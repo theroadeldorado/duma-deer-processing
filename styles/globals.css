@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @import '~react-tooltip/dist/react-tooltip.css';
+  html {
+    @apply bg-gray-100 text-gray-900 antialiased;
+    scroll-behavior: smooth;
+    overflow-x: hidden; /* Prevent flicker of horizontal scrollbar when clicking "Manage" on user table */
+  }
+
+  table tr .cell {
+    @apply px-2 py-2.5 text-[13px] text-gray-500;
+  }
+
+  table tr .cell:first-child {
+    @apply pl-3 pr-2 font-medium text-gray-900 sm:pl-5;
+  }
+
+  table tr .cell:last-child {
+    @apply pl-2 pr-3 sm:pr-5;
+  }
+}
+
+@layer components {
+  .input {
+    @apply block w-full rounded-lg border-gray-300 font-normal shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-100;
+  }
+}
+
+/* Uppy */
+.uppy-Root .uppy-DragDrop-arrow {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 0;
+}
+
+.uppy-Root .uppy-DragDrop-container {
+  opacity: 0.8;
+}
+
+.uppy-Root .uppy-DragDrop-inner {
+  padding: 0;
+}
