@@ -1,1 +1,1 @@
-export const siteName = '__MY_APP__';
+export const siteName = 'duma-deer-processing';

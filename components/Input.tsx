@@ -21,8 +21,28 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
   const { register } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleTelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove all non-digit characters
+    let formattedValue = value;
+
+    if (value.length > 3 && value.length <= 6) {
+      formattedValue = `${value.slice(0, 3)}-${value.slice(3)}`;
+    } else if (value.length > 6) {
+      formattedValue = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6, 10)}`;
+    }
+
+    // Only update the input value if the formatted value is different
+    if (e.target.value !== formattedValue) {
+      e.target.value = formattedValue;
+    }
+
+    onChange?.(e);
+  };
+
   if (type === 'password') {
     type = showPassword ? 'text' : 'password';
+  } else if (type === 'tel') {
+    onChange = handleTelChange;
   } else {
     type = type || 'text';
   }
@@ -41,7 +61,7 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
         <button
           onClick={() => setShowPassword(!showPassword)}
           type='button'
-          className='absolute bottom-0 right-4 top-0'
+          className='absolute top-0 bottom-0 right-4'
           title='Toggle show password'
           tabIndex={-1}
         >

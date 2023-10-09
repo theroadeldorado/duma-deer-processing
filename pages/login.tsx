@@ -27,13 +27,14 @@ export default function Login() {
 
   return (
     <UtilityPage heading='Login'>
-      {unauthorized === 'true' && <div className='mb-4 rounded bg-yellow-200 p-4'>You don&apos;t have permission to access that page.</div>}
+      {unauthorized === 'true' && <div className='p-4 mb-4 bg-yellow-200 rounded'>You don&apos;t have permission to access that page.</div>}
       <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-4'>
         <Input label='Email' type='email' name='email' required />
         <Input label='Password' type='password' name='password' required />
         <Link href='/forgot' className='text-sm font-semibold text-gray-600'>
           Forgot Password
         </Link>
+
         <p className='mt-4 text-center'>
           <Button type='submit' className='w-full'>
             Login
@@ -44,6 +45,13 @@ export default function Login() {
           <Link href='/signup' className='font-semibold text-blue-500'>
             Sign Up
           </Link>
+        </p>
+
+        {/* add anonymous login button */}
+        <p className='mt-4 text-center'>
+          <Button type='button' onClick={handleSubmit}>
+            Login as guest
+          </Button>
         </p>
       </Form>
     </UtilityPage>

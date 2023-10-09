@@ -36,7 +36,7 @@ const Navigation = ({ className }: Props) => {
   return (
     <>
       <button type='button' onClick={() => setOpen(!open)} title='Toggle menu' className='block lg:hidden'>
-        <Icon name='menu' className='h-5 w-5' />
+        <Icon name='menu' className='w-5 h-5' />
       </button>
 
       <button
@@ -71,7 +71,7 @@ const Navigation = ({ className }: Props) => {
               open ? 'visible lg:hidden' : 'hidden'
             )}
           >
-            <Icon name='close' className='h-5 w-5' />
+            <Icon name='close' className='w-5 h-5' />
           </button>
 
           <nav className={clsx('gap-1', open ? 'flex flex-col items-start p-3 px-5 lg:flex-row' : 'hidden items-center lg:flex', className)}>
@@ -79,7 +79,7 @@ const Navigation = ({ className }: Props) => {
               <Link
                 key={index}
                 href={href}
-                className={clsx('text-md rounded-md px-3 py-2 font-semibold text-gray-900 hover:bg-gray-100', pathname === href ? 'bg-gray-50' : '')}
+                className={clsx('rounded-md px-3 py-2 text-md font-semibold text-gray-900 hover:bg-gray-100', pathname === href ? 'bg-gray-50' : '')}
               >
                 <span>{label}</span>
               </Link>
