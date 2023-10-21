@@ -9,10 +9,12 @@
     @apply bg-gray-100  antialiased;
     scroll-behavior: smooth;
     overflow-x: hidden; /* Prevent flicker of horizontal scrollbar when clicking "Manage" on user table */
+    /* @apply bg-[url('/pattern.png')]; */
+    /* @apply bg-repeat; */
   }
 
   body {
-    @apply bg-tan-1 font-body text-brown;
+    @apply bg-tan-1 font-body text-[18px] text-brown;
   }
 
   #__next {

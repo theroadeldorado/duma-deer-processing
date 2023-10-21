@@ -17,7 +17,7 @@ module.exports = {
           1: '#E7E0D6',
           2: '#B7AC92',
         },
-        'primary-blue': '#2563eb',
+        'primary-blue': '#193266',
         green: '#5E7D57',
         brown: '#412D22',
       },

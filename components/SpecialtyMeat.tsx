@@ -7,7 +7,7 @@ import Textarea from './Textarea';
 type Props = {
   name: string;
   image: string;
-  options: { name: string; label: string; price: number }[];
+  options: { name: string; label: string; price: number; priceFlat?: boolean }[];
 };
 
 export default function SpecialtyMeat({ name, image, options }: Props) {
@@ -25,6 +25,15 @@ export default function SpecialtyMeat({ name, image, options }: Props) {
     { value: '50lbs', label: '50lbs' },
     { value: 'Evenly', label: 'Evenly Distribute' },
   ];
+
+  const printPrice = (price: number, priceFlat?: boolean) => {
+    if (priceFlat) {
+      return `$${price} Flat Rate`;
+    } else {
+      return `$${price} per 5lb lot`;
+    }
+  };
+
   return (
     <div className='grid grid-cols-2 gap-6'>
       <h3 className='col-span-2 font-bold text-center text-display-xs'>{name}</h3>
@@ -34,14 +43,17 @@ export default function SpecialtyMeat({ name, image, options }: Props) {
       <div className='flex flex-col gap-3'>
         {options &&
           options.map((option) => (
-            <Select
-              key={option.name}
-              name='trailBolognaRegular'
-              label={option.label}
-              register={register}
-              options={selectOptions}
-              placeholder='Select Amount'
-            />
+            <div key={option.name} className='flex flex-col gap-1'>
+              <Select
+                key={option.name}
+                name={option.name.replace(/\s+/g, '-').toLowerCase()}
+                label={option.label}
+                register={register}
+                options={selectOptions}
+                isClearable
+                placeholder={`Select Amount - ${printPrice(option.price, option.priceFlat)}`}
+              />
+            </div>
           ))}
         <Textarea rows={2} name={`${name}Notes`} label='Special Instructions' register={register} />
       </div>
