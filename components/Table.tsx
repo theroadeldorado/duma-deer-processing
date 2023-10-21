@@ -51,9 +51,7 @@ export function Table({ children, total, isLoading, error, page, cols, sortBy, s
                     index === 0 && 'sm:rounded-tl-lg',
                     index === cols.length - 1 && 'sm:rounded-tr-lg',
                     sortable !== false && 'cursor-pointer',
-                    index === 0
-                      ? 'py-3.5 pl-3 pr-2 text-left text-[13px] font-semibold text-gray-900 sm:pl-5'
-                      : 'px-2 py-3.5 text-left text-[13px] font-semibold text-gray-900'
+                    index === 0 ? 'py-3.5 pl-3 pr-2 text-left text-[13px] font-semibold  sm:pl-5' : 'px-2 py-3.5 text-left text-[13px] font-semibold '
                   )}
                   onClick={sortable !== false ? () => onSort && handleSort(id) : undefined}
                 >
@@ -77,7 +75,7 @@ export function Table({ children, total, isLoading, error, page, cols, sortBy, s
             {!isLoading && total === 0 && !error && (
               <tr>
                 <td colSpan={cols.length} className='p-8 text-center'>
-                  <p className='text-md mb-1 font-semibold text-gray-900'>No results found</p>
+                  <p className='mb-1 text-md font-semibold '>No results found</p>
                   <p className='text-sm text-gray-600'>Your search and filters didn&apos;t return any results.</p>
                 </td>
               </tr>
@@ -85,7 +83,7 @@ export function Table({ children, total, isLoading, error, page, cols, sortBy, s
             {!isLoading && error && (
               <tr>
                 <td colSpan={cols.length} className='p-8 text-center'>
-                  <p className='text-md mb-1 font-semibold text-red-600'>An error occurred</p>
+                  <p className='mb-1 text-md font-semibold text-red-600'>An error occurred</p>
                   <p className='text-xs text-gray-500'>Error: {error}</p>
                 </td>
               </tr>

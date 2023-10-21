@@ -14,7 +14,7 @@ export default function TemplatesTableRow({ data }: Props) {
   return (
     <tr>
       <Cell>
-        <Link href={`/admin/templates/${_id}/edit`} className='text-gray-700 hover:text-gray-900'>
+        <Link href={`/admin/templates/${_id}/edit`} className='hover: text-gray-700'>
           {name}
         </Link>
       </Cell>

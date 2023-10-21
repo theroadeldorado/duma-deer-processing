@@ -11,8 +11,8 @@ export default function EmailVariables({ vars }: Props) {
       <table className='min-w-full divide-y divide-gray-200 border-b border-gray-200'>
         <thead>
           <tr>
-            <th className='pb-3 text-left text-xs font-semibold text-gray-900'>Variable</th>
-            <th className='pb-3 text-left text-xs font-semibold text-gray-900'>Example</th>
+            <th className='pb-3 text-left text-xs font-semibold '>Variable</th>
+            <th className='pb-3 text-left text-xs font-semibold '>Example</th>
           </tr>
         </thead>
         <tbody>

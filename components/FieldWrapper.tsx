@@ -17,17 +17,21 @@ export const FieldWrapper = ({ name, label, children, required, isRadio }: Props
     return (
       <div className='relative'>
         <div className='relative flex-grow'>{children}</div>
-        <ErrorMessage errors={errors} name={name} render={({ message }) => <span className='text-sm text-red-600'>{message}</span>} />
+        <ErrorMessage
+          errors={errors}
+          name={name}
+          render={({ message }) => <span className='relative flex-grow text-sm text-primary-blue'>{message}</span>}
+        />
       </div>
     );
   return (
-    <label className='relative flex flex-col gap-1 text-gray-700'>
+    <label className='relative flex flex-col gap-1 font-bold text-brown'>
       <span>
         {label}
-        {required && <strong className='font-normal text-red-600'>*</strong>}
+        {required && <strong className='font-bold text-primary-blue'>*</strong>}
       </span>
       <div className={clsx(isRadio && 'mt-1 flex flex-wrap items-center justify-start gap-x-6 gap-y-2', 'relative flex-grow')}>{children}</div>
-      <ErrorMessage errors={errors} name={name} render={({ message }) => <span className='text-sm text-red-600'>{message}</span>} />
+      <ErrorMessage errors={errors} name={name} render={({ message }) => <span className='relative flex-grow text-sm text-primary-blue'>{message}</span>} />
     </label>
   );
 };

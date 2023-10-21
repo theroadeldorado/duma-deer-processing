@@ -13,11 +13,11 @@ export default function UtilityPage({ heading, children }: PropTypes) {
       <Title>{heading}</Title>
       <div className='sm:mx-auto sm:w-full sm:max-w-md'>
         <Logo className='mx-auto mb-8 w-[300px]' />
-        <h2 className='mt-6 text-xl font-extrabold text-center text-gray-900'>{heading}</h2>
+        <h2 className='mt-6 text-center text-xl font-extrabold '>{heading}</h2>
       </div>
 
       <div className='mt-8 sm:mx-auto sm:w-full sm:max-w-md'>
-        <div className='px-4 py-8 bg-white shadow sm:rounded-lg sm:px-10'>{children}</div>
+        <div className='bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10'>{children}</div>
       </div>
     </div>
   );

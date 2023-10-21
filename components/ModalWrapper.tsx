@@ -53,7 +53,7 @@ export default function ColModal({ title, open, onClose, children, width }: Prop
                     <Icon name='close' className='h-6 w-6' aria-hidden='true' />
                   </button>
                 </div>
-                <Dialog.Title as='h3' className='mb-4 text-xl font-medium leading-6 text-gray-900'>
+                <Dialog.Title as='h3' className='mb-4 text-xl font-medium leading-6 '>
                   {title}
                 </Dialog.Title>
                 {children}

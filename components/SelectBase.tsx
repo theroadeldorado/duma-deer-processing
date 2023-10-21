@@ -24,7 +24,7 @@ const SelectBase = (props: any) => {
         }),
         control: (base, state) => ({
           ...base,
-          borderColor: state.isFocused ? 'rgb(165, 180, 252)' : base.borderColor,
+          borderColor: state.isFocused ? 'rgb(209, 213, 219)' : base.borderColor,
           borderRadius: '0.5rem',
           fontSize: '1rem',
           outline: 'none',

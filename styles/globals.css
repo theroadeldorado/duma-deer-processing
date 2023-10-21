@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -5,9 +6,17 @@
 @layer base {
   @import '~react-tooltip/dist/react-tooltip.css';
   html {
-    @apply bg-gray-100 text-gray-900 antialiased;
+    @apply bg-gray-100  antialiased;
     scroll-behavior: smooth;
     overflow-x: hidden; /* Prevent flicker of horizontal scrollbar when clicking "Manage" on user table */
+  }
+
+  body {
+    @apply bg-tan-1 font-body text-brown;
+  }
+
+  #__next {
+    @apply min-h-[100svh];
   }
 
   table tr .cell {
@@ -15,17 +24,26 @@
   }
 
   table tr .cell:first-child {
-    @apply pl-3 pr-2 font-medium text-gray-900 sm:pl-5;
+    @apply pl-3 pr-2 font-medium  sm:pl-5;
   }
 
   table tr .cell:last-child {
     @apply pl-2 pr-3 sm:pr-5;
   }
+
+  [type='checkbox']:checked,
+  [type='radio']:checked {
+    @apply border-transparent bg-primary-blue hover:bg-primary-blue focus:bg-primary-blue focus:ring-primary-blue focus-visible:ring-primary-blue active:bg-primary-blue active:ring-primary-blue;
+  }
+  [type='checkbox'],
+  [type='radio'] {
+    @apply focus:ring-primary-blue focus-visible:ring-primary-blue active:ring-primary-blue;
+  }
 }
 
 @layer components {
   .input {
-    @apply block w-full rounded-lg border-gray-300 font-normal shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-100;
+    @apply block w-full rounded-lg border-gray-300 font-normal shadow-sm focus-within:ring-primary-blue focus:border-primary-blue focus:ring focus:ring-primary-blue/10;
   }
 }
 

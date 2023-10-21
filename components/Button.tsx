@@ -21,7 +21,7 @@ type SizeTypes = {
 };
 
 export default function Button({ className, disabled, type = 'button', color = 'primary', size = 'md', children, href, ...props }: Props) {
-  const baseClasses = 'font-semibold rounded-lg inline-flex items-center justify-center';
+  const baseClasses = 'font-semibold rounded-lg inline-flex items-center justify-center duration-300 ease-in-out transition-all';
 
   const sizes: SizeTypes = {
     '2xl': 'text-lg py-4 px-7',
@@ -33,7 +33,7 @@ export default function Button({ className, disabled, type = 'button', color = '
 
   const colors: ColorTypes = {
     default: 'bg-white text-black border border-gray-300 hover:bg-gray-50 shadow-xs focus:ring-4 focus:ring-gray-100',
-    primary: 'bg-blue-500 text-white border hover:bg-blue-600 shadow-xs focus:ring-4 focus:ring-blue-100 border-blue-500 hover:border-blue-600',
+    primary: 'bg-primary-blue border-0 text-white hover:bg-tan-2 shadow-xs focus-visible:ring-primary-blue border-green hover:border-tan-2',
     gray: 'bg-gray-50 border-gray-50 border hover:border-gray-100 text-gray-800 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100',
     danger: 'bg-red-50 text-red-700 border border-red-50 hover:border-red-100 hover:bg-red-100 focus:ring-4 focus:ring-red-100',
   };

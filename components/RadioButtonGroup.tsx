@@ -25,7 +25,7 @@ const RadioButtonGroup = ({ className, name, options, required, onChange, wrappe
   return (
     <FieldWrapper {...{ name, label: wrapperLabel, required, help }} isRadio>
       {options.map((option) => (
-        <div key={option.value} className='flex flex-wrap items-center justify-start gap-2'>
+        <div key={option.value} className='flex flex-wrap items-center justify-start gap-2 font-normal'>
           <input
             type='radio'
             value={option.value}

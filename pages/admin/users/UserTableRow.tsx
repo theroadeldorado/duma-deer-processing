@@ -50,7 +50,7 @@ export default function TableRow({ data }: Props) {
   return (
     <tr key={_id}>
       <Cell>
-        <Link href={`/admin/users/${_id}/edit`} className='text-gray-700 hover:text-gray-900'>
+        <Link href={`/admin/users/${_id}/edit`} className='hover: text-gray-700'>
           {truncate(name, 32)}
         </Link>
       </Cell>
@@ -72,12 +72,12 @@ export default function TableRow({ data }: Props) {
           >
             <Menu.Button className='ml-2 flex items-center justify-center rounded-lg border border-gray-50 bg-gray-50 px-[0.875rem] py-2 text-sm font-semibold text-gray-800 hover:border-gray-100 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100'>
               Manage
-              <Icon name='angleDown' className='-mr-0.5 ml-1.5 text-base' />
+              <Icon name='angleDown' className='text-base -mr-0.5 ml-1.5' />
             </Menu.Button>
 
             <Menu.Items className='z-10 w-[180px] rounded bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
               <Menu.Item>
-                <Link href={`/admin/users/${_id}/edit`} className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'>
+                <Link href={`/admin/users/${_id}/edit`} className='hover: block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
                   <Icon name='edit' className='mr-2 inline-block' />
                   Edit
                 </Link>
@@ -88,7 +88,7 @@ export default function TableRow({ data }: Props) {
                   <button
                     type='button'
                     onClick={() => resendInvite(_id)}
-                    className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                    className='hover: block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
                     disabled={mutation.isLoading}
                   >
                     <Icon name='envelope' className='mr-2 inline-block' />
@@ -101,7 +101,7 @@ export default function TableRow({ data }: Props) {
                 <button
                   type='button'
                   onClick={() => open('changePass', { id: _id, name, email })}
-                  className='block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  className='hover: block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
                 >
                   <Icon name='lock' className='mr-2 inline-block' />
                   Change Password
