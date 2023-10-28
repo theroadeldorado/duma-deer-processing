@@ -1,31 +1,21 @@
 import { useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import Input from './Input';
 import Form from './Form';
 import RadioButtonGroup from './RadioButtonGroup';
 import CheckboxGroup from './CheckboxGroup';
 import Button from './Button';
-import Select from './Select';
 import Image from 'next/image';
 import SpecialtyMeat from './SpecialtyMeat';
 import Textarea from './Textarea';
-
-type CommunicationPreference = 'call' | 'text';
-type BackStrapsPreference = 'Cut in half' | 'Sliced' | 'Butterfly';
-
-type Inputs = {
-  name: string;
-  tagNumber: string;
-  phone: string;
-  communicationPreference: CommunicationPreference;
-  isSkinned: boolean;
-  backStrapsPreference: BackStrapsPreference;
-};
+import router from 'next/router';
+import useMutation from 'hooks/useMutation';
+import { DeerDropOffT } from 'lib/types';
 
 const TOTAL_STEPS = 7;
 
 const CheckInForm = () => {
-  const form = useForm<Inputs>();
+  const form = useForm<DeerDropOffT>();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSkinnedSelection, setIsSkinnedSelection] = useState(null);
   const [isHindLegPreference1, setIsHindLegPreference1] = useState(null);
@@ -43,23 +33,27 @@ const CheckInForm = () => {
     setIsSkinnedSelection(event.target.value);
   };
 
-  const { register, handleSubmit, watch } = form;
-
-  const onSubmit = (data: Inputs) => {
-    console.log(data);
-  };
-
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
-
-  // Watch the values of the fields based on the current step
+  const { register, watch } = form;
   const values = watch();
-
-  // Check if required fields for the current step are filled
   const isCurrentStepFilled = () => {
     switch (currentStep) {
       default:
         return true;
     }
+  };
+
+  const mutation = useMutation({
+    url: '/api/auth/deerdropoff',
+    method: 'POST',
+    onSuccess: async (data: any) => {
+      router.push('/login');
+    },
+  });
+
+  const handleSubmit: SubmitHandler<DeerDropOffT> = async ({ ...data }) => {
+    console.log(data);
+    mutation.mutate(data as any);
   };
 
   return (
@@ -69,12 +63,11 @@ const CheckInForm = () => {
           <div className='absolute top-0 left-0 h-4 transition-all duration-500 bg-primary-blue' style={{ width: `${progressPercentage}%` }}></div>
         </div>
 
-        <Form onSubmit={handleSubmit(onSubmit)} form={form} className='flex flex-col gap-6'>
+        <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
           {currentStep === 1 && (
             <>
               <Input label='Full Name' type='text' name='name' register={register} required />
               <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
-
               <Input label='Address' type='text' name='address' register={register} required />
               <div className='grid grid-cols-5 gap-4'>
                 <div className='col-span-2'>
@@ -441,7 +434,6 @@ const CheckInForm = () => {
                 <li>
                   <span className='font-bold'>Communication Preference:</span> {values.communicationPreference}
                 </li>
-
                 <li>
                   <span className='font-bold'>Cape:</span> {values.cape}
                 </li>
