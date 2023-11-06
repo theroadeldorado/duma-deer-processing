@@ -68,8 +68,6 @@ export default function EditDeer({ data, isNew }: Props) {
     del.mutate({});
   };
 
-  // Add mutation for deletion as well if needed, similar to the profile deletion mutation above
-
   return (
     <AdminPage title={isNew ? 'Add Deer' : 'Edit Deer'}>
       <Form form={form} onSubmit={mutation.mutate} className='mx-auto max-w-6xl bg-white shadow sm:rounded-lg'>
@@ -99,7 +97,7 @@ export default function EditDeer({ data, isNew }: Props) {
             <div>
               <CheckboxGroup name='cape' options={[{ value: 'cape', label: 'Cape for shoulder mount. Additional $50' }]} />
               <CheckboxGroup name='hide' options={[{ value: 'hide', label: 'Keep skinned hide. Additional $15' }]} />
-              <Textarea rows={2} name={`cape-hide-Notes`} label='Special Instructions' />
+              <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' />
             </div>
             <div>
               <RadioButtonGroup
@@ -112,7 +110,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 defaultCheckedValue='skinned'
                 required
               />
-              <Textarea rows={2} name={`skinned-boneless-Notes`} label='Special Instructions' />
+              <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions' />
             </div>
           </div>
           <div className='grid grid-cols-3 gap-4'>
@@ -218,7 +216,7 @@ export default function EditDeer({ data, isNew }: Props) {
               defaultCheckedValue='Grind'
               wrapperLabel='Roast Preference'
             />
-            <Textarea rows={2} name={`roast-Notes`} label='Special Instructions' />
+            <Textarea rows={2} name={`roastNotes`} label='Special Instructions' />
           </div>
           <div className='flex items-center justify-start gap-4'>
             <div className='mt-2 h-px w-full grow bg-gray-500'></div>

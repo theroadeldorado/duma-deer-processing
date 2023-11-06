@@ -24,7 +24,7 @@ const EmailTemplate: Omit<EmailTemplateSchemaT, 'key' | 'vars'> = {
 export const EmailTemplateZ = z.object(EmailTemplate);
 
 export const Deer = {
-  _id: z.string().min(1, 'ID is required'),
+  _id: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
   tagNumber: z.string().min(1, 'Tag Number is required'),
   address: z.string().min(1, 'Address is required'),

@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { newPasswordValidation } from '@/config/form';
 import { FieldWrapper } from 'components/FieldWrapper';
 import Icon from 'components/Icon';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import clsx from 'clsx';
 
 type InputProps = {
@@ -21,22 +21,21 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
   const { register } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
 
+  const valueRef = useRef('');
+
   const handleTelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    let value = e.target.value.replace(/\D/g, ''); // Remove all non-digit characters
-    let formattedValue = value;
-
-    if (value.length > 3 && value.length <= 6) {
-      formattedValue = `${value.slice(0, 3)}-${value.slice(3)}`;
-    } else if (value.length > 6) {
-      formattedValue = `${value.slice(0, 3)}-${value.slice(3, 6)}-${value.slice(6, 10)}`;
+    const { value } = e.target;
+    if (valueRef.current === value) {
+      // prevent onChange if the formatted value is the same as the current value
+      return;
     }
 
-    // Only update the input value if the formatted value is different
-    if (e.target.value !== formattedValue) {
-      e.target.value = formattedValue;
-    }
+    valueRef.current = value; // Store current value to check in future changes
 
-    onChange?.(e);
+    const phone = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+    const formatted = !phone[2] ? phone[1] : `(${phone[1]}) ${phone[2]}${phone[3] ? `-${phone[3]}` : ''}`;
+    e.target.value = formatted;
+    onChange && onChange(e); // Call the original onChange prop, if provided
   };
 
   if (type === 'password') {
@@ -61,7 +60,7 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
         <button
           onClick={() => setShowPassword(!showPassword)}
           type='button'
-          className='absolute top-0 bottom-0 right-4'
+          className='absolute bottom-0 right-4 top-0'
           title='Toggle show password'
           tabIndex={-1}
         >
