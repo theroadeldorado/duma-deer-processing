@@ -1,4 +1,4 @@
-import DeerDropOff from 'models/DeerDropOff';
+import Deer from 'models/Deer';
 import { connect } from 'lib/mongo';
 import secureApi from 'lib/secureApi';
 import { exportDeers } from 'lib/csv';
@@ -24,12 +24,12 @@ export default secureApi(async (req, res) => {
 
   await connect();
   const [deers, total] = await Promise.all([
-    DeerDropOff.find(query)
+    Deer.find(query)
       .limit(isCSV ? 0 : 20)
       .skip(isCSV ? 0 : 20 * (currentPage - 1))
       .sort(sortBy && sortDirection ? { [sortBy]: sortDirection === 'asc' ? 1 : -1 } : undefined)
       .lean(),
-    DeerDropOff.countDocuments(query),
+    Deer.countDocuments(query),
   ]);
 
   if (isCSV) {

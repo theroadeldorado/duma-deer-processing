@@ -10,12 +10,12 @@ import SpecialtyMeat from './SpecialtyMeat';
 import Textarea from './Textarea';
 import router from 'next/router';
 import useMutation from 'hooks/useMutation';
-import { DeerDropOffT } from 'lib/types';
+import { DeerT } from 'lib/types';
 
 const TOTAL_STEPS = 7;
 
 const CheckInForm = () => {
-  const form = useForm<DeerDropOffT>();
+  const form = useForm<DeerT>();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSkinnedSelection, setIsSkinnedSelection] = useState(null);
   const [isHindLegPreference1, setIsHindLegPreference1] = useState(null);
@@ -44,23 +44,23 @@ const CheckInForm = () => {
   };
 
   const mutation = useMutation({
-    url: '/api/auth/deerdropoff',
+    url: '/api/auth/Deer',
     method: 'POST',
     onSuccess: async (data: any) => {
       router.push('/login');
     },
   });
 
-  const handleSubmit: SubmitHandler<DeerDropOffT> = async ({ ...data }) => {
-    console.log(data);
+  const handleSubmit: SubmitHandler<DeerT> = async ({ ...data }) => {
+    data._id = `${data.tagNumber}-${Date.now()}`;
     mutation.mutate(data as any);
   };
 
   return (
     <>
       <div className='flex flex-col gap-6'>
-        <div className='relative w-full h-4 overflow-hidden rounded-full bg-tan-1'>
-          <div className='absolute top-0 left-0 h-4 transition-all duration-500 bg-primary-blue' style={{ width: `${progressPercentage}%` }}></div>
+        <div className='relative h-4 w-full overflow-hidden rounded-full bg-tan-1'>
+          <div className='absolute left-0 top-0 h-4 bg-primary-blue transition-all duration-500' style={{ width: `${progressPercentage}%` }}></div>
         </div>
 
         <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
@@ -97,7 +97,7 @@ const CheckInForm = () => {
               <div className='grid grid-cols-2 gap-6'>
                 <div className='flex flex-col gap-3'>
                   <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
-                    <Image src={'/cape.png'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'cape'} />
+                    <Image src={'/cape.png'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'cape'} />
                   </div>
                   <div className='pl-2'>
                     <CheckboxGroup name='cape' options={[{ value: 'cape', label: 'Cape for shoulder mount. Additional $50' }]} register={register} />
@@ -105,13 +105,13 @@ const CheckInForm = () => {
                 </div>
                 <div className='flex flex-col gap-3'>
                   <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
-                    <Image src={'/hide.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'hide'} />
+                    <Image src={'/hide.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'hide'} />
                   </div>
                   <div className='pl-2'>
                     <CheckboxGroup name='hide' options={[{ value: 'hide', label: 'Keep skinned hide. Additional $15' }]} register={register} />
                   </div>
                 </div>
-                <p className='col-span-2 mt-2 italic text-center'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
+                <p className='col-span-2 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
                 <div className='col-span-2'>
                   <Textarea rows={2} name={`cape-hide-Notes`} label='Special Instructions' register={register} />
                 </div>
@@ -122,7 +122,7 @@ const CheckInForm = () => {
             <>
               <div className='grid grid-cols-1 gap-5'>
                 <div className='relative aspect-[5/2] w-full overflow-hidden rounded-md'>
-                  <Image src={'/deer.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'deer'} />
+                  <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
                 </div>
                 <div className='pl-2'>
                   <RadioButtonGroup
@@ -136,7 +136,7 @@ const CheckInForm = () => {
                     defaultCheckedValue='skinned'
                     required
                   />
-                  <p className='mt-2 italic text-center'>
+                  <p className='mt-2 text-center italic'>
                     Must select "Skinned" even if already skinned or quartered.
                     <br />
                     There is no cost if your deer is 100% deboned.
@@ -152,7 +152,7 @@ const CheckInForm = () => {
             <>
               <div className='flex flex-col items-center justify-center gap-4'>
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
-                  <Image src={'/back_straps.svg'} className='object-cover w-full h-full scale-150' width={500} height={300} alt={'backstraps'} />
+                  <Image src={'/back_straps.svg'} className='h-full w-full scale-150 object-cover' width={500} height={300} alt={'backstraps'} />
                 </div>
                 <div className='grid grid-cols-2 gap-20 [&>label>div]:flex-col [&>label>div]:items-start [&>label>div]:justify-start'>
                   <RadioButtonGroup
@@ -217,7 +217,7 @@ const CheckInForm = () => {
                   {isHindLegPreference1 === 'Jerky' && (
                     <>
                       <div className='relative aspect-[3/1] overflow-hidden rounded-md'>
-                        <Image src={'/jerky-2.jpg'} className='object-cover w-full h-full ' width={500} height={300} alt={'jerky'} />
+                        <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
                       </div>
                       <RadioButtonGroup
                         name='hindLegJerky1'
@@ -250,7 +250,7 @@ const CheckInForm = () => {
                   {isHindLegPreference2 === 'Jerky' && (
                     <>
                       <div className='relative aspect-[3/1] overflow-hidden rounded-md'>
-                        <Image src={'/jerky-2.jpg'} className='object-cover w-full h-full ' width={500} height={300} alt={'jerky'} />
+                        <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
                       </div>
                       <RadioButtonGroup
                         name='hindLegJerky2'
@@ -288,7 +288,7 @@ const CheckInForm = () => {
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
                   <Image
                     src={'/roast.svg'}
-                    className='object-cover w-full h-full scale-150 translate-y-8 translate-x-14'
+                    className='h-full w-full translate-x-14 translate-y-8 scale-150 object-cover'
                     width={500}
                     height={300}
                     alt={'roast'}
@@ -317,7 +317,7 @@ const CheckInForm = () => {
 
           {currentStep === 7 && (
             <>
-              <h3 className='mb-2 font-bold text-center text-display-sm'>Ground Venison Options</h3>
+              <h3 className='mb-2 text-center text-display-sm font-bold'>Ground Venison Options</h3>
 
               <SpecialtyMeat
                 name='Ground Venison'
@@ -327,7 +327,7 @@ const CheckInForm = () => {
                   { name: 'groundVenisonPorkTrim', label: 'Ground Venison with Pork Trim', price: 5, priceFlat: true },
                 ]}
               />
-              <p className='italic text-center'>Ground Venison is the default option if nothing is selected.</p>
+              <p className='text-center italic'>Ground Venison is the default option if nothing is selected.</p>
 
               <SpecialtyMeat
                 name='Trail Bologna'
@@ -445,7 +445,7 @@ const CheckInForm = () => {
                 </li>
               </ul>
 
-              <h4 className='mt-4 mb-2 text-lg font-bold'>Selected Options:</h4>
+              <h4 className='mb-2 mt-4 text-lg font-bold'>Selected Options:</h4>
               <ul>
                 {/* Use Object.entries to iterate over all properties of the `values` object */}
                 {Object.entries(values).map(([key, value]) => {

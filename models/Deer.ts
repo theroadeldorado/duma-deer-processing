@@ -1,8 +1,12 @@
-import { DeerDropOffT, DeerDropOffSchemaT } from 'lib/types';
+import { DeerT, DeerSchemaT } from 'lib/types';
 import mongoose from 'mongoose';
 const { Schema, model, models } = mongoose;
 
-const fields: DeerDropOffSchemaT = {
+const fields: DeerSchemaT = {
+  _id: {
+    type: String,
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -193,10 +197,10 @@ const fields: DeerDropOffSchemaT = {
   },
 };
 
-const DeerDropOffSchema = new Schema(fields, {
+const DeerSchema = new Schema(fields, {
   timestamps: true,
 });
 
-const DeerDropOff = models?.DeerDropOff || model('DeerDropOff', DeerDropOffSchema);
+const Deer = models?.Deer || model('Deer', DeerSchema);
 
-export default DeerDropOff as mongoose.Model<DeerDropOffT>;
+export default Deer as mongoose.Model<DeerT>;

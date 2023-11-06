@@ -15,7 +15,8 @@ export type ProfileT = {
   updatedAt: Date;
 };
 
-export type DeerDropOffT = {
+export type DeerT = {
+  _id: string;
   name: string;
   tagNumber: string;
   address: string;
@@ -36,6 +37,7 @@ export type DeerDropOffT = {
   hindLegPreference2?: string;
   hindLegNotes?: string;
   tenderizedCubedSteaks?: string;
+  hindLegJerky1?: string;
   hindLegJerky2?: string;
   roast?: string;
   roastNotes?: string;
@@ -82,7 +84,7 @@ export type DeerDropOffT = {
 
 export type ProfileInputT = Omit<ProfileT, '_id' | 'uid' | 'createdAt' | 'updatedAt' | 'inviteCode'>;
 export type ProfileSchemaT = Record<keyof Omit<ProfileT, '_id' | 'updatedAt' | 'createdAt'>, any>;
-export type DeerDropOffSchemaT = Record<keyof Omit<DeerDropOffT, 'updatedAt' | 'createdAt'>, any>;
+export type DeerSchemaT = Record<keyof Omit<DeerT, 'updatedAt' | 'createdAt'>, any>;
 
 export type SessionDataT = {
   name?: string;

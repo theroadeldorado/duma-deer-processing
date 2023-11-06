@@ -9,7 +9,7 @@ import Form from '@/components/Form';
 import Input from '@/components/Input';
 import Icon from '@/components/Icon';
 import { debounce } from '@/lib/helpers';
-import { DeerDropOffT } from 'lib/types';
+import { DeerT } from 'lib/types';
 import DeerTableRow from './DeerTableRow';
 
 const cols = [
@@ -26,7 +26,7 @@ const cols = [
 ];
 
 export default function Deers() {
-  const { results, tableProps, updateFilters, onExport } = useTableSearch<DeerDropOffT>({
+  const { results, tableProps, updateFilters, onExport } = useTableSearch<DeerT>({
     url: '/api/deers',
     defaultFilters: { status: 'both' },
     defaultSortBy: 'createdAt',

@@ -1,5 +1,5 @@
 import { auth } from 'lib/firebaseAdmin';
-import Profile from 'models/Profile';
+import Deer from 'models/Deer';
 import { connect } from 'lib/mongo';
 import secureApi from 'lib/secureApi';
 
@@ -8,17 +8,17 @@ export default secureApi(async (req, res) => {
   try {
     await connect();
 
-    const profile = await Profile.findById(id);
-    if (!profile) throw new Error('User not found');
-    await Profile.deleteOne({ _id: id });
+    const Deer = await Deer.findById(id);
+    if (!Deer) throw new Error('Deer not found');
+    await Deer.deleteOne({ tagNumber: id });
 
-    if (profile.uid) {
-      await auth.deleteUser(profile.uid);
+    if (Deer.tagNumber) {
+      await auth.deleteUser(Deer.tagNumber);
     }
 
     res.status(200).json({ success: true });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: 'Error deleting user' });
+    res.status(500).json({ error: 'Error deleting deer' });
   }
 }, true);

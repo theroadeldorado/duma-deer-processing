@@ -1,10 +1,10 @@
-import { ProfileT, DeerDropOffT } from 'lib/types';
+import { ProfileT, DeerT } from 'lib/types';
 import { parseAsync } from 'json2csv';
 import { admin } from 'lib/firebaseAdmin';
 import fs from 'fs/promises';
 import dayjs from 'dayjs';
 
-export const exportDeers = async (data: DeerDropOffT[]) => {
+export const exportDeers = async (data: DeerT[]) => {
   const fields = {
     createdAt: 'Date',
     name: 'Name',
