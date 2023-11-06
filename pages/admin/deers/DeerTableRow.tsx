@@ -1,28 +1,26 @@
 import React from 'react';
 import Link from 'next/link';
-import { DeerDropOffT } from 'lib/types';
+import { DeerT } from 'lib/types';
 import { truncate } from 'lib/helpers';
 import { Cell } from 'components/Table';
 import { Menu } from '@headlessui/react';
 import dayjs from 'dayjs';
 import Icon from '@/components/Icon';
 import useMutation from 'hooks/useMutation';
-import { useModal } from '@/providers/ModalProvider';
 import { Float } from '@headlessui-float/react';
 import { useQueryClient } from '@tanstack/react-query';
 import Button from '@/components/Button';
 
 type Props = {
-  data: DeerDropOffT;
+  data: DeerT;
 };
 
 export default function DeerTableRow({ data }: Props) {
-  const { name, tagNumber, address, city, state, zip, phone, communicationPreference, createdAt } = data;
-  const { open } = useModal();
+  const { _id, name, tagNumber, address, city, state, zip, phone, communicationPreference, createdAt } = data;
   const queryClient = useQueryClient();
 
   const del = useMutation({
-    url: `/api/deer/${tagNumber}/delete`,
+    url: `/api/deer/${_id}/delete`,
     method: 'DELETE',
     successMessage: 'User deleted successfully',
     onSuccess: () => {
@@ -36,12 +34,7 @@ export default function DeerTableRow({ data }: Props) {
   };
 
   return (
-    <tr key={tagNumber}>
-      {/* <Cell>
-        <Link href={`/admin/deer/${tagNumber}/edit`} className='text-gray-700 hover:text-primary-blue'>
-          {truncate(name, 32)}
-        </Link>
-      </Cell> */}
+    <tr key={_id}>
       <Cell suppressHydrationWarning>{createdAt && dayjs(createdAt).format('M/D/YY')}</Cell>
       <Cell>{name}</Cell>
       <Cell>{phone}</Cell>
@@ -73,8 +66,8 @@ export default function DeerTableRow({ data }: Props) {
 
             <Menu.Items className='z-10 w-[180px] rounded bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
               <Menu.Item>
-                <Link href={`/admin/deer/${tagNumber}/edit`} className='block px-4 py-2 text-sm text-gray-700 hover: hover:bg-gray-100'>
-                  <Icon name='edit' className='inline-block mr-2' />
+                <Link href={`/admin/deer/${_id}/edit`} className='hover: block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                  <Icon name='edit' className='mr-2 inline-block' />
                   Edit
                 </Link>
               </Menu.Item>
@@ -82,11 +75,11 @@ export default function DeerTableRow({ data }: Props) {
               <Menu.Item>
                 <button
                   type='button'
-                  onClick={() => deleteUser(tagNumber)}
-                  className='block w-full px-4 py-2 text-sm text-left text-red-700 hover:bg-gray-100 hover:text-red-900'
+                  onClick={() => deleteUser(_id)}
+                  className='block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-gray-100 hover:text-red-900'
                   disabled={del.isLoading}
                 >
-                  <Icon name='delete' className='inline-block mr-2' />
+                  <Icon name='delete' className='mr-2 inline-block' />
                   Delete
                 </button>
               </Menu.Item>

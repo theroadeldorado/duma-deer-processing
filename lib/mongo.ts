@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
 import Profile from 'models/Profile';
+import Deer from 'models/Deer';
 import EmailTemplate from 'models/EmailTemplate';
-import { ProfileT, EmailTemplateT } from 'lib/types';
+import { ProfileT, EmailTemplateT, DeerT } from 'lib/types';
 import { env } from '@/env.mjs';
 
 declare global {
@@ -65,5 +66,11 @@ export const getProfileByCode = async (inviteCode: string): Promise<ProfileT | n
 export const getEmailTemplate = async (id: string): Promise<EmailTemplateT | null> => {
   await connect();
   const result = await EmailTemplate.findById(id);
+  return result ? JSON.parse(JSON.stringify(result)) : null;
+};
+
+export const getDeer = async (id: string): Promise<DeerT | null> => {
+  await connect();
+  const result = await Deer.findById(id).lean();
   return result ? JSON.parse(JSON.stringify(result)) : null;
 };

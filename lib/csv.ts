@@ -27,6 +27,7 @@ export const exportDeers = async (data: DeerT[]) => {
     hindLegPreference2: 'Hind Leg Preference 2',
     hindLegNotes: 'Hind Leg Notes',
     tenderizedCubedSteaks: 'Tenderized Cubed Steaks',
+    hindLegJerky1: 'Hind Leg Jerky 1',
     hindLegJerky2: 'Hind Leg Jerky 2',
     roast: 'Roast',
     roastNotes: 'Roast Notes',

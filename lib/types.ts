@@ -81,6 +81,7 @@ export type DeerT = {
   createdAt: Date;
   updatedAt: Date;
 };
+export type DeerInputT = Omit<DeerT, '_id' | 'createdAt' | 'updatedAt'>;
 
 export type ProfileInputT = Omit<ProfileT, '_id' | 'uid' | 'createdAt' | 'updatedAt' | 'inviteCode'>;
 export type ProfileSchemaT = Record<keyof Omit<ProfileT, '_id' | 'updatedAt' | 'createdAt'>, any>;

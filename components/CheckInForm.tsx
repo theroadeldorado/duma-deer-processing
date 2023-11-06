@@ -44,15 +44,15 @@ const CheckInForm = () => {
   };
 
   const mutation = useMutation({
-    url: '/api/auth/Deer',
+    url: '/api/auth/deer',
     method: 'POST',
     onSuccess: async (data: any) => {
-      router.push('/login');
+      router.push('/success');
     },
   });
 
   const handleSubmit: SubmitHandler<DeerT> = async ({ ...data }) => {
-    data._id = `${data.tagNumber}-${Date.now()}`;
+    data._id = data.tagNumber + Date.now();
     mutation.mutate(data as any);
   };
 

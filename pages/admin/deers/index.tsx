@@ -57,7 +57,7 @@ export default function Deers() {
 
       <Table cols={cols} {...tableProps}>
         {results.map((data) => (
-          <DeerTableRow key={data.tagNumber} data={data} />
+          <DeerTableRow key={data._id} data={data} />
         ))}
       </Table>
     </AdminPage>

@@ -5,6 +5,7 @@ import { exportDeers } from 'lib/csv';
 
 type QueryT = {
   search?: string;
+  role?: string;
   sortBy?: string;
   sortDirection?: string;
   format?: string;
@@ -19,7 +20,7 @@ export default secureApi(async (req, res) => {
   const query: any = {};
 
   if (search) {
-    query.$or = [{ name: { $regex: search, $options: 'i' } }, { tagNumber: search.toLowerCase() }];
+    query.$or = [{ name: { $regex: search, $options: 'i' } }];
   }
 
   await connect();
