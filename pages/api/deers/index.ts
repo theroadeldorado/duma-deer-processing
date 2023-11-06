@@ -1,7 +1,7 @@
 import Deer from 'models/Deer';
 import { connect } from 'lib/mongo';
 import secureApi from 'lib/secureApi';
-import { exportDeers } from 'lib/csv';
+import { exportUsers } from 'lib/csv';
 
 type QueryT = {
   search?: string;
@@ -14,13 +14,17 @@ type QueryT = {
 
 export default secureApi(async (req, res) => {
   await connect();
-  const { search, sortBy, sortDirection, format, page } = req.query as QueryT;
+  const { search, role, sortBy, sortDirection, format, page } = req.query as QueryT;
   const currentPage = Number(page) || 1;
   const isCSV = format === 'csv';
   const query: any = {};
 
   if (search) {
     query.$or = [{ name: { $regex: search, $options: 'i' } }];
+  }
+
+  if (role) {
+    query.role = role;
   }
 
   await connect();
@@ -35,7 +39,7 @@ export default secureApi(async (req, res) => {
 
   if (isCSV) {
     try {
-      const url = await exportDeers(deers);
+      const url = await exportUsers(deers);
       res.status(200).json({ success: true, url });
     } catch (error) {
       console.log(error);

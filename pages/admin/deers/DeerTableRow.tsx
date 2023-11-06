@@ -66,7 +66,7 @@ export default function DeerTableRow({ data }: Props) {
 
             <Menu.Items className='z-10 w-[180px] rounded bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5'>
               <Menu.Item>
-                <Link href={`/admin/deer/${_id}/edit`} className='hover: block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
+                <Link href={`/admin/deers/${_id}/edit`} className='hover: block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'>
                   <Icon name='edit' className='mr-2 inline-block' />
                   Edit
                 </Link>

@@ -1,35 +1,36 @@
-import { auth } from 'lib/firebaseAdmin';
-import Profile from 'models/Profile';
-import { ProfileZ, safeData } from 'lib/zod';
-import { z } from 'zod';
 import { connect } from 'lib/mongo';
 import secureApi from 'lib/secureApi';
+import Deer from 'models/Deer'; // Your Deer model
+import { DeerZ, safeData } from 'lib/zod'; // Your Zod validation for deer
+import { z } from 'zod';
+import { NextApiRequest, NextApiResponse } from 'next';
 
-export default secureApi(async (req, res) => {
+export default secureApi(async (req: NextApiRequest, res: NextApiResponse) => {
+  if (req.method !== 'PUT') {
+    return res.status(405).json({ error: 'Method not allowed' });
+  }
+
   const id = req.query.id as string;
 
   try {
-    type DataT = z.infer<typeof ProfileZ>;
-    const data = await safeData<DataT>(ProfileZ, req.body);
+    type DeerDataT = z.infer<typeof DeerZ>;
+    const data = await safeData<DeerDataT>(DeerZ, req.body);
 
     await connect();
-    const profile = await Profile.findById(id);
+    const deer = await Deer.findById(id);
 
-    if (!profile) throw new Error('User not found');
-
-    if (profile.uid) {
-      await auth.updateUser(profile.uid, { email: data.email.toLowerCase(), displayName: data.name });
-      await auth.setCustomUserClaims(profile.uid, {
-        profileId: profile._id,
-        role: data.role,
-      });
+    if (!deer) {
+      return res.status(404).json({ error: 'Deer not found' });
     }
 
-    await Profile.updateOne({ _id: id }, data);
+    // Add your update logic here.
+    // For example, you might want to prevent certain fields from being updated or handle specific updates in a custom way.
 
-    res.status(200).json({ success: true });
+    await Deer.updateOne({ _id: id }, data);
+
+    res.status(200).json({ success: true, message: 'Deer updated successfully' });
   } catch (error: any) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 }, true);

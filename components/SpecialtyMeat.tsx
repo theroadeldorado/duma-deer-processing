@@ -6,7 +6,7 @@ import Textarea from './Textarea';
 
 type Props = {
   name: string;
-  image: string;
+  image?: string;
   options: { name: string; label: string; price: number; priceFlat?: boolean }[];
   admin?: boolean;
 };
@@ -41,8 +41,6 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
         options &&
         options.map((option) => (
           <div key={option.name} className='flex flex-col gap-1'>
-            <h3 className='col-span-2 text-center text-display-xs font-bold'>{name}</h3>
-
             <Select
               key={option.name}
               name={option.name.replace(/\s+/g, '-').toLowerCase()}
@@ -58,7 +56,7 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
         <div className='grid grid-cols-2 gap-6'>
           <h3 className='col-span-2 text-center text-display-xs font-bold'>{name}</h3>
           <div className='relative overflow-hidden rounded-md'>
-            <Image src={image} className={clsx('absolute inset-0 h-full w-full object-cover')} width={500} height={300} alt={name} />
+            {image && <Image src={image} className={clsx('absolute inset-0 h-full w-full object-cover')} width={500} height={300} alt={name} />}
           </div>
           <div className='flex flex-col gap-3'>
             {options &&

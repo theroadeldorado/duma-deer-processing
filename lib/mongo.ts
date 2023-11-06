@@ -69,8 +69,8 @@ export const getEmailTemplate = async (id: string): Promise<EmailTemplateT | nul
   return result ? JSON.parse(JSON.stringify(result)) : null;
 };
 
-export const getDeer = async (id: string): Promise<DeerT | null> => {
+export const getDeer = async (id: string, fields?: string[]): Promise<DeerT | null> => {
   await connect();
-  const result = await Deer.findById(id).lean();
+  const result = await Deer.findById({ _id: id }, fields).lean();
   return result ? JSON.parse(JSON.stringify(result)) : null;
 };
