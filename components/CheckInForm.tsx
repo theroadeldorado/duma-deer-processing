@@ -137,7 +137,7 @@ const CheckInForm = () => {
                     required
                   />
                   <p className='mt-2 text-center italic'>
-                    Must select "Skinned" even if already skinned or quartered.
+                    Must select &quot;Skinned&quot; even if already skinned or quartered.
                     <br />
                     There is no cost if your deer is 100% deboned.
                   </p>
