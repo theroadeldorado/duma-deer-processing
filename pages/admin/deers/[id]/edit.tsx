@@ -16,6 +16,7 @@ import RadioButtonGroup from '@/components/RadioButtonGroup';
 import CheckboxGroup from '@/components/CheckboxGroup';
 import Textarea from '@/components/Textarea';
 import SpecialtyMeat from '@/components/SpecialtyMeat';
+import Select from '@/components/Select';
 
 type Props = {
   data?: DeerT;
@@ -97,14 +98,24 @@ export default function EditDeer({ data, isNew }: Props) {
             <div>
               <CheckboxGroup name='cape' options={[{ value: 'cape', label: 'Cape for shoulder mount. Additional $50' }]} />
               <CheckboxGroup name='hide' options={[{ value: 'hide', label: 'Keep skinned hide. Additional $15' }]} />
+              <Select
+                className='w-full'
+                name='euroMount'
+                options={[
+                  { value: 'none', label: 'Select Option' },
+                  { value: 'Keep head', label: 'Keep Head' },
+                  { value: 'pork', label: 'Boiled Finished Mount - $145' },
+                  { value: 'both', label: 'Beetles Finished Mount - $175' },
+                ]}
+              ></Select>
               <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' />
             </div>
             <div>
               <RadioButtonGroup
-                name='isSkinned'
+                name='skinnedOrBoneless'
                 options={[
-                  { value: 'skinned', label: '$95 - Skinned, Cut, Ground, Vacuum packed.' },
-                  { value: 'boneless', label: 'Boneless, 100% deboned already.' },
+                  { value: 'skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                  { value: 'boneless', label: 'Boneless, 100% deboned already' },
                 ]}
                 onChange={handleSkinned}
                 defaultCheckedValue='skinned'
@@ -121,6 +132,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 { value: 'Cut in half', label: 'Cut in half' },
                 { value: 'Sliced', label: 'Sliced' },
                 { value: 'Butterfly', label: 'Butterfly' },
+                { value: 'Whole', label: 'Whole' },
                 { value: 'Grind', label: 'Grind' },
               ]}
               defaultCheckedValue='Grind'
@@ -132,6 +144,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 { value: 'Cut in half', label: 'Cut in half' },
                 { value: 'Sliced', label: 'Sliced' },
                 { value: 'Butterfly', label: 'Butterfly' },
+                { value: 'Whole', label: 'Whole' },
                 { value: 'Grind', label: 'Grind' },
               ]}
               defaultCheckedValue='Grind'
@@ -225,14 +238,18 @@ export default function EditDeer({ data, isNew }: Props) {
           </div>
           <div className='grid grid-cols-3 gap-4'>
             <h3 className='col-span-3 text-display-sm font-bold'>Ground Venison Options</h3>
-            <SpecialtyMeat
-              admin
-              name='Ground Venison'
+            <Select
+              name='groundVenison'
+              label='Ground Venison'
+              placeholder='Select Option'
+              required
               options={[
-                { name: 'groundVenisonBeefTrim', label: 'Ground Venison with Beef Trim', price: 5, priceFlat: true },
-                { name: 'groundVenisonPorkTrim', label: 'Ground Venison with Pork Trim', price: 5, priceFlat: true },
+                { value: 'plain', label: 'Plain' },
+                { value: 'beef', label: 'Add Beef Trim - $5' },
+                { value: 'pork', label: 'Add Pork Trim - $5' },
+                { value: 'both', label: 'Add Beef & Pork Trim - $10' },
               ]}
-            />
+            ></Select>
           </div>
           <div className='grid grid-cols-3 gap-4'>
             <h3 className='col-span-3 text-display-sm font-bold'>Trail Bologna</h3>

@@ -11,13 +11,13 @@ import Textarea from './Textarea';
 import router from 'next/router';
 import useMutation from 'hooks/useMutation';
 import { DeerT } from 'lib/types';
+import Select from './Select';
 
 const TOTAL_STEPS = 7;
 
 const CheckInForm = () => {
   const form = useForm<DeerT>();
   const [currentStep, setCurrentStep] = useState(1);
-  const [isSkinnedSelection, setIsSkinnedSelection] = useState(null);
   const [isHindLegPreference1, setIsHindLegPreference1] = useState(null);
   const [isHindLegPreference2, setIsHindLegPreference2] = useState(null);
 
@@ -27,10 +27,6 @@ const CheckInForm = () => {
 
   const handleHindLegPreference2 = (event: any) => {
     setIsHindLegPreference2(event.target.value);
-  };
-
-  const handleSkinned = (event: any) => {
-    setIsSkinnedSelection(event.target.value);
   };
 
   // Function to calculate total price
@@ -58,6 +54,7 @@ const CheckInForm = () => {
 
   const handleSubmit: SubmitHandler<DeerT> = async ({ ...data }) => {
     data._id = data.tagNumber + Date.now();
+    data.name = data.firstName + ' ' + data.lastName;
     mutation.mutate(data as any);
   };
 
@@ -71,7 +68,10 @@ const CheckInForm = () => {
         <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
           {currentStep === 1 && (
             <>
-              <Input label='Full Name' type='text' name='name' register={register} required />
+              <div className='grid grid-cols-2 gap-4'>
+                <Input label='First Name' type='text' name='firstName' register={register} required />
+                <Input label='Last Name' type='text' name='lastName' register={register} required />
+              </div>
               <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
               <Input label='Address' type='text' name='address' register={register} required />
               <div className='grid grid-cols-5 gap-4'>
@@ -83,6 +83,21 @@ const CheckInForm = () => {
                   <Input label='Zip' type='text' name='zip' register={register} required />
                 </div>
               </div>
+
+              <Select
+                name='stateHarvestedIn'
+                label='State Harvested In'
+                register={register}
+                placeholder='Select State'
+                required
+                options={[
+                  { value: 'OH', label: 'Ohio' },
+                  { value: 'WV', label: 'West Virginia' },
+                  { value: 'PA', label: 'Pennsylvania' },
+                  { value: 'Other', label: 'Other' },
+                ]}
+              ></Select>
+
               <Input label='Phone' type='tel' name='phone' register={register} required />
               <RadioButtonGroup
                 name='communicationPreference'
@@ -99,56 +114,80 @@ const CheckInForm = () => {
           )}
           {currentStep === 2 && (
             <>
-              <div className='grid grid-cols-2 gap-6'>
-                <div className='flex flex-col gap-3'>
-                  <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
+              <div className='grid grid-cols-3 gap-6'>
+                <div className='flex flex-col items-center justify-start gap-1'>
+                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
                     <Image src={'/cape.png'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'cape'} />
                   </div>
-                  <div className='pl-2'>
-                    <CheckboxGroup name='cape' options={[{ value: 'cape', label: 'Cape for shoulder mount. Additional $50' }]} register={register} />
-                  </div>
+                  <p className='mb-1 w-full text-center font-bold'>Cape for shoulder mount</p>
+                  <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50.' }]} register={register} />
                 </div>
-                <div className='flex flex-col gap-3'>
-                  <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
+                <div className='flex flex-col items-center justify-start gap-1'>
+                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
                     <Image src={'/hide.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'hide'} />
                   </div>
-                  <div className='pl-2'>
-                    <CheckboxGroup name='hide' options={[{ value: 'hide', label: 'Keep skinned hide. Additional $15' }]} register={register} />
-                  </div>
+                  <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
+                  <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} register={register} />
                 </div>
-                <p className='col-span-2 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
-                <div className='col-span-2'>
-                  <Textarea rows={2} name={`cape-hide-Notes`} label='Special Instructions' register={register} />
+                <div className='flex flex-col items-center justify-start gap-1'>
+                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
+                    <Image
+                      src={'/euro-mount.jpg'}
+                      className='absolute inset-0 h-full w-full object-cover'
+                      width={500}
+                      height={300}
+                      alt={'euro-mount'}
+                    />
+                  </div>
+                  <p className='w-full text-center font-bold'>Euro Mount</p>
+                  <Select
+                    className='w-full'
+                    name='euroMount'
+                    register={register}
+                    options={[
+                      { value: 'none', label: 'Select Option' },
+                      { value: 'Keep head', label: 'Keep Head' },
+                      { value: 'pork', label: 'Boiled Finished Mount - $145' },
+                      { value: 'both', label: 'Beetles Finished Mount - $175' },
+                    ]}
+                  ></Select>
+                </div>
+
+                <p className='col-span-3 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
+                <div className='col-span-3'>
+                  <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' register={register} />
                 </div>
               </div>
             </>
           )}
           {currentStep === 3 && (
             <>
-              <div className='grid grid-cols-1 gap-5'>
-                <div className='relative aspect-[5/2] w-full overflow-hidden rounded-md'>
-                  <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
-                </div>
-                <div className='pl-2'>
-                  <RadioButtonGroup
-                    name='isSkinned'
-                    options={[
-                      { value: 'skinned', label: '$95 - Skinned, Cut, Ground, Vacuum packed.' },
-                      { value: 'boneless', label: 'Boneless, 100% deboned already.' },
-                    ]}
-                    onChange={handleSkinned}
-                    register={register}
-                    defaultCheckedValue='skinned'
-                    required
-                  />
-                  <p className='mt-2 text-center italic'>
-                    Must select &quot;Skinned&quot; even if already skinned or quartered.
-                    <br />
-                    There is no cost if your deer is 100% deboned.
-                  </p>
-                </div>
-                <div>
-                  <Textarea rows={2} name={`skinned-boneless-Notes`} label='Special Instructions' register={register} />
+              <div className='grid grid-cols-7'>
+                <div className='col-span-5 col-start-2 flex flex-col gap-5'>
+                  <div className='relative aspect-[4/3] w-full overflow-hidden rounded-md'>
+                    <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
+                  </div>
+                  <div className='pl-2'>
+                    <Select
+                      className='w-full'
+                      name='skinnedOrBoneless'
+                      register={register}
+                      required
+                      options={[
+                        { value: 'skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                        { value: 'boneless', label: 'Boneless, 100% deboned already' },
+                      ]}
+                    ></Select>
+
+                    <p className='mt-2 text-center italic'>
+                      Must select &quot;Skinned&quot; even if already skinned or quartered.
+                      <br />
+                      There is no cost if your deer is 100% deboned.
+                    </p>
+                  </div>
+                  <div>
+                    <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions' register={register} />
+                  </div>
                 </div>
               </div>
             </>
@@ -166,9 +205,10 @@ const CheckInForm = () => {
                       { value: 'Cut in half', label: 'Cut in half' },
                       { value: 'Sliced', label: 'Sliced' },
                       { value: 'Butterfly', label: 'Butterfly' },
+                      { value: 'Whole', label: 'Whole' },
                       { value: 'Grind', label: 'Grind' },
                     ]}
-                    defaultCheckedValue='Grind'
+                    defaultCheckedValue='Cut in half'
                     register={register}
                     wrapperLabel='Back Strap 1 Preference'
                   />
@@ -178,15 +218,16 @@ const CheckInForm = () => {
                       { value: 'Cut in half', label: 'Cut in half' },
                       { value: 'Sliced', label: 'Sliced' },
                       { value: 'Butterfly', label: 'Butterfly' },
+                      { value: 'Whole', label: 'Whole' },
                       { value: 'Grind', label: 'Grind' },
                     ]}
-                    defaultCheckedValue='Grind'
+                    defaultCheckedValue='Cut in half'
                     register={register}
                     wrapperLabel='Back Strap 2 Preference'
                   />
                 </div>
                 <div className='w-full'>
-                  <Textarea rows={2} name={`backstrap-Notes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`backStrapNotes`} label='Special Instructions' register={register} />
                 </div>
               </div>
             </>
@@ -201,7 +242,7 @@ const CheckInForm = () => {
                     className='h-full w-full -translate-x-24 -translate-y-10 scale-[2]'
                     width={500}
                     height={300}
-                    alt={'backstraps'}
+                    alt={'back straps'}
                   />
                 </div>
                 <div className='flex flex-col items-center justify-center gap-5 text-center'>
@@ -281,7 +322,7 @@ const CheckInForm = () => {
                 </div>
 
                 <div className='w-full'>
-                  <Textarea rows={2} name={`hind-leg-Notes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`hindLegNotes`} label='Special Instructions' register={register} />
                 </div>
               </div>
             </>
@@ -293,7 +334,7 @@ const CheckInForm = () => {
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
                   <Image
                     src={'/roast.svg'}
-                    className='h-full w-full translate-x-14 translate-y-8 scale-150 object-cover'
+                    className='h-full w-full translate-x-8 translate-y-8 scale-125 object-cover'
                     width={500}
                     height={300}
                     alt={'roast'}
@@ -314,7 +355,7 @@ const CheckInForm = () => {
                 </div>
 
                 <div className='w-full'>
-                  <Textarea rows={2} name={`roast-Notes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`roastNotes`} label='Special Instructions' register={register} />
                 </div>
               </div>
             </>
@@ -324,15 +365,37 @@ const CheckInForm = () => {
             <>
               <h3 className='mb-2 text-center text-display-sm font-bold'>Ground Venison Options</h3>
 
-              <SpecialtyMeat
-                name='Ground Venison'
-                image='/ground_venison.jpg'
-                options={[
-                  { name: 'groundVenisonBeefTrim', label: 'Ground Venison with Beef Trim', price: 5, priceFlat: true },
-                  { name: 'groundVenisonPorkTrim', label: 'Ground Venison with Pork Trim', price: 5, priceFlat: true },
-                ]}
-              />
-              <p className='text-center italic'>Ground Venison is the default option if nothing is selected.</p>
+              <div className='grid grid-cols-2 gap-6'>
+                <h3 className='col-span-2 text-center text-display-xs font-bold'>Ground Venison</h3>
+                <div className='relative overflow-hidden rounded-md'>
+                  <Image
+                    src='/ground_venison.jpg'
+                    className={'absolute inset-0 h-full w-full object-cover'}
+                    width={500}
+                    height={300}
+                    alt='Ground Venison'
+                  />
+                </div>
+                <div className='flex flex-col gap-3'>
+                  <div className='flex flex-col gap-1'>
+                    <Select
+                      name='groundVenison'
+                      label='Ground Venison'
+                      register={register}
+                      placeholder='Select Option'
+                      required
+                      options={[
+                        { value: 'plain', label: 'Plain' },
+                        { value: 'beef', label: 'Add Beef Trim - $5' },
+                        { value: 'pork', label: 'Add Pork Trim - $5' },
+                        { value: 'both', label: 'Add Beef & Pork Trim - $10' },
+                      ]}
+                    ></Select>
+                  </div>
+                  <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions' register={register} />
+                  <p className='text-md italic'>Ground Venison is the default option if no other options are selected.</p>
+                </div>
+              </div>
 
               <SpecialtyMeat
                 name='Trail Bologna'
@@ -503,7 +566,7 @@ const CheckInForm = () => {
               </p>
 
               <div>
-                <Textarea rows={2} name={`recap-Notes`} label='Special Instructions' register={register} />
+                <Textarea rows={2} name={`recapNotes`} label='Special Instructions' register={register} />
               </div>
             </div>
           )}

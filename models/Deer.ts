@@ -48,7 +48,10 @@ const fields: DeerSchemaT = {
   capeHideNotes: {
     type: String,
   },
-  isSkinned: {
+  skinnedOrBoneless: {
+    type: String,
+  },
+  euroMount: {
     type: String,
   },
   skinnedBonelessNotes: {

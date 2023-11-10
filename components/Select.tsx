@@ -4,6 +4,7 @@ import { FieldWrapper } from 'components/FieldWrapper';
 
 type Props = {
   name: string;
+  className?: string;
   required?: boolean;
   isMulti?: boolean;
   label?: string;
@@ -15,11 +16,11 @@ type Props = {
   [x: string]: any;
 };
 
-export default function Select({ name, label, required, isMulti, options, isClearable, onChange: customOnChange, ...props }: Props) {
+export default function Select({ name, className, label, required, isMulti, options, isClearable, onChange: customOnChange, ...props }: Props) {
   const { control } = useFormContext();
 
   return (
-    <FieldWrapper name={name} label={label}>
+    <FieldWrapper name={name} label={label} className={className}>
       <Controller
         control={control}
         name={name}
