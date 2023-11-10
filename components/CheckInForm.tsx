@@ -508,53 +508,6 @@ const CheckInForm = () => {
               </ul>
 
               <h4 className='mb-2 mt-4 text-lg font-bold'>Selected Processing Options:</h4>
-              <ul className='mb-4'>
-                <li>
-                  <span className='font-bold'>Cape:</span> {values.cape ? 'Yes' : 'No'}
-                </li>
-                <li>
-                  <span className='font-bold'>Hide:</span> {values.hide ? 'Yes' : 'No'}
-                </li>
-                <li>
-                  <span className='font-bold'>Skinned:</span> {values.isSkinned}
-                </li>
-                <li>
-                  <span className='font-bold'>Back Strap Preferences:</span> {values.backStraps1Preference}, {values.backStrap2Preference}
-                </li>
-                <li>
-                  <span className='font-bold'>Hind Leg Preferences:</span> {values.hindLegPreference1}, {values.hindLegPreference2}
-                </li>
-                <li>
-                  <span className='font-bold'>Roast Preference:</span> {values.roast}
-                </li>
-              </ul>
-
-              <h4 className='mb-2 mt-4 text-lg font-bold'>Specialty Meat Selections:</h4>
-              <ul className='mb-4'>
-                {/* Iterate over specialty meat selections and display them */}
-                {Object.entries(values)
-                  .filter(
-                    ([key, value]) =>
-                      key.startsWith('groundVenison') ||
-                      key.startsWith('trailBologna') ||
-                      key.startsWith('garlicRingBologna') ||
-                      key.startsWith('summerSausage') ||
-                      key.startsWith('smokedKielbasaSausage') ||
-                      key.startsWith('italianSausageLinks') ||
-                      key.startsWith('countryBreakfastSausage') ||
-                      key.startsWith('babyLinks') ||
-                      key.startsWith('snackSticks') ||
-                      key.startsWith('hotDogs') ||
-                      key.startsWith('jerkyRestructured')
-                  )
-                  .map(([key, value]) => {
-                    return value ? (
-                      <li key={key}>
-                        <span className='font-bold'>{key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ')}:</span> Yes
-                      </li>
-                    ) : null;
-                  })}
-              </ul>
 
               {/* Calculate and render the total price */}
               <p className='mt-4'>

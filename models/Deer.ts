@@ -11,6 +11,12 @@ const fields: DeerSchemaT = {
     type: String,
     required: true,
   },
+  firstName: {
+    type: String,
+  },
+  lastName: {
+    type: String,
+  },
   tagNumber: {
     type: String,
     required: true,
@@ -90,10 +96,7 @@ const fields: DeerSchemaT = {
   roastNotes: {
     type: String,
   },
-  groundVenisonBeefTrim: {
-    type: String,
-  },
-  groundVenisonPorkTrim: {
+  groundVenison: {
     type: String,
   },
   groundVenisonNotes: {
