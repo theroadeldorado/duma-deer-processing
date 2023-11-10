@@ -16,12 +16,12 @@ const cols = [
   { id: 'createdAt', label: 'Submitted' },
   { id: 'name', label: 'Name' },
   { id: 'phone', label: 'Phone' },
-  { id: 'tagNumber', label: 'Tag Number' },
+  { id: 'communicationPreference', label: 'Com Pref' },
   { id: 'address', label: 'Address' },
   { id: 'city', label: 'City' },
   { id: 'state', label: 'State' },
   { id: 'zip', label: 'Zip' },
-  { id: 'communicationPreference', label: 'Communication Preference' },
+  { id: 'tagNumber', label: 'Tag Number' },
   { id: 'actions', label: '', sortable: false },
 ];
 

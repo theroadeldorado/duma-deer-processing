@@ -15,7 +15,8 @@ const Navigation = ({ className }: Props) => {
   const { pathname } = useRouter();
 
   const links = [
-    { href: '/admin', label: 'Dashboard' },
+    // { href: '/admin', label: 'Dashboard' },
+    { href: '/admin/deers', label: 'Deers' },
     { href: '/admin/users', label: 'Users' },
     { href: '/admin/templates', label: 'Email Templates' },
   ];
