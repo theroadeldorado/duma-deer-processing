@@ -23,25 +23,25 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
 
   const valueRef = useRef('');
 
-  const handleTelChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    if (valueRef.current === value) {
-      // prevent onChange if the formatted value is the same as the current value
-      return;
+  const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (value) {
+      // Check if value is not null
+      const phone = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+      if (phone) {
+        const formatted = !phone[2] ? phone[1] : `(${phone[1]}) ${phone[2]}${phone[3] ? `-${phone[3]}` : ''}`;
+        e.target.value = formatted;
+      }
     }
 
-    valueRef.current = value; // Store current value to check in future changes
-
-    const phone = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-    const formatted = !phone[2] ? phone[1] : `(${phone[1]}) ${phone[2]}${phone[3] ? `-${phone[3]}` : ''}`;
-    e.target.value = formatted;
     onChange && onChange(e); // Call the original onChange prop, if provided
   };
 
   if (type === 'password') {
     type = showPassword ? 'text' : 'password';
   } else if (type === 'tel') {
-    onChange = handleTelChange;
+    onChange = handlePhoneInputChange;
   } else {
     type = type || 'text';
   }

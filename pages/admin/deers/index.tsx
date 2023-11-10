@@ -56,9 +56,7 @@ export default function Deers() {
       </Form>
 
       <Table cols={cols} {...tableProps}>
-        {results.map((data) => (
-          <DeerTableRow key={data._id} data={data} />
-        ))}
+        {results.map((data) => (data ? <DeerTableRow key={data._id} data={data} /> : null))}
       </Table>
     </AdminPage>
   );

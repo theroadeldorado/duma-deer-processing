@@ -62,6 +62,9 @@ export default function Edit({ data }: Props) {
 export const getServerSideProps = getSecureServerSideProps(async (context, session) => {
   try {
     const { profileId } = session;
+    if (typeof profileId !== 'string') {
+      return { notFound: true };
+    }
     const data = await getProfile(profileId);
     if (!data) return { notFound: true };
 

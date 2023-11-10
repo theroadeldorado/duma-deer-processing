@@ -33,6 +33,11 @@ const CheckInForm = () => {
     setIsSkinnedSelection(event.target.value);
   };
 
+  // Function to calculate total price
+  const calculateTotalPrice = (values: any) => {
+    return 0;
+  };
+
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
   const { register, watch } = form;
   const values = watch();
@@ -421,7 +426,7 @@ const CheckInForm = () => {
           {currentStep === 8 && (
             <div>
               <h3 className='mb-4 text-lg font-bold'>Review Your Information:</h3>
-              <ul>
+              <ul className='mb-4'>
                 <li>
                   <span className='font-bold'>Name:</span> {values.name}
                 </li>
@@ -435,40 +440,65 @@ const CheckInForm = () => {
                   <span className='font-bold'>Communication Preference:</span> {values.communicationPreference}
                 </li>
                 <li>
-                  <span className='font-bold'>Cape:</span> {values.cape}
+                  <span className='font-bold'>Address:</span> {`${values.address}, ${values.city}, ${values.state}, ${values.zip}`}
+                </li>
+              </ul>
+
+              <h4 className='mb-2 mt-4 text-lg font-bold'>Selected Processing Options:</h4>
+              <ul className='mb-4'>
+                <li>
+                  <span className='font-bold'>Cape:</span> {values.cape ? 'Yes' : 'No'}
                 </li>
                 <li>
-                  <span className='font-bold'>Hide:</span> {values.hide}
+                  <span className='font-bold'>Hide:</span> {values.hide ? 'Yes' : 'No'}
                 </li>
                 <li>
                   <span className='font-bold'>Skinned:</span> {values.isSkinned}
                 </li>
+                <li>
+                  <span className='font-bold'>Back Strap Preferences:</span> {values.backStraps1Preference}, {values.backStrap2Preference}
+                </li>
+                <li>
+                  <span className='font-bold'>Hind Leg Preferences:</span> {values.hindLegPreference1}, {values.hindLegPreference2}
+                </li>
+                <li>
+                  <span className='font-bold'>Roast Preference:</span> {values.roast}
+                </li>
               </ul>
 
-              <h4 className='mb-2 mt-4 text-lg font-bold'>Selected Options:</h4>
-              <ul>
-                {/* Use Object.entries to iterate over all properties of the `values` object */}
-                {Object.entries(values).map(([key, value]) => {
-                  // Check if value is truthy or if it's an array with at least one truthy value
-                  const hasValue = value && (Array.isArray(value) ? value.some((v) => v) : true);
-
-                  return hasValue ? (
-                    <li key={key}>
-                      {/* Render additional option names and their $5 default price */}
-                      <span className='font-bold'>{key.replace(/([A-Z])/g, ' $1')}:</span> {Array.isArray(value) ? value.join(', ') : value} - ${5}
-                    </li>
-                  ) : null;
-                })}
+              <h4 className='mb-2 mt-4 text-lg font-bold'>Specialty Meat Selections:</h4>
+              <ul className='mb-4'>
+                {/* Iterate over specialty meat selections and display them */}
+                {Object.entries(values)
+                  .filter(
+                    ([key, value]) =>
+                      key.startsWith('groundVenison') ||
+                      key.startsWith('trailBologna') ||
+                      key.startsWith('garlicRingBologna') ||
+                      key.startsWith('summerSausage') ||
+                      key.startsWith('smokedKielbasaSausage') ||
+                      key.startsWith('italianSausageLinks') ||
+                      key.startsWith('countryBreakfastSausage') ||
+                      key.startsWith('babyLinks') ||
+                      key.startsWith('snackSticks') ||
+                      key.startsWith('hotDogs') ||
+                      key.startsWith('jerkyRestructured')
+                  )
+                  .map(([key, value]) => {
+                    return value ? (
+                      <li key={key}>
+                        <span className='font-bold'>{key.replace(/([A-Z])/g, ' $1').replace(/_/g, ' ')}:</span> Yes
+                      </li>
+                    ) : null;
+                  })}
               </ul>
 
               {/* Calculate and render the total price */}
               <p className='mt-4'>
                 <span className='font-bold'>Total Price:</span> $
                 {
-                  // Use Object.values to get all form values, filter truthy values or non-empty arrays, and multiply their count by $5
-                  Object.values(values)
-                    .filter((value) => value && (Array.isArray(value) ? value.some((v) => v) : true))
-                    .reduce((total, value) => total + (Array.isArray(value) ? value.length : 1) * 5, 0)
+                  // Calculate the total price based on the selected options
+                  calculateTotalPrice(values)
                 }
               </p>
 

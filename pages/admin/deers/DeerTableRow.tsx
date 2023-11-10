@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import { DeerT } from 'lib/types';
-import { truncate } from 'lib/helpers';
 import { Cell } from 'components/Table';
 import { Menu } from '@headlessui/react';
 import dayjs from 'dayjs';
@@ -12,21 +11,27 @@ import { useQueryClient } from '@tanstack/react-query';
 import Button from '@/components/Button';
 
 type Props = {
-  data: DeerT;
+  data: DeerT | null;
 };
 
 export default function DeerTableRow({ data }: Props) {
-  const { _id, name, tagNumber, address, city, state, zip, phone, communicationPreference, createdAt } = data;
+  // Moved the hooks to the top level of the component.
   const queryClient = useQueryClient();
-
   const del = useMutation({
-    url: `/api/deer/${_id}/delete`,
+    url: `/api/deer/${data?._id}/delete`,
     method: 'DELETE',
     successMessage: 'User deleted successfully',
     onSuccess: () => {
       queryClient.invalidateQueries(['/api/deer']);
     },
   });
+
+  // Early return if data is not available.
+  if (!data) {
+    return null;
+  }
+
+  const { _id, name, tagNumber, address, city, state, zip, phone, communicationPreference, createdAt } = data;
 
   const deleteUser = async (id: string) => {
     if (!confirm('Are you sure you want to permanently delete this user?')) return;

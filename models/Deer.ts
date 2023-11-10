@@ -75,6 +75,9 @@ const fields: DeerSchemaT = {
   tenderizedCubedSteaks: {
     type: String,
   },
+  hindLegJerky1: {
+    type: String,
+  },
   hindLegJerky2: {
     type: String,
   },

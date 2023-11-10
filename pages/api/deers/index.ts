@@ -1,7 +1,7 @@
 import Deer from 'models/Deer';
 import { connect } from 'lib/mongo';
 import secureApi from 'lib/secureApi';
-import { exportUsers } from 'lib/csv';
+import { exportDeers } from 'lib/csv';
 
 type QueryT = {
   search?: string;
@@ -39,7 +39,7 @@ export default secureApi(async (req, res) => {
 
   if (isCSV) {
     try {
-      const url = await exportUsers(deers);
+      const url = await exportDeers(deers);
       res.status(200).json({ success: true, url });
     } catch (error) {
       console.log(error);
