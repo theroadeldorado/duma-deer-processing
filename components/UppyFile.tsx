@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react'; // Import useEffect and useState directly
 import Uppy from '@uppy/core';
 import { DragDrop } from '@uppy/react';
 import '@uppy/status-bar/dist/style.css';
@@ -19,9 +19,9 @@ const uppy = new Uppy({
 });
 
 export default function UppyFile({ limit, onSuccess, fileTypes }: Props) {
-  const [uploading, setUploading] = React.useState(false);
+  const [uploading, setUploading] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     uppy.setOptions({
       restrictions: {
         maxNumberOfFiles: limit || 10,
@@ -39,14 +39,17 @@ export default function UppyFile({ limit, onSuccess, fileTypes }: Props) {
       onSuccess(successFiles);
       setUploading(false);
     });
-  }, [limit, fileTypes]);
+
+    // Cleanup on unmount
+    return () => uppy.close();
+  }, [limit, fileTypes, onSuccess]); // Add onSuccess to the dependency array
 
   return (
     <div className='relative'>
       {!uploading && <DragDrop uppy={uppy} height='120px' />}
       {uploading && (
         <div className='flex h-[120px] w-full items-center justify-center rounded-lg border-2 border-dashed border-gray-200 text-lg font-bold'>
-          <Icon name='spinner' className='animate-spin text-3xl text-gray-500' />
+          <Icon name='spinner' className='text-3xl animate-spin text-gray-500' />
         </div>
       )}
     </div>

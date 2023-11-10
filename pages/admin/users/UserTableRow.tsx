@@ -96,7 +96,7 @@ export default function UserTableRow({ data }: Props) {
                 <Menu.Item>
                   <button
                     type='button'
-                    onClick={() => resendInvite(_id)}
+                    onClick={resendInvite} // No need to pass _id here
                     className='hover: block w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-100'
                     disabled={mutation.isLoading}
                   >
@@ -120,7 +120,7 @@ export default function UserTableRow({ data }: Props) {
               <Menu.Item>
                 <button
                   type='button'
-                  onClick={() => deleteUser(_id)}
+                  onClick={deleteUser}
                   className='block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-gray-100 hover:text-red-900'
                   disabled={del.isLoading}
                 >
