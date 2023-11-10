@@ -12,16 +12,17 @@ import { Float } from '@headlessui-float/react';
 import { useQueryClient } from '@tanstack/react-query';
 
 type Props = {
-  data: ProfileT;
+  data?: ProfileT; // data can be undefined
 };
 
-export default function TableRow({ data }: Props) {
-  const { _id, name, email, createdAt, inviteCode } = data;
-  const { open } = useModal();
+export default function UserTableRow({ data }: Props) {
+  // Hooks should be called at the top level, not conditionally
   const queryClient = useQueryClient();
+  const { open } = useModal();
 
+  // Define the mutation hooks at the top level
   const del = useMutation({
-    url: `/api/users/${_id}/delete`,
+    url: `/api/users/${data?._id}/delete`, // Use optional chaining for dynamic URL
     method: 'DELETE',
     successMessage: 'User deleted successfully',
     onSuccess: () => {
@@ -30,21 +31,29 @@ export default function TableRow({ data }: Props) {
   });
 
   const mutation = useMutation({
-    url: `/api/users/${_id}/resend-invite`,
+    url: `/api/users/${data?._id}/resend-invite`, // Use optional chaining for dynamic URL
     method: 'POST',
     onSuccess: async () => {
       queryClient.invalidateQueries(['/api/users']);
     },
   });
 
-  const deleteUser = async (id: string) => {
+  // Early return if data is undefined
+  if (!data) {
+    return null;
+  }
+
+  const { _id, name, email, createdAt, inviteCode } = data;
+
+  // Event handlers can be defined here since they don't invoke hooks directly
+  const deleteUser = async () => {
     if (!confirm('Are you sure you want to permanently delete this user?')) return;
-    del.mutate({});
+    del.mutate({}); // No need to pass id since it's already included in the URL
   };
 
-  const resendInvite = async (id: string) => {
+  const resendInvite = async () => {
     if (!confirm('Are you sure you want to resend this invite?')) return;
-    mutation.mutate({});
+    mutation.mutate({}); // No need to pass id since it's already included in the URL
   };
 
   return (
