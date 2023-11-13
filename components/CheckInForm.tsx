@@ -18,15 +18,15 @@ const TOTAL_STEPS = 7;
 const CheckInForm = () => {
   const form = useForm<DeerT>();
   const [currentStep, setCurrentStep] = useState(1);
-  const [isHindLegPreference1, setIsHindLegPreference1] = useState(null);
-  const [isHindLegPreference2, setIsHindLegPreference2] = useState(null);
+  const [isHindLegPreference1, setIsHindLegPreference1] = useState('Grind');
+  const [isHindLegPreference2, setIsHindLegPreference2] = useState('Grind');
 
   const handleHindLegPreference1 = (event: any) => {
-    setIsHindLegPreference1(event.target.value);
+    setIsHindLegPreference1(event);
   };
 
   const handleHindLegPreference2 = (event: any) => {
-    setIsHindLegPreference2(event.target.value);
+    setIsHindLegPreference2(event);
   };
 
   // Function to calculate total price
@@ -114,6 +114,38 @@ const CheckInForm = () => {
           )}
           {currentStep === 2 && (
             <>
+              <div className='flex flex-col gap-5'>
+                <div className='relative aspect-[8/3] w-full overflow-hidden rounded-md'>
+                  <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
+                </div>
+
+                <div className='pl-2'>
+                  <Select
+                    className='w-full'
+                    name='skinnedOrBoneless'
+                    register={register}
+                    required
+                    options={[
+                      { value: 'skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                      { value: 'boneless', label: 'Boneless, 100% deboned already' },
+                    ]}
+                    defaultValue='skinned'
+                  ></Select>
+
+                  <p className='mt-2 text-center italic'>
+                    Must select &quot;Skinned&quot; even if already skinned or quartered.
+                    <br />
+                    There is no cost if your deer is 100% deboned.
+                  </p>
+                </div>
+                <div>
+                  <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions' register={register} />
+                </div>
+              </div>
+            </>
+          )}
+          {currentStep === 3 && (
+            <>
               <div className='grid grid-cols-3 gap-6'>
                 <div className='flex flex-col items-center justify-start gap-1'>
                   <div className='relative aspect-square w-full overflow-hidden rounded-md'>
@@ -160,71 +192,31 @@ const CheckInForm = () => {
               </div>
             </>
           )}
-          {currentStep === 3 && (
-            <>
-              <div className='grid grid-cols-7'>
-                <div className='col-span-5 col-start-2 flex flex-col gap-5'>
-                  <div className='relative aspect-[4/3] w-full overflow-hidden rounded-md'>
-                    <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
-                  </div>
-                  <div className='pl-2'>
-                    <Select
-                      className='w-full'
-                      name='skinnedOrBoneless'
-                      register={register}
-                      required
-                      options={[
-                        { value: 'skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
-                        { value: 'boneless', label: 'Boneless, 100% deboned already' },
-                      ]}
-                    ></Select>
 
-                    <p className='mt-2 text-center italic'>
-                      Must select &quot;Skinned&quot; even if already skinned or quartered.
-                      <br />
-                      There is no cost if your deer is 100% deboned.
-                    </p>
-                  </div>
-                  <div>
-                    <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions' register={register} />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
           {currentStep === 4 && (
             <>
               <div className='flex flex-col items-center justify-center gap-4'>
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
                   <Image src={'/back_straps.svg'} className='h-full w-full scale-150 object-cover' width={500} height={300} alt={'backstraps'} />
                 </div>
-                <div className='grid grid-cols-2 gap-20 [&>label>div]:flex-col [&>label>div]:items-start [&>label>div]:justify-start'>
-                  <RadioButtonGroup
-                    name='backStraps1Preference'
-                    options={[
-                      { value: 'Cut in half', label: 'Cut in half' },
-                      { value: 'Sliced', label: 'Sliced' },
-                      { value: 'Butterfly', label: 'Butterfly' },
-                      { value: 'Whole', label: 'Whole' },
-                      { value: 'Grind', label: 'Grind' },
-                    ]}
-                    defaultCheckedValue='Cut in half'
-                    register={register}
-                    wrapperLabel='Back Strap 1 Preference'
-                  />
-                  <RadioButtonGroup
-                    name='backStrap2Preference'
-                    options={[
-                      { value: 'Cut in half', label: 'Cut in half' },
-                      { value: 'Sliced', label: 'Sliced' },
-                      { value: 'Butterfly', label: 'Butterfly' },
-                      { value: 'Whole', label: 'Whole' },
-                      { value: 'Grind', label: 'Grind' },
-                    ]}
-                    defaultCheckedValue='Cut in half'
-                    register={register}
-                    wrapperLabel='Back Strap 2 Preference'
-                  />
+                <div className='grid w-full grid-cols-1 gap-8'>
+                  <div>
+                    <p className='mb-1 w-full font-bold'>Back Strap Preference</p>
+                    <Select
+                      className='w-full'
+                      name='backStrapsPreference'
+                      register={register}
+                      required
+                      options={[
+                        { value: 'Cut in half', label: 'Cut in half' },
+                        { value: 'Sliced', label: 'Sliced' },
+                        { value: 'Butterfly', label: 'Butterfly' },
+                        { value: 'Whole', label: 'Whole' },
+                        { value: 'Grind', label: 'Grind' },
+                      ]}
+                      defaultValue='Cut in half'
+                    ></Select>
+                  </div>
                 </div>
                 <div className='w-full'>
                   <Textarea rows={2} name={`backStrapNotes`} label='Special Instructions' register={register} />
@@ -245,85 +237,97 @@ const CheckInForm = () => {
                     alt={'back straps'}
                   />
                 </div>
-                <div className='flex flex-col items-center justify-center gap-5 text-center'>
-                  <RadioButtonGroup
-                    name='hindLegPreference1'
-                    options={[
-                      { value: 'Steaks', label: 'Steaks' },
-                      { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham' },
-                      { value: 'Jerky', label: 'Jerky' },
-                      { value: 'Grind', label: 'Grind' },
-                    ]}
-                    defaultCheckedValue='Grind'
-                    register={register}
-                    onChange={handleHindLegPreference1}
-                    wrapperLabel='Hind Leg Preference Leg 1'
-                  />
+                <div className='grid w-full grid-cols-2 gap-8'>
+                  <div>
+                    <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 1</p>
+                    <Select
+                      className='w-full'
+                      name='hindLegPreference1'
+                      register={register}
+                      onChange={handleHindLegPreference1}
+                      required
+                      options={[
+                        { value: 'Steaks', label: 'Steaks' },
+                        { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
+                        { value: 'Jerky', label: 'Jerky' },
+                        { value: 'Grind', label: 'Ground Venison' },
+                      ]}
+                      defaultValue='Grind'
+                    ></Select>
 
-                  {isHindLegPreference1 === 'Jerky' && (
-                    <>
-                      <div className='relative aspect-[3/1] overflow-hidden rounded-md'>
-                        <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
+                    {isHindLegPreference1 === 'Jerky' && (
+                      <div className='mt-5'>
+                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
+                        <div className='relative mb-2 aspect-[3/1] overflow-hidden rounded-md'>
+                          <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
+                        </div>
+                        <Select
+                          className='w-full'
+                          name='hindLegJerky1'
+                          register={register}
+                          required
+                          options={[
+                            { value: 'Mild', label: 'Mild' },
+                            { value: 'Hot', label: 'Hot' },
+                            { value: 'Teriyaki', label: 'Teriyaki' },
+                          ]}
+                          defaultValue='Mild'
+                        ></Select>
                       </div>
-                      <RadioButtonGroup
-                        name='hindLegJerky1'
-                        options={[
-                          { value: 'Hot', label: 'Hot' },
-                          { value: 'Mild', label: 'Mild' },
-                          { value: 'Teriyaki', label: 'Teriyaki' },
-                        ]}
-                        defaultCheckedValue='Mild'
-                        register={register}
-                        wrapperLabel='Jerky flavor'
-                      />
-                    </>
-                  )}
+                    )}
+                  </div>
+                  <div>
+                    <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 2</p>
+                    <Select
+                      className='w-full'
+                      name='hindLegPreference2'
+                      register={register}
+                      onChange={handleHindLegPreference2}
+                      required
+                      options={[
+                        { value: 'Steaks', label: 'Steaks' },
+                        { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
+                        { value: 'Jerky', label: 'Jerky' },
+                        { value: 'Grind', label: 'Ground Venison' },
+                      ]}
+                      defaultValue='Grind'
+                    ></Select>
 
-                  <RadioButtonGroup
-                    name='hindLegPreference2'
-                    options={[
-                      { value: 'Steaks', label: 'Steaks' },
-                      { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham' },
-                      { value: 'Jerky', label: 'Jerky' },
-                      { value: 'Grind', label: 'Grind' },
-                    ]}
-                    defaultCheckedValue='Grind'
-                    register={register}
-                    onChange={handleHindLegPreference2}
-                    wrapperLabel='Hind Leg Preference Leg 2'
-                  />
-
-                  {isHindLegPreference2 === 'Jerky' && (
-                    <>
-                      <div className='relative aspect-[3/1] overflow-hidden rounded-md'>
-                        <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
+                    {isHindLegPreference2 === 'Jerky' && (
+                      <div className='mt-5'>
+                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
+                        <div className='relative mb-2 aspect-[3/1] overflow-hidden rounded-md'>
+                          <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
+                        </div>
+                        <Select
+                          className='w-full'
+                          name='hindLegJerky2'
+                          register={register}
+                          required
+                          options={[
+                            { value: 'Mild', label: 'Mild' },
+                            { value: 'Hot', label: 'Hot' },
+                            { value: 'Teriyaki', label: 'Teriyaki' },
+                          ]}
+                          defaultValue='Mild'
+                        ></Select>
                       </div>
-                      <RadioButtonGroup
-                        name='hindLegJerky2'
-                        options={[
-                          { value: 'Hot', label: 'Hot' },
-                          { value: 'Mild', label: 'Mild' },
-                          { value: 'Teriyaki', label: 'Teriyaki' },
-                        ]}
-                        defaultCheckedValue='Mild'
-                        register={register}
-                        wrapperLabel='Jerky flavor'
-                      />
-                    </>
-                  )}
-
-                  {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
+                    )}
+                  </div>
+                </div>
+                {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
+                  <div className='col-span-2 mt-5'>
                     <CheckboxGroup
                       name='tenderizedCubedSteaks'
-                      options={[{ value: 'Tenderized Cubed Steaks', label: '$5 - Tenderized Cubed Steaks.' }]}
+                      options={[{ value: 'Tenderized Cubed Steaks', label: 'Tenderized Cubed Steaks - $5' }]}
                       register={register}
                     />
-                  )}
-                </div>
+                  </div>
+                )}
+              </div>
 
-                <div className='w-full'>
-                  <Textarea rows={2} name={`hindLegNotes`} label='Special Instructions' register={register} />
-                </div>
+              <div className='w-full'>
+                <Textarea rows={2} name={`hindLegNotes`} label='Special Instructions' register={register} />
               </div>
             </>
           )}
@@ -340,18 +344,20 @@ const CheckInForm = () => {
                     alt={'roast'}
                   />
                 </div>
-                <div className='flex flex-col items-center justify-center gap-5 text-center'>
-                  <RadioButtonGroup
+                <div className='w-full'>
+                  <p className='mb-1 w-full font-bold'>Roast Preference</p>
+                  <Select
+                    className='w-full'
                     name='roast'
-                    options={[
-                      { value: '2 Roasts, Grind Rest', label: '2 Roasts, Grind Rest' },
-                      { value: 'As many as possible', label: 'As many as possible' },
-                      { value: 'Grind', label: 'Grind' },
-                    ]}
-                    defaultCheckedValue='Grind'
                     register={register}
-                    wrapperLabel='Roast Preference'
-                  />
+                    required
+                    options={[
+                      { value: '2 Roasts, Grind Rest', label: '2 Roasts, Ground Venison for the rest' },
+                      { value: 'As many as possible', label: 'As many as possible' },
+                      { value: 'Grind', label: 'Ground Venison' },
+                    ]}
+                    defaultValue='Grind'
+                  ></Select>
                 </div>
 
                 <div className='w-full'>

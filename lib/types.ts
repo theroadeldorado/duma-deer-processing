@@ -33,7 +33,7 @@ export type DeerT = {
   capeHideNotes?: string;
   skinnedOrBoneless?: string;
   skinnedBonelessNotes?: string;
-  backStraps1Preference?: string;
+  backStrapsPreference?: string;
   backStrap2Preference?: string;
   backStrapNotes?: string;
   hindLegPreference1?: string;

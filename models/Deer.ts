@@ -63,7 +63,7 @@ const fields: DeerSchemaT = {
   skinnedBonelessNotes: {
     type: String,
   },
-  backStraps1Preference: {
+  backStrapsPreference: {
     type: String,
   },
   backStrap2Preference: {

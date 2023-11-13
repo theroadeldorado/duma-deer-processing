@@ -127,7 +127,7 @@ export default function EditDeer({ data, isNew }: Props) {
           <div className='grid grid-cols-3 gap-4'>
             <h3 className='col-span-3 text-display-sm font-bold'>Back Straps</h3>
             <RadioButtonGroup
-              name='backStraps1Preference'
+              name='backStrapsPreference'
               options={[
                 { value: 'Cut in half', label: 'Cut in half' },
                 { value: 'Sliced', label: 'Sliced' },

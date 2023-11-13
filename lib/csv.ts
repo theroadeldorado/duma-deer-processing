@@ -20,7 +20,7 @@ export const exportDeers = async (data: DeerT[]) => {
     capeHideNotes: 'Cape/Hide Notes',
     isSkinned: 'Is Skinned',
     skinnedBonelessNotes: 'Skinned/Boneless Notes',
-    backStraps1Preference: 'Back Straps 1 Preference',
+    backStrapsPreference: 'Back Straps 1 Preference',
     backStrap2Preference: 'Back Straps 2 Preference',
     backStrapNotes: 'Back Straps Notes',
     hindLegPreference1: 'Hind Leg Preference 1',

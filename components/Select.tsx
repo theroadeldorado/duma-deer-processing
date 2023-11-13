@@ -9,6 +9,7 @@ type Props = {
   isMulti?: boolean;
   label?: string;
   isClearable?: boolean;
+  defaultValue?: string;
   options: {
     value: string;
     label: string;
@@ -16,7 +17,18 @@ type Props = {
   [x: string]: any;
 };
 
-export default function Select({ name, className, label, required, isMulti, options, isClearable, onChange: customOnChange, ...props }: Props) {
+export default function Select({
+  name,
+  className,
+  label,
+  required,
+  isMulti,
+  options,
+  isClearable,
+  defaultValue,
+  onChange: customOnChange,
+  ...props
+}: Props) {
   const { control } = useFormContext();
 
   return (
@@ -24,6 +36,7 @@ export default function Select({ name, className, label, required, isMulti, opti
       <Controller
         control={control}
         name={name}
+        defaultValue={defaultValue}
         rules={{ required: required ? 'This field is required' : false }}
         render={({ field: { onChange, value, ref, ...field } }) => {
           let selected = null;
