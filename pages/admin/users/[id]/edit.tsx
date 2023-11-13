@@ -94,7 +94,7 @@ export const getServerSideProps = getSecureServerSideProps(async (context) => {
     const profile = await getProfile(id);
     if (!profile) return { notFound: true };
     return {
-      props: { profile },
+      props: { data: profile },
     };
   } catch (error) {
     return { notFound: true };
