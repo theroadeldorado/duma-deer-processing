@@ -10,7 +10,13 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
   value && (
     <li>
       <span className='font-bold'>{label}: </span>
-      <span>{price ? `${value} ($${price.toFixed(2)})` : value}</span>
+      {pricePer5lb ? (
+        <span>
+          {value}lbs {price ? `$${price.toFixed(2)}` : ''}
+        </span>
+      ) : (
+        <span>{price ? `${value} $${price.toFixed(2)}` : value}</span>
+      )}
     </li>
   );
 

@@ -464,6 +464,7 @@ const CheckInForm = () => {
                       label='Ground Venison'
                       register={register}
                       placeholder='Select Option'
+                      defaultValue='Plain'
                       required
                       options={[
                         { value: 'Plain', label: 'Plain' },
