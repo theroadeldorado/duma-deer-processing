@@ -21,12 +21,14 @@ export type DeerT = {
   firstName: string;
   lastName: string;
   tagNumber: string;
+  fullAddress: string;
   address: string;
   city: string;
   state: string;
-  zip: string;
+  zip: number;
   phone: string;
   communicationPreference: string;
+  stateHarvestedIn: string;
   cape?: boolean;
   hide?: boolean;
   euroMount?: boolean;

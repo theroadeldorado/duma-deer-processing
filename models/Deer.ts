@@ -21,6 +21,12 @@ const fields: DeerSchemaT = {
     type: String,
     required: true,
   },
+  stateHarvestedIn: {
+    type: String,
+  },
+  fullAddress: {
+    type: String,
+  },
   address: {
     type: String,
     required: true,

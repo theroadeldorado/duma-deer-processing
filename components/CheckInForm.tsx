@@ -12,6 +12,7 @@ import router from 'next/router';
 import useMutation from 'hooks/useMutation';
 import { DeerT } from 'lib/types';
 import Select from './Select';
+import Summary from './Summary';
 
 const TOTAL_STEPS = 7;
 
@@ -27,11 +28,6 @@ const CheckInForm = () => {
 
   const handleHindLegPreference2 = (event: any) => {
     setIsHindLegPreference2(event);
-  };
-
-  // Function to calculate total price
-  const calculateTotalPrice = (values: any) => {
-    return 0;
   };
 
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
@@ -61,26 +57,93 @@ const CheckInForm = () => {
   return (
     <>
       <div className='flex flex-col gap-6'>
-        <div className='relative h-4 w-full overflow-hidden rounded-full bg-tan-1'>
-          <div className='absolute left-0 top-0 h-4 bg-primary-blue transition-all duration-500' style={{ width: `${progressPercentage}%` }}></div>
+        <div className='relative w-full h-4 overflow-hidden rounded-full bg-tan-1'>
+          <div className='absolute top-0 left-0 h-4 transition-all duration-500 bg-primary-blue' style={{ width: `${progressPercentage}%` }}></div>
         </div>
 
         <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
           {currentStep === 1 && (
             <>
               <div className='grid grid-cols-2 gap-4'>
-                <Input label='First Name' type='text' name='firstName' register={register} required />
-                <Input label='Last Name' type='text' name='lastName' register={register} required />
+                <div className='hidden'>
+                  <Input label='Name' type='text' name='name' register={register} />
+                </div>
+                <div className='hidden'>
+                  <Input label='fullAddress' type='text' name='fullAddress' />
+                </div>
+                <Input
+                  label='First Name'
+                  type='text'
+                  name='firstName'
+                  required
+                  onChange={(e) => {
+                    form.setValue('name', e.target.value + ' ' + form.watch('lastName'));
+                  }}
+                />
+                <Input
+                  label='Last Name'
+                  type='text'
+                  name='lastName'
+                  required
+                  onChange={(e) => {
+                    form.setValue('name', form.watch('firstName') + ' ' + e.target.value);
+                  }}
+                />
               </div>
               <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
-              <Input label='Address' type='text' name='address' register={register} required />
+
+              <Input
+                label='Address'
+                type='text'
+                name='address'
+                register={register}
+                required
+                onChange={(e) => {
+                  form.setValue('fullAddress', e.target.value + ' ' + form.watch('city') + ' ' + form.watch('state') + ' ' + form.watch('zip'));
+                }}
+              />
               <div className='grid grid-cols-5 gap-4'>
                 <div className='col-span-2'>
-                  <Input label='City' type='text' name='city' register={register} required />
+                  <Input
+                    label='City'
+                    type='text'
+                    name='city'
+                    register={register}
+                    required
+                    onChange={(e) => {
+                      form.setValue(
+                        'fullAddress',
+                        form.watch('address') + ' ' + e.target.value + ' ' + form.watch('state') + ' ' + form.watch('zip')
+                      );
+                    }}
+                  />
                 </div>
-                <Input label='State' type='text' name='state' register={register} value='OH' required />
+                <Input
+                  label='State'
+                  type='text'
+                  name='state'
+                  register={register}
+                  defaultValue='OH'
+                  required
+                  onChange={(e) => {
+                    form.setValue('fullAddress', form.watch('address') + ' ' + form.watch('city') + ' ' + e.target.value + ' ' + form.watch('zip'));
+                  }}
+                />
                 <div className='col-span-2'>
-                  <Input label='Zip' type='text' name='zip' register={register} required />
+                  <Input
+                    label='Zip'
+                    type='number'
+                    maxLength={5}
+                    name='zip'
+                    register={register}
+                    required
+                    onChange={(e) => {
+                      form.setValue(
+                        'fullAddress',
+                        form.watch('address') + ' ' + form.watch('city') + ' ' + form.watch('state') + ' ' + e.target.value
+                      );
+                    }}
+                  />
                 </div>
               </div>
 
@@ -116,7 +179,7 @@ const CheckInForm = () => {
             <>
               <div className='flex flex-col gap-5'>
                 <div className='relative aspect-[8/3] w-full overflow-hidden rounded-md'>
-                  <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
+                  <Image src={'/deer.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'deer'} />
                 </div>
 
                 <div className='pl-2'>
@@ -132,7 +195,7 @@ const CheckInForm = () => {
                     defaultValue='skinned'
                   ></Select>
 
-                  <p className='mt-2 text-center italic'>
+                  <p className='mt-2 italic text-center'>
                     Must select &quot;Skinned&quot; even if already skinned or quartered.
                     <br />
                     There is no cost if your deer is 100% deboned.
@@ -148,30 +211,30 @@ const CheckInForm = () => {
             <>
               <div className='grid grid-cols-3 gap-6'>
                 <div className='flex flex-col items-center justify-start gap-1'>
-                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
-                    <Image src={'/cape.png'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'cape'} />
+                  <div className='relative w-full overflow-hidden rounded-md aspect-square'>
+                    <Image src={'/cape.png'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'cape'} />
                   </div>
-                  <p className='mb-1 w-full text-center font-bold'>Cape for shoulder mount</p>
-                  <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50.' }]} register={register} />
+                  <p className='w-full mb-1 font-bold text-center'>Cape for shoulder mount</p>
+                  <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50' }]} register={register} />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
-                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
-                    <Image src={'/hide.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'hide'} />
+                  <div className='relative w-full overflow-hidden rounded-md aspect-square'>
+                    <Image src={'/hide.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'hide'} />
                   </div>
-                  <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
+                  <p className='w-full mb-1 font-bold text-center'>Keep skinned hide</p>
                   <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} register={register} />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
-                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
+                  <div className='relative w-full overflow-hidden rounded-md aspect-square'>
                     <Image
                       src={'/euro-mount.jpg'}
-                      className='absolute inset-0 h-full w-full object-cover'
+                      className='absolute inset-0 object-cover w-full h-full'
                       width={500}
                       height={300}
                       alt={'euro-mount'}
                     />
                   </div>
-                  <p className='w-full text-center font-bold'>Euro Mount</p>
+                  <p className='w-full font-bold text-center'>Euro Mount</p>
                   <Select
                     className='w-full'
                     name='euroMount'
@@ -179,13 +242,13 @@ const CheckInForm = () => {
                     options={[
                       { value: 'none', label: 'Select Option' },
                       { value: 'Keep head', label: 'Keep Head' },
-                      { value: 'pork', label: 'Boiled Finished Mount - $145' },
-                      { value: 'both', label: 'Beetles Finished Mount - $175' },
+                      { value: 'Boiled Finished Mount', label: 'Boiled Finished Mount - $145' },
+                      { value: 'Beetles Finished Mount', label: 'Beetles Finished Mount - $175' },
                     ]}
                   ></Select>
                 </div>
 
-                <p className='col-span-3 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
+                <p className='col-span-3 mt-2 italic text-center'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
                 <div className='col-span-3'>
                   <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' register={register} />
                 </div>
@@ -197,11 +260,11 @@ const CheckInForm = () => {
             <>
               <div className='flex flex-col items-center justify-center gap-4'>
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
-                  <Image src={'/back_straps.svg'} className='h-full w-full scale-150 object-cover' width={500} height={300} alt={'backstraps'} />
+                  <Image src={'/back_straps.svg'} className='object-cover w-full h-full scale-150' width={500} height={300} alt={'backstraps'} />
                 </div>
                 <div className='grid w-full grid-cols-1 gap-8'>
                   <div>
-                    <p className='mb-1 w-full font-bold'>Back Strap Preference</p>
+                    <p className='w-full mb-1 font-bold'>Back Strap Preference</p>
                     <Select
                       className='w-full'
                       name='backStrapsPreference'
@@ -239,7 +302,7 @@ const CheckInForm = () => {
                 </div>
                 <div className='grid w-full grid-cols-2 gap-8'>
                   <div>
-                    <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 1</p>
+                    <p className='w-full mb-1 font-bold'>Hind Leg Preference Leg 1</p>
                     <Select
                       className='w-full'
                       name='hindLegPreference1'
@@ -249,7 +312,7 @@ const CheckInForm = () => {
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
                         { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                        { value: 'Jerky', label: 'Jerky' },
+                        { value: 'Jerky', label: 'Jerky - $35 per 5lb' },
                         { value: 'Grind', label: 'Ground Venison' },
                       ]}
                       defaultValue='Grind'
@@ -257,10 +320,7 @@ const CheckInForm = () => {
 
                     {isHindLegPreference1 === 'Jerky' && (
                       <div className='mt-5'>
-                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
-                        <div className='relative mb-2 aspect-[3/1] overflow-hidden rounded-md'>
-                          <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
-                        </div>
+                        <p className='w-full mb-1 font-bold'>Jerky flavor</p>
                         <Select
                           className='w-full'
                           name='hindLegJerky1'
@@ -277,7 +337,7 @@ const CheckInForm = () => {
                     )}
                   </div>
                   <div>
-                    <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 2</p>
+                    <p className='w-full mb-1 font-bold'>Hind Leg Preference Leg 2</p>
                     <Select
                       className='w-full'
                       name='hindLegPreference2'
@@ -287,7 +347,7 @@ const CheckInForm = () => {
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
                         { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                        { value: 'Jerky', label: 'Jerky' },
+                        { value: 'Jerky', label: 'Jerky - $35 per 5lb' },
                         { value: 'Grind', label: 'Ground Venison' },
                       ]}
                       defaultValue='Grind'
@@ -295,10 +355,7 @@ const CheckInForm = () => {
 
                     {isHindLegPreference2 === 'Jerky' && (
                       <div className='mt-5'>
-                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
-                        <div className='relative mb-2 aspect-[3/1] overflow-hidden rounded-md'>
-                          <Image src={'/jerky-2.jpg'} className='h-full w-full object-cover ' width={500} height={300} alt={'jerky'} />
-                        </div>
+                        <p className='w-full mb-1 font-bold'>Jerky flavor</p>
                         <Select
                           className='w-full'
                           name='hindLegJerky2'
@@ -314,16 +371,34 @@ const CheckInForm = () => {
                       </div>
                     )}
                   </div>
-                </div>
-                {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
-                  <div className='col-span-2 mt-5'>
-                    <CheckboxGroup
-                      name='tenderizedCubedSteaks'
-                      options={[{ value: 'Tenderized Cubed Steaks', label: 'Tenderized Cubed Steaks - $5' }]}
-                      register={register}
-                    />
+                  {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
+                    <div className='col-span-2'>
+                      <CheckboxGroup
+                        name='tenderizedCubedSteaks'
+                        options={[{ value: 'Tenderized Cubed Steaks', label: 'Tenderized Cubed Steaks - $5' }]}
+                        register={register}
+                      />
+                    </div>
+                  )}
+                  <div>
+                    <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
+                      <Image
+                        src={'/whole-muscle-jerky.jpg'}
+                        className='absolute inset-0 object-cover w-full h-full'
+                        width={500}
+                        height={300}
+                        alt={'whole muscle jerky'}
+                      />
+                    </div>
+                    <p className='w-full mb-1 font-bold text-center'>Whole Muscle Jerky</p>
                   </div>
-                )}
+                  <div>
+                    <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
+                      <Image src={'/ham.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'Ham'} />
+                    </div>
+                    <p className='w-full mb-1 font-bold text-center'>Smoked Whole Ham</p>
+                  </div>
+                </div>
               </div>
 
               <div className='w-full'>
@@ -338,14 +413,14 @@ const CheckInForm = () => {
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
                   <Image
                     src={'/roast.svg'}
-                    className='h-full w-full translate-x-8 translate-y-8 scale-125 object-cover'
+                    className='object-cover w-full h-full scale-125 translate-x-8 translate-y-8'
                     width={500}
                     height={300}
                     alt={'roast'}
                   />
                 </div>
                 <div className='w-full'>
-                  <p className='mb-1 w-full font-bold'>Roast Preference</p>
+                  <p className='w-full mb-1 font-bold'>Roast Preference</p>
                   <Select
                     className='w-full'
                     name='roast'
@@ -369,10 +444,10 @@ const CheckInForm = () => {
 
           {currentStep === 7 && (
             <>
-              <h3 className='mb-2 text-center text-display-sm font-bold'>Ground Venison Options</h3>
+              <h3 className='mb-2 font-bold text-center text-display-sm'>Ground Venison Options</h3>
 
               <div className='grid grid-cols-2 gap-6'>
-                <h3 className='col-span-2 text-center text-display-xs font-bold'>Ground Venison</h3>
+                <h3 className='col-span-2 font-bold text-center text-display-xs'>Ground Venison</h3>
                 <div className='relative overflow-hidden rounded-md'>
                   <Image
                     src='/ground_venison.jpg'
@@ -391,15 +466,15 @@ const CheckInForm = () => {
                       placeholder='Select Option'
                       required
                       options={[
-                        { value: 'plain', label: 'Plain' },
-                        { value: 'beef', label: 'Add Beef Trim - $5' },
-                        { value: 'pork', label: 'Add Pork Trim - $5' },
-                        { value: 'both', label: 'Add Beef & Pork Trim - $10' },
+                        { value: 'Plain', label: 'Plain' },
+                        { value: 'Add Beef Trim', label: 'Add Beef Trim - $5' },
+                        { value: 'Add Pork Trim', label: 'Add Pork Trim - $5' },
+                        { value: 'Add Beef & Pork Trim', label: 'Add Beef & Pork Trim - $10' },
                       ]}
                     ></Select>
                   </div>
                   <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions' register={register} />
-                  <p className='text-md italic'>Ground Venison is the default option if no other options are selected.</p>
+                  <p className='italic text-md'>Ground Venison is the default option if no other options are selected.</p>
                 </div>
               </div>
 
@@ -491,44 +566,7 @@ const CheckInForm = () => {
               />
             </>
           )}
-
-          {currentStep === 8 && (
-            <div>
-              <h3 className='mb-4 text-lg font-bold'>Review Your Information:</h3>
-              <ul className='mb-4'>
-                <li>
-                  <span className='font-bold'>Name:</span> {values.name}
-                </li>
-                <li>
-                  <span className='font-bold'>Tag Number:</span> {values.tagNumber}
-                </li>
-                <li>
-                  <span className='font-bold'>Phone:</span> {values.phone}
-                </li>
-                <li>
-                  <span className='font-bold'>Communication Preference:</span> {values.communicationPreference}
-                </li>
-                <li>
-                  <span className='font-bold'>Address:</span> {`${values.address}, ${values.city}, ${values.state}, ${values.zip}`}
-                </li>
-              </ul>
-
-              <h4 className='mb-2 mt-4 text-lg font-bold'>Selected Processing Options:</h4>
-
-              {/* Calculate and render the total price */}
-              <p className='mt-4'>
-                <span className='font-bold'>Total Price:</span> $
-                {
-                  // Calculate the total price based on the selected options
-                  calculateTotalPrice(values)
-                }
-              </p>
-
-              <div>
-                <Textarea rows={2} name={`recapNotes`} label='Special Instructions' register={register} />
-              </div>
-            </div>
-          )}
+          {currentStep === 8 && <Summary formValues={values} />}
 
           <div className='flex justify-between gap-4'>
             {/* Back Button */}
