@@ -57,8 +57,8 @@ const CheckInForm = () => {
   return (
     <>
       <div className='flex flex-col gap-6'>
-        <div className='relative w-full h-4 overflow-hidden rounded-full bg-tan-1'>
-          <div className='absolute top-0 left-0 h-4 transition-all duration-500 bg-primary-blue' style={{ width: `${progressPercentage}%` }}></div>
+        <div className='relative h-4 w-full overflow-hidden rounded-full bg-tan-1'>
+          <div className='absolute left-0 top-0 h-4 bg-primary-blue transition-all duration-500' style={{ width: `${progressPercentage}%` }}></div>
         </div>
 
         <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
@@ -99,7 +99,7 @@ const CheckInForm = () => {
                 register={register}
                 required
                 onChange={(e) => {
-                  form.setValue('fullAddress', e.target.value + ' ' + form.watch('city') + ' ' + form.watch('state') + ' ' + form.watch('zip'));
+                  form.setValue('fullAddress', e.target.value + '\n' + form.watch('city') + ', ' + form.watch('state') + ' ' + form.watch('zip'));
                 }}
               />
               <div className='grid grid-cols-5 gap-4'>
@@ -113,7 +113,7 @@ const CheckInForm = () => {
                     onChange={(e) => {
                       form.setValue(
                         'fullAddress',
-                        form.watch('address') + ' ' + e.target.value + ' ' + form.watch('state') + ' ' + form.watch('zip')
+                        form.watch('address') + '\n' + e.target.value + ', ' + form.watch('state') + ' ' + form.watch('zip')
                       );
                     }}
                   />
@@ -126,7 +126,7 @@ const CheckInForm = () => {
                   defaultValue='OH'
                   required
                   onChange={(e) => {
-                    form.setValue('fullAddress', form.watch('address') + ' ' + form.watch('city') + ' ' + e.target.value + ' ' + form.watch('zip'));
+                    form.setValue('fullAddress', form.watch('address') + '\n' + form.watch('city') + ', ' + e.target.value + ' ' + form.watch('zip'));
                   }}
                 />
                 <div className='col-span-2'>
@@ -140,7 +140,7 @@ const CheckInForm = () => {
                     onChange={(e) => {
                       form.setValue(
                         'fullAddress',
-                        form.watch('address') + ' ' + form.watch('city') + ' ' + form.watch('state') + ' ' + e.target.value
+                        form.watch('address') + '\n' + form.watch('city') + ', ' + form.watch('state') + ' ' + e.target.value
                       );
                     }}
                   />
@@ -163,15 +163,15 @@ const CheckInForm = () => {
 
               <Input label='Phone' type='tel' name='phone' register={register} required />
               <RadioButtonGroup
-                name='communicationPreference'
+                name='communication'
                 required
                 options={[
-                  { value: 'call', label: 'Call' },
-                  { value: 'text', label: 'Text' },
+                  { value: 'Call', label: 'Call' },
+                  { value: 'Text', label: 'Text' },
                 ]}
-                defaultCheckedValue='text'
+                defaultCheckedValue='Text'
                 register={register}
-                wrapperLabel='Communication Preference'
+                wrapperLabel='Communication'
               />
             </>
           )}
@@ -179,7 +179,7 @@ const CheckInForm = () => {
             <>
               <div className='flex flex-col gap-5'>
                 <div className='relative aspect-[8/3] w-full overflow-hidden rounded-md'>
-                  <Image src={'/deer.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'deer'} />
+                  <Image src={'/deer.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'deer'} />
                 </div>
 
                 <div className='pl-2'>
@@ -189,13 +189,13 @@ const CheckInForm = () => {
                     register={register}
                     required
                     options={[
-                      { value: 'skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
-                      { value: 'boneless', label: 'Boneless, 100% deboned already' },
+                      { value: 'Skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                      { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                     ]}
-                    defaultValue='skinned'
+                    defaultValue='Skinned'
                   ></Select>
 
-                  <p className='mt-2 italic text-center'>
+                  <p className='mt-2 text-center italic'>
                     Must select &quot;Skinned&quot; even if already skinned or quartered.
                     <br />
                     There is no cost if your deer is 100% deboned.
@@ -211,30 +211,30 @@ const CheckInForm = () => {
             <>
               <div className='grid grid-cols-3 gap-6'>
                 <div className='flex flex-col items-center justify-start gap-1'>
-                  <div className='relative w-full overflow-hidden rounded-md aspect-square'>
-                    <Image src={'/cape.png'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'cape'} />
+                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
+                    <Image src={'/cape.png'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'cape'} />
                   </div>
-                  <p className='w-full mb-1 font-bold text-center'>Cape for shoulder mount</p>
+                  <p className='mb-1 w-full text-center font-bold'>Cape for shoulder mount</p>
                   <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50' }]} register={register} />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
-                  <div className='relative w-full overflow-hidden rounded-md aspect-square'>
-                    <Image src={'/hide.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'hide'} />
+                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
+                    <Image src={'/hide.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'hide'} />
                   </div>
-                  <p className='w-full mb-1 font-bold text-center'>Keep skinned hide</p>
+                  <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
                   <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} register={register} />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
-                  <div className='relative w-full overflow-hidden rounded-md aspect-square'>
+                  <div className='relative aspect-square w-full overflow-hidden rounded-md'>
                     <Image
                       src={'/euro-mount.jpg'}
-                      className='absolute inset-0 object-cover w-full h-full'
+                      className='absolute inset-0 h-full w-full object-cover'
                       width={500}
                       height={300}
                       alt={'euro-mount'}
                     />
                   </div>
-                  <p className='w-full font-bold text-center'>Euro Mount</p>
+                  <p className='w-full text-center font-bold'>Euro Mount</p>
                   <Select
                     className='w-full'
                     name='euroMount'
@@ -242,13 +242,13 @@ const CheckInForm = () => {
                     options={[
                       { value: 'none', label: 'Select Option' },
                       { value: 'Keep head', label: 'Keep Head' },
-                      { value: 'Boiled Finished Mount', label: 'Boiled Finished Mount - $145' },
-                      { value: 'Beetles Finished Mount', label: 'Beetles Finished Mount - $175' },
+                      { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
+                      { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
                     ]}
                   ></Select>
                 </div>
 
-                <p className='col-span-3 mt-2 italic text-center'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
+                <p className='col-span-3 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
                 <div className='col-span-3'>
                   <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' register={register} />
                 </div>
@@ -260,11 +260,11 @@ const CheckInForm = () => {
             <>
               <div className='flex flex-col items-center justify-center gap-4'>
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
-                  <Image src={'/back_straps.svg'} className='object-cover w-full h-full scale-150' width={500} height={300} alt={'backstraps'} />
+                  <Image src={'/back_straps.svg'} className='h-full w-full scale-150 object-cover' width={500} height={300} alt={'backstraps'} />
                 </div>
                 <div className='grid w-full grid-cols-1 gap-8'>
                   <div>
-                    <p className='w-full mb-1 font-bold'>Back Strap Preference</p>
+                    <p className='mb-1 w-full font-bold'>Back Strap Preference</p>
                     <Select
                       className='w-full'
                       name='backStrapsPreference'
@@ -302,7 +302,7 @@ const CheckInForm = () => {
                 </div>
                 <div className='grid w-full grid-cols-2 gap-8'>
                   <div>
-                    <p className='w-full mb-1 font-bold'>Hind Leg Preference Leg 1</p>
+                    <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 1</p>
                     <Select
                       className='w-full'
                       name='hindLegPreference1'
@@ -320,7 +320,7 @@ const CheckInForm = () => {
 
                     {isHindLegPreference1 === 'Jerky' && (
                       <div className='mt-5'>
-                        <p className='w-full mb-1 font-bold'>Jerky flavor</p>
+                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
                         <Select
                           className='w-full'
                           name='hindLegJerky1'
@@ -337,7 +337,7 @@ const CheckInForm = () => {
                     )}
                   </div>
                   <div>
-                    <p className='w-full mb-1 font-bold'>Hind Leg Preference Leg 2</p>
+                    <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 2</p>
                     <Select
                       className='w-full'
                       name='hindLegPreference2'
@@ -355,7 +355,7 @@ const CheckInForm = () => {
 
                     {isHindLegPreference2 === 'Jerky' && (
                       <div className='mt-5'>
-                        <p className='w-full mb-1 font-bold'>Jerky flavor</p>
+                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
                         <Select
                           className='w-full'
                           name='hindLegJerky2'
@@ -384,19 +384,19 @@ const CheckInForm = () => {
                     <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
                       <Image
                         src={'/whole-muscle-jerky.jpg'}
-                        className='absolute inset-0 object-cover w-full h-full'
+                        className='absolute inset-0 h-full w-full object-cover'
                         width={500}
                         height={300}
                         alt={'whole muscle jerky'}
                       />
                     </div>
-                    <p className='w-full mb-1 font-bold text-center'>Whole Muscle Jerky</p>
+                    <p className='mb-1 w-full text-center font-bold'>Whole Muscle Jerky</p>
                   </div>
                   <div>
                     <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
-                      <Image src={'/ham.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'Ham'} />
+                      <Image src={'/ham.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'Ham'} />
                     </div>
-                    <p className='w-full mb-1 font-bold text-center'>Smoked Whole Ham</p>
+                    <p className='mb-1 w-full text-center font-bold'>Smoked Whole Ham</p>
                   </div>
                 </div>
               </div>
@@ -413,14 +413,14 @@ const CheckInForm = () => {
                 <div className='mb-6 aspect-square w-48 overflow-hidden rounded-full border-[5px] border-dashed border-[#E28532] bg-tan-1'>
                   <Image
                     src={'/roast.svg'}
-                    className='object-cover w-full h-full scale-125 translate-x-8 translate-y-8'
+                    className='h-full w-full translate-x-8 translate-y-8 scale-125 object-cover'
                     width={500}
                     height={300}
                     alt={'roast'}
                   />
                 </div>
                 <div className='w-full'>
-                  <p className='w-full mb-1 font-bold'>Roast Preference</p>
+                  <p className='mb-1 w-full font-bold'>Roast Preference</p>
                   <Select
                     className='w-full'
                     name='roast'
@@ -444,10 +444,10 @@ const CheckInForm = () => {
 
           {currentStep === 7 && (
             <>
-              <h3 className='mb-2 font-bold text-center text-display-sm'>Ground Venison Options</h3>
+              <h3 className='mb-2 text-center text-display-sm font-bold'>Ground Venison Options</h3>
 
               <div className='grid grid-cols-2 gap-6'>
-                <h3 className='col-span-2 font-bold text-center text-display-xs'>Ground Venison</h3>
+                <h3 className='col-span-2 text-center text-display-xs font-bold'>Ground Venison</h3>
                 <div className='relative overflow-hidden rounded-md'>
                   <Image
                     src='/ground_venison.jpg'
@@ -475,7 +475,7 @@ const CheckInForm = () => {
                     ></Select>
                   </div>
                   <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions' register={register} />
-                  <p className='italic text-md'>Ground Venison is the default option if no other options are selected.</p>
+                  <p className='text-md italic'>Ground Venison is the default option if no other options are selected.</p>
                 </div>
               </div>
 

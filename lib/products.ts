@@ -43,11 +43,11 @@ export const productsConfig: ProductsConfig = {
   // state: { label: 'State', type: 'text', required: true, defaultValue: 'OH' },
   // zip: { label: 'Zip', type: 'text', required: true },
   phone: { label: 'Phone', type: 'tel', required: true, section: 'Contact Information' },
-  communicationPreference: {
-    label: 'Communication Preference',
+  communication: {
+    label: 'Communication',
     type: 'radio',
     required: true,
-    options: ['call', 'text'],
+    options: ['Call', 'text'],
     section: 'Contact Information',
   },
   tagNumber: { label: 'Tag Number', type: 'text', required: true, section: 'Contact Information' },
@@ -66,8 +66,8 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     required: true,
     options: [
-      { value: 'skinned', label: 'Skinned, Cut, Ground, Vacuum packed', price: 95 },
-      { value: 'boneless', label: 'Boneless, 100% deboned already' },
+      { value: 'Skinned', label: 'Skinned, Cut, Ground, Vacuum packed', price: 95 },
+      { value: 'Boneless', label: 'Boneless, 100% deboned already' },
     ],
     defaultValue: 'skinned',
   },
@@ -90,8 +90,8 @@ export const productsConfig: ProductsConfig = {
     options: [
       { value: 'none', label: 'Select Option' },
       { value: 'Keep head', label: 'Keep Head' },
-      { value: 'Boiled Finished Mount', label: 'Boiled Finished Mount', price: 145 },
-      { value: 'Beetles Finished Mount', label: 'Beetles Finished Mount', price: 175 },
+      { value: 'Boiled finished mount', label: 'Boiled Finished Mount', price: 145 },
+      { value: 'Beetles finished mount', label: 'Beetles Finished Mount', price: 175 },
     ],
   },
 

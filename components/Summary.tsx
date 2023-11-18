@@ -1,6 +1,8 @@
 import React from 'react';
 import { productsConfig } from '../lib/products';
 import SummaryItem from './SummaryItem';
+import SummaryItemGeneral from './SummaryItemsGeneral';
+import SummaryItemsGeneral from './SummaryItemsGeneral';
 
 interface ProductOption {
   value?: string | number;
@@ -38,7 +40,7 @@ interface ProductsConfig {
   name: Product;
   fullAddress: Product;
   phone: Product;
-  communicationPreference: Product;
+  communication: Product;
   tagNumber: Product;
   stateHarvestedIn: Product;
   skinnedOrBoneless: Product;
@@ -73,32 +75,44 @@ interface SectionedValues {
 }
 
 const Summary: React.FC<SummaryProps> = ({ formValues }) => {
+  console.log(formValues);
   const sectionedFormValues = groupFormValuesBySections(formValues);
 
   return (
     <div>
-      <h3 className='mb-4 text-lg font-bold'>Review Your Information:</h3>
+      <h3 className='mb-7 text-center text-display-sm font-bold'>Review Your Information</h3>
       {Object.entries(sectionedFormValues).map(([section, values]) => (
         <div key={section}>
           {/* if has values */}
-
-          {values.length > 0 && (
+          {section === 'Contact Information' ? (
+            <div className='mb-6 gap-3 border-b border-dashed border-gray-300 pb-6'>
+              <h4 className='my-4 text-xl font-bold'>Contact Information</h4>
+              <SummaryItemsGeneral values={values} section={section} />
+            </div>
+          ) : (
             <>
-              <h4 className='mt-4 mb-2 font-bold text-display-md'>{section}:</h4>
-              <ul className='mb-4'>
-                {values.map(({ key, label, value, price, pricePer5lb }) => (
-                  <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} />
-                ))}
-              </ul>
+              {values.length > 0 && (
+                <div className='mb-6 gap-3 border-b border-dashed border-gray-300 pb-6 last:border-0'>
+                  <h4 className='my-4 text-xl font-bold'>{section}:</h4>
+                  <ul className='grid grid-cols-2 gap-x-10 gap-y-5'>
+                    {values.map(({ key, label, value, price, pricePer5lb }) => (
+                      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} section={section} />
+                    ))}
+                  </ul>
+                </div>
+              )}
             </>
           )}
         </div>
       ))}
-      <h4 className='mt-4 mb-2 text-lg font-bold'>Total Price:</h4>
-      <p className='mt-4'>
-        <span className='font-bold'>$</span>
-        {calculateTotalPrice(formValues).toFixed(2)}
-      </p>
+      <div className='text-right'>
+        <h4 className='mb-1 mt-4 text-lg font-bold'>Estimated Total Price:</h4>
+        <p className='text-sm'>Your price will vary based on the yield.</p>
+        <p className='mb-10 mt-2 text-xl font-bold'>
+          <span className=''>$</span>
+          {calculateTotalPrice(formValues).toFixed(2)}
+        </p>
+      </div>
     </div>
   );
 };

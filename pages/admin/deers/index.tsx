@@ -16,7 +16,7 @@ const cols = [
   { id: 'createdAt', label: 'Submitted' },
   { id: 'name', label: 'Name' },
   { id: 'phone', label: 'Phone' },
-  { id: 'communicationPreference', label: 'Com Pref' },
+  { id: 'communication', label: 'Com Pref' },
   { id: 'address', label: 'Address' },
   { id: 'city', label: 'City' },
   { id: 'state', label: 'State' },

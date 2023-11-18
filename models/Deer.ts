@@ -47,7 +47,7 @@ const fields: DeerSchemaT = {
     type: String,
     required: true,
   },
-  communicationPreference: {
+  communication: {
     type: String,
     required: true,
   },

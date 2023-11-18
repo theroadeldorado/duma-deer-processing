@@ -31,7 +31,7 @@ export default function DeerTableRow({ data }: Props) {
     return null;
   }
 
-  const { _id, name, tagNumber, address, city, state, zip, phone, communicationPreference, createdAt } = data;
+  const { _id, name, tagNumber, address, city, state, zip, phone, communication, createdAt } = data;
 
   const deleteUser = async (id: string) => {
     if (!confirm('Are you sure you want to permanently delete this user?')) return;
@@ -43,7 +43,7 @@ export default function DeerTableRow({ data }: Props) {
       <Cell suppressHydrationWarning>{createdAt && dayjs(createdAt).format('M/D/YY')}</Cell>
       <Cell>{name}</Cell>
       <Cell>{phone}</Cell>
-      <Cell>{communicationPreference}</Cell>
+      <Cell>{communication}</Cell>
       <Cell>{address}</Cell>
       <Cell>{city}</Cell>
       <Cell>{state}</Cell>

@@ -32,7 +32,7 @@ export const Deer = {
   state: z.string().min(1, 'State is required'),
   zip: z.string().min(1, 'ZIP code is required'),
   phone: z.string().min(1, 'Phone number is required'),
-  communicationPreference: z.string().min(1, 'Communication preference is required'),
+  communication: z.string().min(1, 'Communication is required'),
   cape: z.string().optional(),
   hide: z.string().optional(),
   capeHideNotes: z.string().optional(),

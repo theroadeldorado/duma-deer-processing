@@ -83,14 +83,14 @@ export default function EditDeer({ data, isNew }: Props) {
             <Input label='Zip' type='text' name='zip' required />
             <Input label='Phone' type='tel' name='phone' required />
             <RadioButtonGroup
-              name='communicationPreference'
+              name='communication'
               required
               options={[
                 { value: 'call', label: 'Call' },
                 { value: 'text', label: 'Text' },
               ]}
               defaultCheckedValue='text'
-              wrapperLabel='Communication Preference'
+              wrapperLabel='Communication'
             />
           </div>
           <div className='grid grid-cols-2 gap-4'>

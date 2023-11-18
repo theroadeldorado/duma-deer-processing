@@ -27,7 +27,7 @@ export type DeerT = {
   state: string;
   zip: number;
   phone: string;
-  communicationPreference: string;
+  communication: string;
   stateHarvestedIn: string;
   cape?: boolean;
   hide?: boolean;

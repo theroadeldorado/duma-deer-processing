@@ -9,7 +9,7 @@ export const exportDeers = async (data: DeerT[]) => {
     createdAt: 'Date',
     name: 'Name',
     phone: 'Phone',
-    communicationPreference: 'Communication Preference',
+    communication: 'Communication',
     tagNumber: 'Tag Number',
     address: 'Address',
     city: 'City',
