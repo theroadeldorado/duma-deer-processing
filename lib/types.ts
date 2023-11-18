@@ -16,6 +16,7 @@ export type ProfileT = {
 };
 
 export type DeerT = {
+  [key: string]: any;
   _id: string;
   name: string;
   firstName: string;
