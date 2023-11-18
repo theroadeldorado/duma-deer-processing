@@ -13,6 +13,7 @@ import useMutation from 'hooks/useMutation';
 import { DeerT } from 'lib/types';
 import Select from './Select';
 import Summary from './Summary';
+import { calculateTotalPrice } from 'lib/priceCalculations';
 
 const TOTAL_STEPS = 7;
 
@@ -48,9 +49,16 @@ const CheckInForm = () => {
     },
   });
 
-  const handleSubmit: SubmitHandler<DeerT> = async ({ ...data }) => {
-    data._id = data.tagNumber + Date.now();
-    data.name = data.firstName + ' ' + data.lastName;
+  const handleSubmit: SubmitHandler<DeerT> = async (formData) => {
+    const totalPrice = calculateTotalPrice(formData);
+
+    const data = {
+      ...formData,
+      _id: formData.tagNumber + Date.now(),
+      name: formData.firstName + ' ' + formData.lastName,
+      totalPrice: totalPrice,
+    };
+
     mutation.mutate(data as any);
   };
 
@@ -99,7 +107,7 @@ const CheckInForm = () => {
                 register={register}
                 required
                 onChange={(e) => {
-                  form.setValue('fullAddress', e.target.value + '\n' + form.watch('city') + ', ' + form.watch('state') + ' ' + form.watch('zip'));
+                  form.setValue('fullAddress', e.target.value + '\n ' + form.watch('city') + ', ' + form.watch('state') + ' ' + form.watch('zip'));
                 }}
               />
               <div className='grid grid-cols-5 gap-4'>
@@ -113,7 +121,7 @@ const CheckInForm = () => {
                     onChange={(e) => {
                       form.setValue(
                         'fullAddress',
-                        form.watch('address') + '\n' + e.target.value + ', ' + form.watch('state') + ' ' + form.watch('zip')
+                        form.watch('address') + '\n ' + e.target.value + ', ' + form.watch('state') + ' ' + form.watch('zip')
                       );
                     }}
                   />
@@ -126,7 +134,10 @@ const CheckInForm = () => {
                   defaultValue='OH'
                   required
                   onChange={(e) => {
-                    form.setValue('fullAddress', form.watch('address') + '\n' + form.watch('city') + ', ' + e.target.value + ' ' + form.watch('zip'));
+                    form.setValue(
+                      'fullAddress',
+                      form.watch('address') + '\n ' + form.watch('city') + ', ' + e.target.value + ' ' + form.watch('zip')
+                    );
                   }}
                 />
                 <div className='col-span-2'>
@@ -140,7 +151,7 @@ const CheckInForm = () => {
                     onChange={(e) => {
                       form.setValue(
                         'fullAddress',
-                        form.watch('address') + '\n' + form.watch('city') + ', ' + form.watch('state') + ' ' + e.target.value
+                        form.watch('address') + '\n ' + form.watch('city') + ', ' + form.watch('state') + ' ' + e.target.value
                       );
                     }}
                   />
@@ -312,13 +323,13 @@ const CheckInForm = () => {
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
                         { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                        { value: 'Jerky', label: 'Jerky - $35 per 5lb' },
+                        { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
                         { value: 'Grind', label: 'Ground Venison' },
                       ]}
                       defaultValue='Grind'
                     ></Select>
 
-                    {isHindLegPreference1 === 'Jerky' && (
+                    {isHindLegPreference1 === 'Whole Muscle Jerky' && (
                       <div className='mt-5'>
                         <p className='mb-1 w-full font-bold'>Jerky flavor</p>
                         <Select
@@ -347,13 +358,13 @@ const CheckInForm = () => {
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
                         { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                        { value: 'Jerky', label: 'Jerky - $35 per 5lb' },
+                        { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
                         { value: 'Grind', label: 'Ground Venison' },
                       ]}
                       defaultValue='Grind'
                     ></Select>
 
-                    {isHindLegPreference2 === 'Jerky' && (
+                    {isHindLegPreference2 === 'Whole Muscle Jerky' && (
                       <div className='mt-5'>
                         <p className='mb-1 w-full font-bold'>Jerky flavor</p>
                         <Select

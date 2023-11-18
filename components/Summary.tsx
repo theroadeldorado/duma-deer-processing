@@ -1,8 +1,9 @@
 import React from 'react';
-import { productsConfig } from '../lib/products';
+import { productsConfig } from 'lib/products';
+import { calculateTotalPrice, calculatePriceForItem, findSpecialtyMeatConfig, getSpecialtyMeatPrice } from 'lib/priceCalculations';
 import SummaryItem from './SummaryItem';
-import SummaryItemGeneral from './SummaryItemsGeneral';
 import SummaryItemsGeneral from './SummaryItemsGeneral';
+import { DeerT } from '@/lib/types';
 
 interface ProductOption {
   value?: string | number;
@@ -22,7 +23,6 @@ interface Product {
   options?: ProductOption[];
   image?: string;
   price?: number;
-  priceCondition?: (value: any) => number;
 }
 
 interface SpecialtyMeat {
@@ -61,7 +61,7 @@ interface ProductsConfig {
 }
 
 interface SummaryProps {
-  formValues: Record<string, any>;
+  formValues: DeerT;
 }
 
 interface SectionedValues {
@@ -75,9 +75,7 @@ interface SectionedValues {
 }
 
 const Summary: React.FC<SummaryProps> = ({ formValues }) => {
-  console.log(formValues);
   const sectionedFormValues = groupFormValuesBySections(formValues);
-
   return (
     <div>
       <h3 className='mb-7 text-center text-display-sm font-bold'>Review Your Information</h3>
@@ -106,9 +104,9 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         </div>
       ))}
       <div className='text-right'>
-        <h4 className='mb-1 mt-4 text-lg font-bold'>Estimated Total Price:</h4>
-        <p className='text-sm'>Your price will vary based on the yield.</p>
-        <p className='mb-10 mt-2 text-xl font-bold'>
+        <h4 className='mt-4 text-lg font-bold'>Estimated Total Price</h4>
+        <p className='text-sm italic'>Your price will vary based on the yield</p>
+        <p className='mb-10 mt-1 text-display-sm  font-bold'>
           <span className=''>$</span>
           {calculateTotalPrice(formValues).toFixed(2)}
         </p>
@@ -146,102 +144,6 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
   });
 
   return sectionedValues;
-}
-
-function findSpecialtyMeatConfig(optionName: string): { section: string; label: string; name: string } | undefined {
-  const specialtyMeatsConfig = productsConfig.specialtyMeats as SpecialtyMeatsConfig;
-  for (const meat of specialtyMeatsConfig.meats) {
-    const option = meat.options.find((option) => option.name === optionName);
-    if (option) {
-      return { section: specialtyMeatsConfig.section, label: option.label, name: meat.name };
-    }
-  }
-  return undefined;
-}
-
-function calculateTotalPrice(formValues: Record<string, any>): number {
-  let total = 0;
-
-  for (const key in formValues) {
-    const config = productsConfig[key] as Product | undefined;
-
-    if (config) {
-      const price = calculatePriceForItem(key, formValues[key]);
-      total += price;
-    } else {
-      const specialtyMeatConfig = findSpecialtyMeatConfig(key);
-      if (specialtyMeatConfig) {
-        const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, formValues[key]);
-        total += price;
-      }
-    }
-  }
-
-  return total;
-}
-
-function isProductConfigKey(key: string): key is keyof ProductsConfig {
-  return key in productsConfig;
-}
-
-function calculatePriceForItem(key: string, value: any): number {
-  if (!isProductConfigKey(key)) {
-    return 0;
-  }
-
-  const config = productsConfig[key] as Product | undefined;
-  if (!config) return 0;
-
-  if (config.options) {
-    let totalPrice = 0;
-    if (Array.isArray(value)) {
-      value.forEach((val) => {
-        const option = findOptionInConfig(config, val);
-        if (option) {
-          totalPrice += calculateOptionPrice(option, val);
-        }
-      });
-    } else {
-      const option = findOptionInConfig(config, value);
-      if (option) {
-        totalPrice = calculateOptionPrice(option, value);
-      }
-    }
-
-    return totalPrice;
-  }
-
-  return config.price || 0;
-}
-
-function getSpecialtyMeatPrice(meatName: string, optionName: string, value: number | string): number {
-  if (value === undefined) return 0;
-  const specialtyMeatsConfig = productsConfig.specialtyMeats as SpecialtyMeatsConfig;
-  const meat = specialtyMeatsConfig.meats.find((meat) => meat.name === meatName);
-  if (meat) {
-    const option = meat.options.find((option) => option.name === optionName);
-    if (option) {
-      return calculateOptionPrice(option, value);
-    }
-  }
-  return 0;
-}
-
-function findOptionInConfig(config: Product, value: string): ProductOption | undefined {
-  return config.options?.find((option) => option.value === value || option.name === value);
-}
-
-function calculateOptionPrice(option: ProductOption, value: number | string): number {
-  if (option.price && option.pricePer5lb) {
-    if (typeof value === 'string') {
-      if (value === 'Evenly') {
-        return option.price || 0;
-      } else {
-        return option.price ? option.price * (parseInt(value) / 5) : 0;
-      }
-    }
-  }
-  return option.price || 0;
 }
 
 export default Summary;

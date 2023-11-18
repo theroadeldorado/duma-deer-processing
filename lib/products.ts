@@ -29,19 +29,13 @@ interface SpecialtyMeatsConfig {
   meats: SpecialtyMeat[];
 }
 
-interface ProductsConfig {
+export interface ProductsConfig {
   [key: string]: Product | SpecialtyMeatsConfig;
 }
 
 export const productsConfig: ProductsConfig = {
   name: { label: 'Name', type: 'text', required: true, section: 'Contact Information' },
-  // firstName: { label: 'First Name', type: 'text', required: true },
-  // lastName: { label: 'Last Name', type: 'text', required: true },
   fullAddress: { label: 'Address', type: 'text', required: true, section: 'Contact Information' },
-  // address: { label: 'Address', type: 'text', required: true, section: 'Contact Information' },
-  // city: { label: 'City', type: 'text', required: true },
-  // state: { label: 'State', type: 'text', required: true, defaultValue: 'OH' },
-  // zip: { label: 'Zip', type: 'text', required: true },
   phone: { label: 'Phone', type: 'tel', required: true, section: 'Contact Information' },
   communication: {
     label: 'Communication',
@@ -111,7 +105,7 @@ export const productsConfig: ProductsConfig = {
     options: [
       { value: 'Steaks', label: 'Steaks' },
       { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle', label: 'Whole Muscle', price: 35, pricePer5lb: true },
+      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
       { value: 'Grind', label: 'Ground Venison' },
     ],
     defaultValue: 'Grind',
@@ -124,7 +118,7 @@ export const productsConfig: ProductsConfig = {
     options: [
       { value: 'Steaks', label: 'Steaks' },
       { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle', label: 'Whole Muscle', price: 35, pricePer5lb: true },
+      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
       { value: 'Grind', label: 'Ground Venison' },
     ],
     defaultValue: 'Grind',

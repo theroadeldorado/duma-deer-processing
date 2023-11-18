@@ -35,7 +35,8 @@ export default function Button({ className, disabled, type = 'button', color = '
     default: 'bg-white text-black border border-gray-300 hover:bg-gray-50 shadow-xs focus:ring-4 focus:ring-gray-100',
     primary: 'bg-primary-blue border-0 text-white hover:bg-tan-2 shadow-xs focus-visible:ring-primary-blue border-green hover:border-tan-2',
     gray: 'bg-gray-50 border-gray-50 border hover:border-gray-100 text-gray-800 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100',
-    danger: 'bg-red-50 text-red-700 border border-red-50 hover:border-red-100 hover:bg-red-100 focus:ring-4 focus:ring-red-100',
+    danger:
+      'bg-red-50 text-red-500 hover:text-white focus:text-white border border-red-500 hover:border-red-700 hover:bg-red-700 focus:ring-4 focus:ring-red-700',
   };
 
   const colorClasses = colors[color];

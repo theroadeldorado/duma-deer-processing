@@ -4,6 +4,7 @@ import Deer from 'models/Deer';
 
 export default secureApi(async (req, res) => {
   const { id }: any = req.query;
+  console.log('delete', id);
   try {
     await connect();
 

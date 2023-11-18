@@ -22,6 +22,8 @@ const cols = [
   { id: 'state', label: 'State' },
   { id: 'zip', label: 'Zip' },
   { id: 'tagNumber', label: 'Tag Number' },
+  { id: 'amountPaid', label: 'Amount Paid' },
+  { id: 'totalAmount', label: 'Total' },
   { id: 'actions', label: '', sortable: false },
 ];
 
