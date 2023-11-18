@@ -207,6 +207,12 @@ const fields: DeerSchemaT = {
   jerkyRestructuredNotes: {
     type: String,
   },
+  amountPaid: {
+    type: Number,
+  },
+  totalPrice: {
+    type: Number,
+  },
   recapNotes: {
     type: String,
   },

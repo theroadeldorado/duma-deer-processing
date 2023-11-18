@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 setTimeout(() => {
   window.location.href = '/';
-}, 20000);
+}, 12000);
 
 export default function success() {
   return (

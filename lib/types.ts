@@ -82,6 +82,8 @@ export type DeerT = {
   jerkyRestructuredTeriyaki?: number;
   jerkyRestructuredNotes?: string;
   recapNotes?: string;
+  amountPaid: Number;
+  totalPrice: Number;
   createdAt: Date;
   updatedAt: Date;
 };
