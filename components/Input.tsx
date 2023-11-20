@@ -15,6 +15,7 @@ type InputProps = {
   label?: string;
   help?: string;
   [x: string]: any;
+  register?: any;
 };
 
 const Input = ({ type, className, name, required, validateNewPassword, onChange, label, help, ...props }: InputProps) => {

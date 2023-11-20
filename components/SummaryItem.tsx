@@ -7,17 +7,13 @@ interface SummaryItemProps {
   notes?: boolean;
 }
 
-const checkForPrice = (price: any) => {
-  return price ? price : 0;
-};
-
 const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer5lb, section, notes }) =>
   value && (
     <li className=''>
       {notes ? (
         <p className='-my-1 text-xs'>
-          <div className='text-xs font-bold uppercase'>{label}:</div>
-          <div>{value}</div>
+          <span className='block text-xs font-bold uppercase'>{label}:</span>
+          <span>{value}</span>
         </p>
       ) : (
         <>

@@ -52,14 +52,12 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
 
       if (config) {
         const price = calculatePriceForItem(key, formValues[key]);
-        console.log(key, price);
         total += price;
       }
     } else {
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
       if (specialtyMeatConfig) {
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, formValues[key]);
-        console.log(key, price);
         total += price;
       }
     }

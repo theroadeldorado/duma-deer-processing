@@ -41,7 +41,9 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
   };
 
   const removeSpacesAndCamelCase = (str: string) => {
-    return str.replace(/\s+/g, '').toLowerCase();
+    // lowercase first letter
+    str = str.charAt(0).toLowerCase() + str.slice(1);
+    return str.replace(/\s+/g, '');
   };
 
   return (

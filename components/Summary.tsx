@@ -84,7 +84,6 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
       <h3 className='mb-7 text-center text-display-sm font-bold'>Review Your Information</h3>
       {Object.entries(sectionedFormValues).map(([section, values]) => (
         <div key={section}>
-          {/* if has values */}
           {section === 'Contact Information' ? (
             <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6'>
               <h4 className='my-4 text-xl font-bold'>Contact Information</h4>
@@ -92,15 +91,28 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
             </div>
           ) : (
             <>
-              {values.length > 0 && (
-                <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
-                  <h4 className='my-4 text-xl font-bold'>{section}:</h4>
-                  <ul className='grid grid-cols-2 gap-x-10 gap-y-5'>
-                    {values.map(({ key, label, value, price, pricePer5lb, notes }) => (
-                      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} section={section} notes={notes} />
-                    ))}
-                  </ul>
-                </div>
+              {/* if section values have value !== '' */}
+              {values.some((value) => value.value !== '') && (
+                <>
+                  {values.length > 0 && (
+                    <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+                      <h4 className='my-4 text-xl font-bold'>{section}:</h4>
+                      <ul className='grid grid-cols-2 gap-x-10 gap-y-5'>
+                        {values.map(({ key, label, value, price, pricePer5lb, notes }) => (
+                          <SummaryItem
+                            key={key}
+                            label={label}
+                            value={value}
+                            price={price}
+                            pricePer5lb={pricePer5lb}
+                            section={section}
+                            notes={notes}
+                          />
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
               )}
             </>
           )}
@@ -129,10 +141,10 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
       const section = config.section || 'Other';
       sectionedValues[section] = sectionedValues[section] || [];
       const price = calculatePriceForItem(key, value);
-      // set pricePer5lb to true if the option has a price and pricePer5lb is true if its undefined set to false
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
-
-      sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
+      if (value) {
+        sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
+      }
     } else {
       // Handle specialty meats
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
@@ -141,7 +153,9 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
         sectionedValues[section] = sectionedValues[section] || [];
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
-        sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
+        if (value) {
+          sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
+        }
       }
     }
   });
