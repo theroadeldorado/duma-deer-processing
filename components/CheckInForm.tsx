@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Input from './Input';
 import Form from './Form';
@@ -23,17 +23,6 @@ const CheckInForm = () => {
   const [isHindLegPreference1, setIsHindLegPreference1] = useState('Grind');
   const [isHindLegPreference2, setIsHindLegPreference2] = useState('Grind');
   const [isFirstStepValid, setIsFirstStepValid] = useState(false);
-
-  const isCurrentStepFilled = () => {
-    if (currentStep === 1) {
-      // Check if all required fields in the first step are filled
-      const requiredFields = ['firstName', 'lastName', 'tagNumber', 'address', 'city', 'state', 'zip', 'stateHarvestedIn', 'phone'];
-      const isValid = requiredFields.every((field) => form.watch(field));
-      setIsFirstStepValid(isValid); // Update the state based on validity
-      return isValid;
-    }
-    return true;
-  };
 
   const handleHindLegPreference1 = (event: any) => {
     setIsHindLegPreference1(event);
@@ -67,6 +56,12 @@ const CheckInForm = () => {
 
     mutation.mutate(data as any);
   };
+
+  useEffect(() => {
+    if (currentStep === 1) {
+      setIsFirstStepValid(form.formState.isValid);
+    }
+  }, [form.formState.isValid]);
 
   return (
     <>
@@ -105,6 +100,20 @@ const CheckInForm = () => {
                 />
               </div>
               <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
+
+              <Select
+                name='stateHarvestedIn'
+                label='State Harvested In*'
+                register={register}
+                placeholder='Select State'
+                required
+                options={[
+                  { value: 'OH', label: 'Ohio' },
+                  { value: 'WV', label: 'West Virginia' },
+                  { value: 'PA', label: 'Pennsylvania' },
+                  { value: 'Other', label: 'Other' },
+                ]}
+              ></Select>
 
               <Input
                 label='Address'
@@ -163,20 +172,6 @@ const CheckInForm = () => {
                   />
                 </div>
               </div>
-
-              <Select
-                name='stateHarvestedIn'
-                label='State Harvested In'
-                register={register}
-                placeholder='Select State'
-                required
-                options={[
-                  { value: 'OH', label: 'Ohio' },
-                  { value: 'WV', label: 'West Virginia' },
-                  { value: 'PA', label: 'Pennsylvania' },
-                  { value: 'Other', label: 'Other' },
-                ]}
-              ></Select>
 
               <Input label='Phone' type='tel' name='phone' register={register} required />
               <RadioButtonGroup
@@ -608,7 +603,7 @@ const CheckInForm = () => {
                 type='button'
                 className='inline-flex gap-2 disabled:cursor-not-allowed'
                 onClick={() => setCurrentStep((prevStep) => prevStep + 1)}
-                disabled={currentStep === 1 ? !isFirstStepValid : !isCurrentStepFilled()}
+                disabled={currentStep === 1 && !isFirstStepValid}
               >
                 Next
                 <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>

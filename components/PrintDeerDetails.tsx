@@ -18,6 +18,7 @@ interface ProductOption {
   price?: number;
   name?: string;
   pricePer5lb?: boolean;
+  notes?: boolean;
 }
 
 interface Product {
@@ -30,6 +31,7 @@ interface Product {
   options?: ProductOption[];
   image?: string;
   price?: number;
+  notes?: boolean;
 }
 
 interface SpecialtyMeat {
@@ -78,6 +80,7 @@ interface SectionedValues {
     value: string | number;
     price: number;
     pricePer5lb?: boolean;
+    notes?: boolean;
   }>;
 }
 
@@ -167,10 +170,10 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
       const section = config.section || 'Other';
       sectionedValues[section] = sectionedValues[section] || [];
       const price = calculatePriceForItem(key, value);
-      // set pricePer5lb to true if the option has a price and pricePer5lb is true if its undefined set to false
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
-
-      sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb });
+      if (value) {
+        sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
+      }
     } else {
       // Handle specialty meats
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
@@ -179,7 +182,9 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
         sectionedValues[section] = sectionedValues[section] || [];
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
-        sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb });
+        if (value) {
+          sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
+        }
       }
     }
   });
