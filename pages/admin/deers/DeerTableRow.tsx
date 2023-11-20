@@ -12,6 +12,8 @@ import { useQueryClient } from '@tanstack/react-query';
 import Button from '@/components/Button';
 import Summary from '@/components/Summary';
 import Modal from '@/components/Modal';
+import PrintDeerDetails from '@/components/PrintDeerDetails';
+import clsx from 'clsx';
 
 type Props = {
   data: DeerT | null;
@@ -19,6 +21,7 @@ type Props = {
 
 export default function DeerTableRow({ data }: Props) {
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [printId, setPrintId] = useState(null);
   const router = useRouter();
   const queryClient = useQueryClient();
   const del = useMutation({
@@ -50,6 +53,17 @@ export default function DeerTableRow({ data }: Props) {
     setIsModalVisible(false);
   };
 
+  const handlePrintDetails = (id: any) => {
+    setPrintId(id);
+    setTimeout(() => {
+      window.print();
+    }, 100);
+  };
+
+  window.onafterprint = () => {
+    setPrintId(null);
+  };
+
   return (
     <>
       <tr key={_id}>
@@ -62,11 +76,12 @@ export default function DeerTableRow({ data }: Props) {
         <Cell>{state}</Cell>
         <Cell>{zip}</Cell>
         <Cell>{tagNumber}</Cell>
-        <Cell>{amountPaid ? `${amountPaid}` : '$0.00'}</Cell>
+        <Cell>{amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}</Cell>
         <Cell>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
 
         <Cell className='flex justify-end gap-4'>
-          <Button>
+          <Button onClick={() => handlePrintDetails(`${data._id}`)}>
+            <span className='sr-only'>Print Details</span>
             <svg xmlns='http://www.w3.org/2000/svg' className='w-5' viewBox='0 0 512 512'>
               <path
                 fill='white'
@@ -103,7 +118,7 @@ export default function DeerTableRow({ data }: Props) {
                 <Menu.Item>
                   <button
                     type='button'
-                    onClick={() => deleteDeer(_id ?? '')}
+                    onClick={() => deleteDeer(`${data._id}`)}
                     disabled={del.isLoading}
                     className='block w-full px-4 py-2 text-left text-sm text-red-700 hover:bg-gray-100 hover:text-red-900'
                   >
@@ -116,6 +131,11 @@ export default function DeerTableRow({ data }: Props) {
           </Menu>
         </Cell>
       </tr>
+      {printId === data?._id && (
+        <div className='pointer-events-none fixed left-0 top-0 bg-white opacity-0 print:opacity-100'>
+          <PrintDeerDetails data={data} />
+        </div>
+      )}
       <Modal isVisible={isModalVisible} onClose={handleCloseModal}>
         <Summary formValues={data} />
       </Modal>

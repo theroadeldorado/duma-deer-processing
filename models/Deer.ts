@@ -52,10 +52,10 @@ const fields: DeerSchemaT = {
     required: true,
   },
   cape: {
-    type: String,
+    type: String || Boolean,
   },
   hide: {
-    type: String,
+    type: String || Boolean,
   },
   capeHideNotes: {
     type: String,

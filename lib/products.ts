@@ -16,6 +16,7 @@ interface Product {
   options?: (string | ProductOption)[];
   image?: string;
   price?: number;
+  notes?: boolean;
 }
 
 interface SpecialtyMeat {
@@ -88,7 +89,103 @@ export const productsConfig: ProductsConfig = {
       { value: 'Beetles finished mount', label: 'Beetles Finished Mount', price: 175 },
     ],
   },
+  capeHideNotes: {
+    section: 'Cutting Instructions Notes',
+    label: 'Cape/Hide Notes',
+    type: 'textarea',
+    notes: true,
+  },
 
+  skinnedBonelessNotes: {
+    section: 'Cutting Instructions Notes',
+    label: 'Skinned/Boneless Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  backStrapNotes: {
+    section: 'Cutting Instructions Notes',
+    label: 'Back Strap Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  hindLegNotes: {
+    section: 'Cutting Instructions Notes',
+    label: 'Hind Leg Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  roastNotes: {
+    section: 'Cutting Instructions Notes',
+    label: 'Roast Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  groundVenisonNotes: {
+    section: 'Cutting Instructions Notes',
+    label: 'Ground Venison Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  trailBolognaNotes: {
+    section: 'Ground Venison Notes',
+    label: 'Trail Bologna Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  garlicRingBolognaNotes: {
+    section: 'Specialty Meats Notes',
+    label: 'Garlic Ring Bologna Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  summerSausageNotes: {
+    section: 'Specialty Meats Notes',
+    label: 'Summer Sausage Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  smokedKielbasaSausageNotes: {
+    section: 'Specialty Meats Notes',
+    label: 'Smoked Kielbasa Sausage Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  italianSausageLinksNotes: {
+    section: 'Specialty Meats Notes',
+    label: 'Italian Sausage Links Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  countryBreakfastSausageNotes: {
+    section: 'Specialty Meats Notes',
+    label: 'Country Breakfast Sausage Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  babyLinksNotes: {
+    section: 'Specialty Meats Notes',
+    label: 'Baby Links Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  snackSticks: {
+    section: 'Specialty Meats Notes',
+    label: 'Snack Sticks Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  hotDogs: {
+    section: 'Specialty Meats Notes',
+    label: 'Hot Dogs Notes',
+    type: 'textarea',
+    notes: true,
+  },
+  jerkyRestructured: {
+    section: 'Specialty Meats Notes',
+    label: 'Jerky Restructured Notes',
+    type: 'textarea',
+    notes: true,
+  },
   backStrapsPreference: {
     section: 'Cutting Instructions',
     label: 'Back Strap Preference',
@@ -99,20 +196,7 @@ export const productsConfig: ProductsConfig = {
   },
   hindLegPreference1: {
     section: 'Cutting Instructions',
-    label: 'Hind Leg Preference',
-    type: 'select',
-    required: true,
-    options: [
-      { value: 'Steaks', label: 'Steaks' },
-      { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
-      { value: 'Grind', label: 'Ground Venison' },
-    ],
-    defaultValue: 'Grind',
-  },
-  hindLegPreference2: {
-    section: 'Cutting Instructions',
-    label: 'Hind Leg Preference Two',
+    label: 'Hind Leg 1 Preference',
     type: 'select',
     required: true,
     options: [
@@ -125,7 +209,7 @@ export const productsConfig: ProductsConfig = {
   },
   hindLegJerky1: {
     section: 'Cutting Instructions',
-    label: 'Whole Muscle Jerky One',
+    label: 'Whole Muscle Jerky (leg 1)',
     type: 'select',
     options: [
       { value: 'Mild', label: 'Mild' },
@@ -133,9 +217,22 @@ export const productsConfig: ProductsConfig = {
       { value: 'Teriyaki', label: 'Teriyaki' },
     ],
   },
+  hindLegPreference2: {
+    section: 'Cutting Instructions',
+    label: 'Hind Leg 2 Preference',
+    type: 'select',
+    required: true,
+    options: [
+      { value: 'Steaks', label: 'Steaks' },
+      { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
+      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
+      { value: 'Grind', label: 'Ground Venison' },
+    ],
+    defaultValue: 'Grind',
+  },
   hindLegJerky2: {
     section: 'Cutting Instructions',
-    label: 'Whole Muscle Jerky Two',
+    label: 'Whole Muscle Jerky (leg 2)',
     type: 'select',
     options: [
       { value: 'Mild', label: 'Mild' },

@@ -33,7 +33,7 @@ interface SpecialtyMeatsConfig {
   meats: SpecialtyMeat[];
 }
 
-export function findSpecialtyMeatConfig(optionName: string): { section: string; label: string; name: string } | undefined {
+export function findSpecialtyMeatConfig(optionName: string): { section: string; label: string; name: string; notes?: boolean } | undefined {
   const specialtyMeatsConfig = productsConfig.specialtyMeats as SpecialtyMeatsConfig;
   for (const meat of specialtyMeatsConfig.meats) {
     const option = meat.options.find((option) => option.name === optionName);
@@ -59,6 +59,7 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
       if (specialtyMeatConfig) {
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, formValues[key]);
+        console.log(key, price);
         total += price;
       }
     }

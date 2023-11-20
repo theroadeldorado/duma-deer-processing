@@ -29,9 +29,7 @@ type Props = {
 
 export default function EditDeer({ data, isNew }: Props) {
   const router = useRouter();
-  const [amountDue, setAmountDue] = useState(0);
-  const [calculatedPrice, setCalculatedPrice] = useState<number>(parseFloat(data?.totalPrice?.toString() ?? '0'));
-  const [amountPaid, setAmountPaid] = useState<number>(parseFloat(data?.amountPaid?.toString() ?? '0'));
+  const [calculatedPrice, setCalculatedPrice] = useState<number>(Number(data?.totalPrice) || 0);
 
   const [isHindLegPreference1, setIsHindLegPreference1] = useState('Grind');
   const [isHindLegPreference2, setIsHindLegPreference2] = useState('Grind');
@@ -55,13 +53,6 @@ export default function EditDeer({ data, isNew }: Props) {
     const newPrice = calculateTotalPrice(formData).toFixed(2);
     setCalculatedPrice(parseFloat(newPrice));
   }, [form.watch()]);
-
-  useEffect(() => {
-    const price = calculatedPrice; // already a number, no need for parseFloat
-    const paid = amountPaid; // already a number, no need for parseFloat
-    const newDueAmount = Math.max(price - paid, 0);
-    setAmountDue(parseFloat(newDueAmount.toFixed(2))); // parse to float after using toFixed
-  }, [calculatedPrice, amountPaid]);
 
   const mutation = useMutation({
     url: isNew ? '/api/deers/add' : `/api/deers/${data?._id}/update`,
@@ -88,7 +79,6 @@ export default function EditDeer({ data, isNew }: Props) {
     const updatedData = {
       ...formData,
       totalPrice: calculatedPrice,
-      amountPaid: amountPaid,
     };
     mutation.mutate(updatedData);
   };
@@ -104,8 +94,8 @@ export default function EditDeer({ data, isNew }: Props) {
               <div className='mt-2 h-px w-full grow bg-gray-500'></div>
             </div>
             <div className='hidden'>
-              <Input label='Full Name' type='text' name='name' />
               <Input label='Full Address' type='text' name='fullAddress' />
+              <Input label='Full Name' type='text' name='name' />
             </div>
 
             <Input
@@ -224,8 +214,20 @@ export default function EditDeer({ data, isNew }: Props) {
             {/* Cape, Hide and Euro Mount */}
             <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div className='flex flex-col gap-2'>
-                <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Cape for shoulder mount - Additional $50' }]} />
-                <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Keep skinned hide - Additional $15' }]} />
+                <div>
+                  {/* <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Cape for shoulder mount - Additional $50' }]} /> */}
+                  <label>
+                    <input type='checkbox' name='cape' className='mr-2' />
+                    Cape for shoulder mount - Additional $50
+                  </label>
+                </div>
+                <div>
+                  {/* <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Keep skinned hide - Additional $15' }]} /> */}
+                  <label>
+                    <input type='checkbox' name='hide' className='mr-2' />
+                    Keep skinned hide - Additional $15
+                  </label>
+                </div>
                 <p className='font-bold'>Euro Mount Options</p>
                 <Select
                   className='w-full'
@@ -248,7 +250,6 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Select
                   className='w-full'
                   name='backStrapsPreference'
-                  required
                   options={[
                     { value: 'Cut in half', label: 'Cut in half' },
                     { value: 'Sliced', label: 'Sliced' },
@@ -270,7 +271,6 @@ export default function EditDeer({ data, isNew }: Props) {
                   className='w-full'
                   name='hindLegPreference1'
                   onChange={handleHindLegPreference1}
-                  required
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
@@ -286,7 +286,6 @@ export default function EditDeer({ data, isNew }: Props) {
                     <Select
                       className='w-full'
                       name='hindLegJerky1'
-                      required
                       options={[
                         { value: 'Mild', label: 'Mild' },
                         { value: 'Hot', label: 'Hot' },
@@ -303,7 +302,6 @@ export default function EditDeer({ data, isNew }: Props) {
                   className='w-full'
                   name='hindLegPreference2'
                   onChange={handleHindLegPreference2}
-                  required
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
@@ -319,7 +317,6 @@ export default function EditDeer({ data, isNew }: Props) {
                     <Select
                       className='w-full'
                       name='hindLegJerky2'
-                      required
                       options={[
                         { value: 'Mild', label: 'Mild' },
                         { value: 'Hot', label: 'Hot' },
@@ -334,10 +331,10 @@ export default function EditDeer({ data, isNew }: Props) {
               <div className='col-span-2'>
                 {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
                   <div className='mb-3'>
-                    <CheckboxGroup
-                      name='tenderizedCubedSteaks'
-                      options={[{ value: 'Tenderized Cubed Steaks', label: 'Tenderized Cubed Steaks - $5' }]}
-                    />
+                    <div className='flex flex-wrap items-center justify-start gap-2 font-normal'>
+                      <input name='tenderizedCubedSteaks' type='checkbox' className='checkbox' />
+                      <label htmlFor='tenderizedCubedSteaks'>Tenderized Cubed Steaks - $5</label>
+                    </div>
                   </div>
                 )}
 
@@ -352,7 +349,6 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Select
                   className='w-full'
                   name='roast'
-                  required
                   options={[
                     { value: '2 Roasts, Grind Rest', label: '2 Roasts, Ground Venison for the rest' },
                     { value: 'As many as possible', label: 'As many as possible' },
@@ -377,7 +373,6 @@ export default function EditDeer({ data, isNew }: Props) {
                 name='groundVenison'
                 label='Ground Venison'
                 placeholder='Select Option'
-                required
                 options={[
                   { value: 'plain', label: 'Plain' },
                   { value: 'beef', label: 'Add Beef Trim - $5' },
@@ -387,21 +382,24 @@ export default function EditDeer({ data, isNew }: Props) {
               ></Select>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Trail Bologna</h3>
               <SpecialtyMeat
                 admin
                 name='Trail Bologna'
                 image='/trail_bologna.jpg'
                 options={[
-                  { name: 'trailBolognaRegular', label: 'Regular Trail Bologna', price: 15 },
-                  { name: 'trailBolognaCheddarCheese', label: 'Cheddar Cheese Trail Bologna', price: 20 },
-                  { name: 'trailBolognaHotPepperJackCheese', label: 'Hot Pepper Jack Cheese Trail Bologna', price: 20 },
+                  { name: 'trailBolognaRegular', label: 'Regular', price: 15 },
+                  { name: 'trailBolognaCheddarCheese', label: 'Cheddar Cheese', price: 20 },
+                  { name: 'trailBolognaHotPepperJackCheese', label: 'Hot Pepper Jack Cheese', price: 20 },
                 ]}
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <SpecialtyMeat admin name='Garlic Ring Bologna' options={[{ name: 'garlicRingBologna', label: 'Garlic Ring Bologna', price: 20 }]} />
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Garlic Ring Bologna</h3>
+              <SpecialtyMeat admin name='Garlic Ring Bologna' options={[{ name: 'garlicRingBologna', label: '', price: 20 }]} />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Summer Sausage</h3>
               <SpecialtyMeat
                 admin
                 name='Summer Sausage'
@@ -412,13 +410,11 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <SpecialtyMeat
-                admin
-                name='Smoked Kielbasa Sausage'
-                options={[{ name: 'smokedKielbasaSausage', label: 'Smoked Kielbasa Sausage', price: 17.5 }]}
-              />
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Smoked Kielbasa Sausage</h3>
+              <SpecialtyMeat admin name='Smoked Kielbasa Sausage' options={[{ name: 'smokedKielbasaSausage', label: '', price: 17.5 }]} />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Italian Sausage Links</h3>
               <SpecialtyMeat
                 admin
                 name='Italian Sausage Links'
@@ -429,6 +425,7 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Country Breakfast Sausage</h3>
               <SpecialtyMeat
                 admin
                 name='Country Breakfast Sausage'
@@ -436,6 +433,7 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Baby Links</h3>
               <SpecialtyMeat
                 admin
                 name='Baby Links'
@@ -446,6 +444,7 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Snack Sticks</h3>
               <SpecialtyMeat
                 admin
                 name='Snack Sticks'
@@ -459,6 +458,7 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Hot Dogs</h3>
               <SpecialtyMeat
                 admin
                 name='Hot Dogs'
@@ -470,6 +470,7 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Jerky Restructured</h3>
               <SpecialtyMeat
                 admin
                 name='Jerky Restructured'
@@ -481,18 +482,13 @@ export default function EditDeer({ data, isNew }: Props) {
               />
             </div>
 
-            <div className='grid grid-cols-3 gap-4'>
+            <div className='grid grid-cols-2 gap-4'>
               <div>
-                <p className='mb-1 font-bold'>Amount Paid</p>
-                <Input name='amountPaid' type='number' value={amountPaid} onChange={(e) => setAmountPaid(parseFloat(e.target.value))} />
+                <Input label='Amount Paid' type='number' name='amountPaid' />
               </div>
               <div>
                 <p className='mb-1 text-right font-bold'>Estimated Price</p>
-                <p className='text-right text-xl'>{calculatedPrice}</p>
-              </div>
-              <div>
-                <p className='mb-1 text-right font-bold'>Amount Due</p>
-                <p className='text-right text-xl'>{amountDue}</p>
+                <p className='text-right text-xl'>${calculatedPrice.toFixed(2)}</p>
               </div>
             </div>
           </div>

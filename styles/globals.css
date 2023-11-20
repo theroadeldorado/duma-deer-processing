@@ -14,7 +14,16 @@
   }
 
   body {
-    @apply bg-tan-1 font-body text-[18px] text-brown;
+    @apply bg-tan-1 font-body text-[18px] text-brown print:bg-transparent print:text-black;
+
+    & *:not(.porint-container, .print-container *) {
+      @apply print:invisible;
+    }
+
+    .print-container,
+    .print-container * {
+      @apply visible print:visible !important;
+    }
   }
 
   #__next {
@@ -62,4 +71,13 @@
 
 .uppy-Root .uppy-DragDrop-inner {
   padding: 0;
+}
+
+@media print {
+  @page {
+    size: landscape;
+    margin: 0.5in;
+    width: 100%;
+    max-width: 11in;
+  }
 }

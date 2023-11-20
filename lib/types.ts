@@ -30,9 +30,9 @@ export type DeerT = {
   phone: string;
   communication: string;
   stateHarvestedIn: string;
-  cape?: boolean;
-  hide?: boolean;
-  euroMount?: boolean;
+  cape?: boolean | string | number;
+  hide?: boolean | string | number;
+  euroMount?: string;
   capeHideNotes?: string;
   skinnedOrBoneless?: string;
   skinnedBonelessNotes?: string;
@@ -42,7 +42,7 @@ export type DeerT = {
   hindLegPreference1?: string;
   hindLegPreference2?: string;
   hindLegNotes?: string;
-  tenderizedCubedSteaks?: boolean;
+  tenderizedCubedSteaks?: boolean | string | number;
   hindLegJerky1?: boolean;
   hindLegJerky2?: boolean;
   roast?: string;

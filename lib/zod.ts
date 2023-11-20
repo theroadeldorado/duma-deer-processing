@@ -26,6 +26,8 @@ export const EmailTemplateZ = z.object(EmailTemplate);
 export const Deer = {
   _id: z.string().optional(),
   name: z.string().min(1, 'Name is required'),
+  firstName: z.string().min(1, 'Name is required'),
+  lastName: z.string().min(1, 'Name is required'),
   tagNumber: z.string().min(1, 'Tag Number is required'),
   address: z.string().min(1, 'Address is required'),
   city: z.string().min(1, 'City is required'),
@@ -33,8 +35,8 @@ export const Deer = {
   zip: z.string().min(1, 'ZIP code is required'),
   phone: z.string().min(1, 'Phone number is required'),
   communication: z.string().min(1, 'Communication is required'),
-  cape: z.string().optional(),
-  hide: z.string().optional(),
+  cape: z.boolean().optional() || z.string().optional(),
+  hide: z.boolean().optional() || z.string().optional(),
   capeHideNotes: z.string().optional(),
   isSkinned: z.string().optional(),
   skinnedBonelessNotes: z.string().optional(),
@@ -84,6 +86,8 @@ export const Deer = {
   jerkyRestructuredTeriyaki: z.string().optional(),
   jerkyRestructuredNotes: z.string().optional(),
   recapNotes: z.string().optional(),
+  amountPaid: z.any().optional(),
+  totalPrice: z.number().optional(),
 };
 
 export const DeerZ = z.object(Deer);

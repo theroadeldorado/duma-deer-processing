@@ -20,8 +20,11 @@ type InputProps = {
 const Input = ({ type, className, name, required, validateNewPassword, onChange, label, help, ...props }: InputProps) => {
   const { register } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
+  const [formattedValue, setFormattedValue] = useState('');
 
   const valueRef = useRef('');
+
+  const inputValue = type === 'tel' ? formattedValue : props.value;
 
   const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -32,16 +35,15 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
       if (phone) {
         const formatted = !phone[2] ? phone[1] : `(${phone[1]}) ${phone[2]}${phone[3] ? `-${phone[3]}` : ''}`;
         e.target.value = formatted;
+        setFormattedValue(formatted);
       }
     }
-
-    onChange && onChange(e); // Call the original onChange prop, if provided
   };
 
   if (type === 'password') {
     type = showPassword ? 'text' : 'password';
-  } else if (type === 'tel') {
-    onChange = handlePhoneInputChange;
+  } else if (type === 'number') {
+    type = 'number';
   } else {
     type = type || 'text';
   }
@@ -53,6 +55,8 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
         type={type}
         className={clsx('input w-full', (type === 'password' || (type === 'text' && showPassword)) && 'pr-11', className)}
         step={type === 'number' ? 'any' : undefined}
+        onChange={type === 'tel' ? handlePhoneInputChange : onChange}
+        value={inputValue}
         {...props}
       />
 

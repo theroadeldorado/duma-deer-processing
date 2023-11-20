@@ -11,6 +11,7 @@ interface ProductOption {
   price?: number;
   name?: string;
   pricePer5lb?: boolean;
+  notes?: boolean;
 }
 
 interface Product {
@@ -23,6 +24,7 @@ interface Product {
   options?: ProductOption[];
   image?: string;
   price?: number;
+  notes?: boolean;
 }
 
 interface SpecialtyMeat {
@@ -71,6 +73,7 @@ interface SectionedValues {
     value: string | number;
     price: number;
     pricePer5lb?: boolean;
+    notes?: boolean;
   }>;
 }
 
@@ -83,18 +86,18 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         <div key={section}>
           {/* if has values */}
           {section === 'Contact Information' ? (
-            <div className='mb-6 gap-3 border-b border-dashed border-gray-300 pb-6'>
+            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6'>
               <h4 className='my-4 text-xl font-bold'>Contact Information</h4>
               <SummaryItemsGeneral values={values} section={section} />
             </div>
           ) : (
             <>
               {values.length > 0 && (
-                <div className='mb-6 gap-3 border-b border-dashed border-gray-300 pb-6 last:border-0'>
+                <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
                   <h4 className='my-4 text-xl font-bold'>{section}:</h4>
                   <ul className='grid grid-cols-2 gap-x-10 gap-y-5'>
-                    {values.map(({ key, label, value, price, pricePer5lb }) => (
-                      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} section={section} />
+                    {values.map(({ key, label, value, price, pricePer5lb, notes }) => (
+                      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} section={section} notes={notes} />
                     ))}
                   </ul>
                 </div>
@@ -106,7 +109,7 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
       <div className='text-right'>
         <h4 className='mt-4 text-lg font-bold'>Estimated Total Price</h4>
         <p className='text-sm italic'>Your price will vary based on the yield</p>
-        <p className='mb-10 mt-1 text-display-sm  font-bold'>
+        <p className='mb-10 mt-1 text-display-sm font-bold'>
           <span className=''>$</span>
           {calculateTotalPrice(formValues).toFixed(2)}
         </p>
@@ -129,7 +132,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
       // set pricePer5lb to true if the option has a price and pricePer5lb is true if its undefined set to false
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
 
-      sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb });
+      sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
     } else {
       // Handle specialty meats
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
@@ -138,7 +141,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
         sectionedValues[section] = sectionedValues[section] || [];
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
-        sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb });
+        sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
       }
     }
   });
