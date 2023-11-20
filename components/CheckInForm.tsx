@@ -615,7 +615,7 @@ const CheckInForm = () => {
               </Button>
             ) : (
               <>
-                <Button type='submit' className='inline-flex origin-right scale-150 gap-2 bg-[#E28532] ' disabled={!isCurrentStepFilled()}>
+                <Button type='submit' className='inline-flex origin-right scale-150 gap-2 bg-[#E28532]'>
                   Submit Order
                 </Button>
                 <div className='[w-20]'></div>
