@@ -106,20 +106,33 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
 
   const renderOtherInformation = (name: keyof SectionedValues) => {
     const contactInfo = sectionedFormValues[name] || [];
-    return contactInfo.map(({ key, label, value, price, pricePer5lb }, index) => (
+    return contactInfo.map(({ key, label, value, price, pricePer5lb, notes }, index) => (
       <div key={index}>
-        <p className='text-xs font-bold uppercase'>{label}: </p>
-        {pricePer5lb ? (
-          <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1 '>
-            <div className='text-[24px] leading-[26px]'>{value}lbs</div>
-            {price && <div className='text-sm'>(${price / 5}/lb)</div>}
-            <div className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</div>
+        {notes ? (
+          <p className='-my-1 text-xs'>
+            <span className='block text-xs font-bold uppercase'>{label}:</span>
+            <span>{value}</span>
           </p>
         ) : (
-          <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1 '>
-            <div className='text-[24px] leading-[26px]'>{value}</div>
-            <div className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</div>
-          </p>
+          <>
+            <p className='text-xs font-bold uppercase'>{label}: </p>
+            {pricePer5lb ? (
+              <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
+                {value === 'Evenly' ? (
+                  <span className='text-[24px] leading-[26px]'>Evenly Distribute</span>
+                ) : (
+                  <span className='text-[24px] leading-[26px]'>{value}lbs</span>
+                )}
+                {price && <span className='text-sm'>(${price / 5}/lb)</span>}
+                <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
+              </p>
+            ) : (
+              <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
+                <span className='text-[24px] leading-[26px]'>{value}</span>
+                <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
+              </p>
+            )}
+          </>
         )}
       </div>
     ));
@@ -140,6 +153,10 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
               <h4 className='my-4 text-xl font-bold'>Cutting Instructions</h4>
               <div className='grid grid-cols-1 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions')}</div>
             </div>
+            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+              <h4 className='my-4 text-xl font-bold'>Notes:</h4>
+              <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions Notes')}</div>
+            </div>
           </div>
         </div>
         <div>
@@ -150,6 +167,10 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
           <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
             <h4 className='my-4 text-xl font-bold'>Specialty Meats</h4>
             <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats')}</div>
+          </div>
+          <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+            <h4 className='my-4 text-xl font-bold'>Notes:</h4>
+            <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats Notes')}</div>
           </div>
         </div>
       </div>

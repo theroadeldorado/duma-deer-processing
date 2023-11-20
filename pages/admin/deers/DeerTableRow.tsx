@@ -76,8 +76,15 @@ export default function DeerTableRow({ data }: Props) {
         <Cell>{state}</Cell>
         <Cell>{zip}</Cell>
         <Cell>{tagNumber}</Cell>
-        <Cell>{amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}</Cell>
-        <Cell>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
+        <Cell
+          className={clsx({
+            'font-bold !text-[#008000]': amountPaid && totalPrice && amountPaid === totalPrice,
+            'font-bold !text-red-500': amountPaid && totalPrice && amountPaid < totalPrice,
+          })}
+        >
+          {amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}
+        </Cell>
+        <Cell className='font-bold'>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
 
         <Cell className='flex justify-end gap-4'>
           <Button onClick={() => handlePrintDetails(`${data._id}`)}>

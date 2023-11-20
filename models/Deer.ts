@@ -44,7 +44,7 @@ const fields: DeerSchemaT = {
     required: true,
   },
   phone: {
-    type: String,
+    type: Number || String,
     required: true,
   },
   communication: {

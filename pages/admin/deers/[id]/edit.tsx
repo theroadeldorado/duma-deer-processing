@@ -380,6 +380,9 @@ export default function EditDeer({ data, isNew }: Props) {
                   { value: 'both', label: 'Add Beef & Pork Trim - $10' },
                 ]}
               ></Select>
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`groundVenisonNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Trail Bologna</h3>
@@ -393,10 +396,16 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'trailBolognaHotPepperJackCheese', label: 'Hot Pepper Jack Cheese', price: 20 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`trailBolognaNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Garlic Ring Bologna</h3>
               <SpecialtyMeat admin name='Garlic Ring Bologna' options={[{ name: 'garlicRingBologna', label: '', price: 20 }]} />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`garlicRingBolognaNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Summer Sausage</h3>
@@ -408,10 +417,16 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'summerSausageHot', label: 'Hot', price: 15 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`summerSausageNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Smoked Kielbasa Sausage</h3>
               <SpecialtyMeat admin name='Smoked Kielbasa Sausage' options={[{ name: 'smokedKielbasaSausage', label: '', price: 17.5 }]} />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`smokedKielbasaSausageNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Italian Sausage Links</h3>
@@ -423,6 +438,9 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'italianSausageLinksHot', label: 'Hot', price: 15 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`italianSausageLinksNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Country Breakfast Sausage</h3>
@@ -431,6 +449,9 @@ export default function EditDeer({ data, isNew }: Props) {
                 name='Country Breakfast Sausage'
                 options={[{ name: 'countryBreakfastSausage', label: 'Country Breakfast Sausage', price: 15 }]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`countryBreakfastSausageNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Baby Links</h3>
@@ -442,6 +463,9 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'babyLinksMaple', label: 'Maple', price: 20 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`babyLinksNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Snack Sticks</h3>
@@ -456,6 +480,9 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'snackSticksHoneyBBQ', label: 'Honey BBQ', price: 30 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`snackSticksNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Hot Dogs</h3>
@@ -468,6 +495,9 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'hotDogsHotPepperJackCheese', label: 'Hot Pepper Jack Cheese', price: 22.5 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`hotDogsNotes`} label='Special Instructions' />
+              </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Jerky Restructured</h3>
@@ -480,6 +510,9 @@ export default function EditDeer({ data, isNew }: Props) {
                   { name: 'jerkyRestructuredTeriyaki', label: 'Teriyaki', price: 35 },
                 ]}
               />
+              <div className='col-span-3'>
+                <Textarea rows={2} name={`jerkyRestructuredNotes`} label='Special Instructions' />
+              </div>
             </div>
 
             <div className='grid grid-cols-2 gap-4'>

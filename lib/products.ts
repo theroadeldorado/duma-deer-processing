@@ -95,7 +95,6 @@ export const productsConfig: ProductsConfig = {
     type: 'textarea',
     notes: true,
   },
-
   skinnedBonelessNotes: {
     section: 'Cutting Instructions Notes',
     label: 'Skinned/Boneless Notes',
