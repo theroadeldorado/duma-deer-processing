@@ -45,6 +45,8 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
     type = showPassword ? 'text' : 'password';
   } else if (type === 'number') {
     type = 'number';
+  } else if (type === 'tel') {
+    type = 'tel';
   } else {
     type = type || 'text';
   }
