@@ -15,9 +15,9 @@ export default function Dashboard() {
         Users
       </Link>{' '}
       |{' '}
-      <Link href='/admin/templates' className='font-bold text-green'>
+      {/* <Link href='/admin/templates' className='font-bold text-green'>
         Email Templates
-      </Link>
+      </Link> */}
     </AdminPage>
   );
 }
