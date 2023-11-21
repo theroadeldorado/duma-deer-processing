@@ -41,12 +41,13 @@ export default function Deers() {
     updateFilters(data);
   };
 
-  const handleSearch = debounce(handleFilterUpdate, 500);
+  const handleSearch = debounce(handleFilterUpdate, 300);
 
   return (
     <AdminPage title='Deers'>
       <Form form={form} onSubmit={() => null} className='flex flex-col gap-4 lg:flex-row'>
         <Input type='search' name='search' placeholder='Search' onChange={handleSearch} className='min-w-[250px]' />
+
         <Button type='button' onClick={onExport} className='gap-2 lg:ml-auto' color='default'>
           <Icon name='download' />
           Export

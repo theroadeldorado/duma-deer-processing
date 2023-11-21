@@ -138,12 +138,9 @@ export default function DeerTableRow({ data }: Props) {
           </Menu>
         </Cell>
       </tr>
-      {/*  */}
-
-      <div className={clsx(printId === data?._id ? 'pointer-events-none fixed left-0 top-0 bg-white opacity-0 print:opacity-100' : 'hidden')}>
+      <span className={clsx(printId === data?._id ? 'pointer-events-none fixed left-0 top-0 block bg-white opacity-0 print:opacity-100' : 'hidden')}>
         <PrintDeerDetails data={data} />
-      </div>
-
+      </span>
       <Modal isVisible={isModalVisible} onClose={handleCloseModal}>
         <Summary formValues={data} />
       </Modal>
