@@ -204,7 +204,7 @@ const CheckInForm = () => {
                       { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
                       { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                     ]}
-                    defaultValue='Skinned'
+                    defaultValue='Skinned, Cut, Ground, Vacuum packed'
                   ></Select>
 
                   <p className='mt-2 text-center italic'>

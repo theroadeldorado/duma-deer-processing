@@ -119,7 +119,7 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         </div>
       ))}
       <div className='text-right'>
-        <h4 className='mt-4 text-lg font-bold'>Estimated Total Price</h4>
+        <h4 className='mt-4 text-lg font-bold'>Total Price</h4>
         <p className='text-sm italic'>Your price will vary based on the yield</p>
         <p className='mb-10 mt-1 text-display-sm font-bold'>
           <span className=''>$</span>

@@ -27,12 +27,17 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
           {pricePer5lb ? (
             <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
               {value === 'Evenly' ? (
-                <span className='text-[24px] leading-[26px]'>Evenly Distribute</span>
+                <span className='text-[24px] leading-[26px]'>Evenly</span>
               ) : (
                 <span className='text-[24px] leading-[26px]'>{value}lbs</span>
               )}
+
               {price && <span className='text-sm'>(${calculatePricePerPound(price, value)}/lb)</span>}
-              <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
+              {value === 'Evenly' ? (
+                <span className='shrink-0 grow justify-items-end text-right'>TBD</span>
+              ) : (
+                <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
+              )}
             </p>
           ) : (
             <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
