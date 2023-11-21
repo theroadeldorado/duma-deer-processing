@@ -48,6 +48,7 @@ export type DeerT = {
   roast?: string;
   roastNotes?: string;
   groundVenison?: string;
+  groundVenisonAmount?: string;
   groundVenisonNotes?: string;
   trailBolognaRegular?: number;
   trailBolognaCheddarCheese?: number;

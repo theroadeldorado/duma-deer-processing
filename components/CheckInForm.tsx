@@ -201,7 +201,7 @@ const CheckInForm = () => {
                     register={register}
                     required
                     options={[
-                      { value: 'Skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                      { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
                       { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                     ]}
                     defaultValue='Skinned'
@@ -210,12 +210,12 @@ const CheckInForm = () => {
                   <p className='mt-2 text-center italic'>
                     Must select &quot;Skinned&quot; even if already skinned or quartered.
                     <br />
-                    There is no cost if your deer is 100% deboned.
+                    There is no cost if your deer is 100% deboned. We will need to weigh your deer before processing.
                   </p>
                 </div>
-                <div>
+                {/* <div>
                   <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions' register={register} />
-                </div>
+                </div> */}
               </div>
             </>
           )}
@@ -253,7 +253,7 @@ const CheckInForm = () => {
                     register={register}
                     options={[
                       { value: 'none', label: 'Select Option' },
-                      { value: 'Keep head', label: 'Keep Head' },
+                      { value: 'Keep head', label: 'Keep Head  - Take Today' },
                       { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
                       { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
                     ]}
@@ -261,9 +261,9 @@ const CheckInForm = () => {
                 </div>
 
                 <p className='col-span-3 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
-                <div className='col-span-3'>
+                {/* <div className='col-span-3'>
                   <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' register={register} />
-                </div>
+                </div> */}
               </div>
             </>
           )}
@@ -293,6 +293,8 @@ const CheckInForm = () => {
                     ></Select>
                   </div>
                 </div>
+                <p className='col-span-3 mt-2 text-center italic'>Inner Tenderloins always left whole.</p>
+
                 <div className='w-full'>
                   <Textarea rows={2} name={`backStrapNotes`} label='Special Instructions' register={register} />
                 </div>
@@ -473,11 +475,10 @@ const CheckInForm = () => {
                   <div className='flex flex-col gap-1'>
                     <Select
                       name='groundVenison'
-                      label='Ground Venison'
+                      label='Ground Venison Options'
                       register={register}
                       placeholder='Select Option'
                       defaultValue='Plain'
-                      required
                       options={[
                         { value: 'Plain', label: 'Plain' },
                         { value: 'Add Beef Trim', label: 'Add Beef Trim - $5' },
@@ -486,8 +487,24 @@ const CheckInForm = () => {
                       ]}
                     ></Select>
                   </div>
-                  <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions' register={register} />
-                  <p className='text-md italic'>Ground Venison is the default option if no other options are selected.</p>
+                  <div className='flex flex-col gap-1'>
+                    <Select
+                      name='groundVenisonAmount'
+                      label='Ground Venison Amount'
+                      register={register}
+                      placeholder='Select Option'
+                      defaultValue='Evenly distribute'
+                      options={[
+                        { value: 'Evenly distribute', label: 'Evenly distribute with specialty meat' },
+                        { value: 'None', label: 'None - All specialty meat' },
+                      ]}
+                    ></Select>
+                  </div>
+                  {/* <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions' register={register} /> */}
+                  <p className='text-md italic'>
+                    If you do not select any other specialty meats you will receive all ground venison. If you select only specific weights for
+                    specialty meat you will receive the remainder in ground venison.
+                  </p>
                 </div>
               </div>
 
@@ -553,7 +570,7 @@ const CheckInForm = () => {
                   { name: 'snackSticksRegular', label: 'Regular Snack Sticks', price: 25 },
                   { name: 'snackSticksCheddarCheese', label: 'Cheddar Cheese Snack Sticks', price: 30 },
                   { name: 'snackSticksHotPepperJackCheese', label: 'Hot Pepper Jack Cheese Snack Sticks', price: 30 },
-                  { name: 'snackSticksHotHotPepperJackCheese', label: '🔥 Hot Hot Pepper Jack Cheese Snack Sticks', price: 30 },
+                  { name: 'snackSticksHotHotPepperJackCheese', label: '🔥 HOT Hot Pepper Jack Cheese Snack Sticks', price: 30 },
                   { name: 'snackSticksHoneyBBQ', label: 'Honey BBQ Snack Sticks', price: 30 },
                 ]}
               />

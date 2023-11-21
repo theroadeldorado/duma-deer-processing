@@ -7,6 +7,12 @@ interface SummaryItemProps {
   notes?: boolean;
 }
 
+const calculatePricePerPound = (price: number, value: string | number) => {
+  if (value === 'Evenly') return (price / 5).toFixed(2);
+  const pricePerPound = price / (Number(value) / 5);
+  return pricePerPound.toFixed(2);
+};
+
 const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer5lb, section, notes }) =>
   value && (
     <li className=''>
@@ -25,7 +31,7 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
               ) : (
                 <span className='text-[24px] leading-[26px]'>{value}lbs</span>
               )}
-              {price && <span className='text-sm'>(${price / 5}/lb)</span>}
+              {price && <span className='text-sm'>(${calculatePricePerPound(price, value)}/lb)</span>}
               <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
             </p>
           ) : (

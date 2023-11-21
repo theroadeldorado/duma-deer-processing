@@ -51,6 +51,7 @@ export const Deer = {
   roast: z.string().optional(),
   roastNotes: z.string().optional(),
   groundVenison: z.string().optional(),
+  groundVenisonAmount: z.string().optional(),
   groundVenisonNotes: z.string().optional(),
   trailBolognaRegular: z.string().optional(),
   trailBolognaCheddarCheese: z.string().optional(),
@@ -87,7 +88,7 @@ export const Deer = {
   jerkyRestructuredNotes: z.string().optional(),
   recapNotes: z.string().optional(),
   amountPaid: z.any().optional(),
-  totalPrice: z.number().optional(),
+  totalPrice: z.any().optional(),
 };
 
 export const DeerZ = z.object(Deer);

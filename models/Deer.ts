@@ -105,6 +105,9 @@ const fields: DeerSchemaT = {
   groundVenison: {
     type: String,
   },
+  groundVenisonAmount: {
+    type: String,
+  },
   groundVenisonNotes: {
     type: String,
   },

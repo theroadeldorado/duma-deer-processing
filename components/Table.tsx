@@ -98,7 +98,7 @@ export function Table({ children, total, isLoading, error, page, cols, sortBy, s
         >
           <div className='hidden sm:block'>
             {total > 0 && (
-              <p className='text-sm text-gray-700'>
+              <p className='hidden text-sm text-gray-700'>
                 Showing <span className='font-medium'>{start}</span> to <span className='font-medium'>{end}</span> of{' '}
                 <span className='font-medium'>{total?.toLocaleString() || 'many'}</span> results
               </p>

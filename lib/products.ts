@@ -61,10 +61,10 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     required: true,
     options: [
-      { value: 'Skinned', label: 'Skinned, Cut, Ground, Vacuum packed', price: 95 },
+      { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed', price: 95 },
       { value: 'Boneless', label: 'Boneless, 100% deboned already' },
     ],
-    defaultValue: 'skinned',
+    defaultValue: 'Skinned, Cut, Ground, Vacuum packed',
   },
   cape: {
     section: 'Cutting Instructions',
@@ -207,6 +207,16 @@ export const productsConfig: ProductsConfig = {
       { value: 'Add Beef Trim', label: 'Add Beef Trim', price: 5 },
       { value: 'Add Pork Trim', label: 'Add Pork Trim', price: 5 },
       { value: 'Add Beef & Pork Trim', label: 'Add Beef & Pork Trim', price: 10 },
+    ],
+  },
+  groundVenisonAmount: {
+    section: 'Ground Venison',
+    label: 'Ground Venison Amount',
+    type: 'select',
+    required: true,
+    options: [
+      { value: 'Evenly', label: 'Evenly distribute with specialty meat' },
+      { value: 'None', label: 'None - All specialty meat' },
     ],
   },
   specialtyMeats: {

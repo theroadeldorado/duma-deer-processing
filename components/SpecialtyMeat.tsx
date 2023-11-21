@@ -65,7 +65,7 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
       ) : (
         <div className='grid grid-cols-2 gap-6'>
           <h3 className='col-span-2 text-center text-display-xs font-bold'>{name}</h3>
-          <div className='relative overflow-hidden rounded-md'>
+          <div className='relative min-h-[220px] overflow-hidden rounded-md'>
             {image && <Image src={image} className={clsx('absolute inset-0 h-full w-full object-cover')} width={500} height={300} alt={name} />}
           </div>
           <div className='flex flex-col gap-3'>
@@ -83,7 +83,7 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
                   />
                 </div>
               ))}
-            <Textarea rows={2} name={`${removeSpacesAndCamelCase(name)}Notes`} label='Special Instructions' register={register} />
+            {/* <Textarea rows={2} name={`${removeSpacesAndCamelCase(name)}Notes`} label='Special Instructions' register={register} /> */}
           </div>
         </div>
       )}
