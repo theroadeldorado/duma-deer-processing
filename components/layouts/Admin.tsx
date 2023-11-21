@@ -14,10 +14,10 @@ export default function AdminPage({ title, children }: PropTypes) {
   return (
     <div className='flex min-h-screen flex-col'>
       <Title>{title}</Title>
-      <header className='mb-8 border-b  border-gray-200 bg-white text-lg print:hidden'>
+      <header className='mb-8 border-b border-gray-200 bg-white text-lg print:hidden'>
         <div className='container flex items-center justify-between gap-8 px-8 py-4'>
           <div className='flex items-center gap-4'>
-            <Link href='/admin'>
+            <Link href='/admin/deers'>
               <Logo className='w-28 -translate-y-1' />
             </Link>
             <Navigation />
