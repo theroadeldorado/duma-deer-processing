@@ -9,7 +9,7 @@ interface SummaryItemProps {
 
 const calculatePricePerPound = (price: number, value: string | number) => {
   if (value === 'Evenly') return (price / 5).toFixed(2);
-  const pricePerPound = price / (Number(value) / 5);
+  const pricePerPound = price / Number(value);
   return pricePerPound.toFixed(2);
 };
 

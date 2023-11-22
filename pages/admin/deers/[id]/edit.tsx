@@ -380,6 +380,18 @@ export default function EditDeer({ data, isNew }: Props) {
                   { value: 'both', label: 'Add Beef & Pork Trim - $10' },
                 ]}
               ></Select>
+
+              <Select
+                name='groundVenisonAmount'
+                label='Ground Venison Amount'
+                placeholder='Select Option'
+                defaultValue='Remainder'
+                options={[
+                  { value: 'Remainder', label: 'Remainder of meat' },
+                  { value: 'Evenly distribute', label: 'Evenly distribute with specialty meat' },
+                  { value: 'None', label: 'None - All specialty meat' },
+                ]}
+              ></Select>
               <div className='col-span-3'>
                 <Textarea rows={2} name={`groundVenisonNotes`} label='Special Instructions' />
               </div>

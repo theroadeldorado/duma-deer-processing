@@ -493,8 +493,9 @@ const CheckInForm = () => {
                       label='Ground Venison Amount'
                       register={register}
                       placeholder='Select Option'
-                      defaultValue='Evenly distribute'
+                      defaultValue='Remainder'
                       options={[
+                        { value: 'Remainder', label: 'Remainder of meat' },
                         { value: 'Evenly distribute', label: 'Evenly distribute with specialty meat' },
                         { value: 'None', label: 'None - All specialty meat' },
                       ]}
