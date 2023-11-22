@@ -174,15 +174,15 @@ export default function EditDeer({ data, isNew }: Props) {
               }}
             />
 
-            <Input label='Phone' type='tel' name='phone' required />
+            <Input label='Phone' type='text' name='phone' required />
             <RadioButtonGroup
               name='communication'
               required
               options={[
-                { value: 'call', label: 'Call' },
-                { value: 'text', label: 'Text' },
+                { value: 'Call', label: 'Call' },
+                { value: 'Text', label: 'Text' },
               ]}
-              defaultCheckedValue='text'
+              defaultCheckedValue='Text'
               wrapperLabel='Communication'
             />
           </div>
@@ -202,7 +202,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   name='skinnedOrBoneless'
                   required
                   options={[
-                    { value: 'Skinned', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                    { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
                     { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                   ]}
                   defaultValue='Skinned'
