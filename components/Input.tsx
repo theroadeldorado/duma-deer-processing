@@ -1,14 +1,28 @@
-'use client';
 import { newPasswordValidation } from '@/config/form';
 import clsx from 'clsx';
-// import { cn } from '@/lib/cn';
 import { FieldWrapper } from 'components/FieldWrapper';
 import Icon from 'components/Icon';
 import { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 
-type InputProps = {
-  type: string;
+// Define a specific type for input types
+type InputType =
+  | 'text'
+  | 'password'
+  | 'tel'
+  | 'number'
+  | 'email'
+  | 'date'
+  | 'time'
+  | 'datetime-local'
+  | 'month'
+  | 'week'
+  | 'url'
+  | 'search'
+  | 'color';
+
+interface InputProps {
+  type: InputType;
   className?: string;
   name: string;
   required?: boolean;
@@ -16,11 +30,11 @@ type InputProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   hint?: string;
-  [x: string]: any;
-  register?: any;
-};
+  [x: string]: any; // Consider defining specific props instead of using an index signature for better type safety
+  register?: any; // Define the correct type for 'register' if possible
+}
 
-const Input = ({ type, className, name, required, validateNewPassword, onChange, label, hint, ...props }: InputProps) => {
+const Input: React.FC<InputProps> = ({ type, className, name, required, validateNewPassword, onChange, label, hint, ...props }) => {
   const { register } = useFormContext();
   const [showPassword, setShowPassword] = useState(false);
   const [formattedValue, setFormattedValue] = useState('');
@@ -41,39 +55,20 @@ const Input = ({ type, className, name, required, validateNewPassword, onChange,
     }
   };
 
-  if (type === 'password') {
-    type = showPassword ? 'text' : 'password';
-  } else if (type === 'number') {
-    type = 'number';
-  } else if (type === 'tel') {
-    type = 'tel';
-  } else {
-    type = type || 'text';
-  }
+  const resolvedType = type === 'password' && showPassword ? 'text' : type;
 
   return (
     <FieldWrapper {...{ name, label, required, hint }}>
-      {type === 'tel' ? (
-        <input
-          {...register(name, { onChange, required: required ? 'This field is required' : false, ...(validateNewPassword && newPasswordValidation) })}
-          type={type}
-          className={clsx('input w-full', (type === 'password' || (type === 'text' && showPassword)) && 'pr-11', className)}
-          step={type === 'number' ? 'any' : undefined}
-          onChange={type === 'tel' ? handlePhoneInputChange : onChange}
-          value={inputValue}
-          {...props}
-        />
-      ) : (
-        <input
-          {...register(name, { onChange, required: required ? 'This field is required' : false, ...(validateNewPassword && newPasswordValidation) })}
-          type={type}
-          className={clsx('input w-full', (type === 'password' || (type === 'text' && showPassword)) && 'pr-11', className)}
-          step={type === 'number' ? 'any' : undefined}
-          {...props}
-        />
-      )}
-
-      {(type === 'password' || (type === 'text' && showPassword)) && (
+      <input
+        {...register(name, { onChange, required: required ? 'This field is required' : false, ...(validateNewPassword && newPasswordValidation) })}
+        type={resolvedType}
+        className={clsx('input w-full', resolvedType === 'password' && 'pr-11', className)}
+        step={resolvedType === 'number' ? 'any' : undefined}
+        onChange={resolvedType === 'tel' ? handlePhoneInputChange : onChange}
+        value={inputValue}
+        {...props}
+      />
+      {resolvedType === 'password' && (
         <button
           onClick={() => setShowPassword(!showPassword)}
           type='button'

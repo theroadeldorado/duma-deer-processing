@@ -78,11 +78,12 @@ interface SectionedValues {
 }
 
 const Summary: React.FC<SummaryProps> = ({ formValues }) => {
-  const sectionedFormValues = groupFormValuesBySections(formValues);
+  const { sectionedValues, hasEvenly } = groupFormValuesBySections(formValues);
+
   return (
     <div>
       <h3 className='mb-7 text-center text-display-sm font-bold'>Review Your Information</h3>
-      {Object.entries(sectionedFormValues).map(([section, values]) => (
+      {Object.entries(sectionedValues).map(([section, values]) => (
         <div key={section}>
           {section === 'Contact Information' ? (
             <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6'>
@@ -119,19 +120,33 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         </div>
       ))}
       <div className='text-right'>
-        <h4 className='mt-4 text-lg font-bold'>Total Price</h4>
-        <p className='text-sm italic'>Your price will vary based on the yield</p>
+        <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
+
+        {hasEvenly && (
+          <p className='max-w-[400px] text-sm italic'>
+            Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
+          </p>
+        )}
         <p className='mb-10 mt-1 text-display-sm font-bold'>
           <span className=''>$</span>
           {calculateTotalPrice(formValues).toFixed(2)}
         </p>
+        {hasEvenly && (
+          <>
+            <h4 className='mt-4 text-lg font-bold'>Specialty Meat Price</h4>
+            <p className='mb-10 mt-1 text-display-sm font-bold'>
+              <span className=''> TBD</span>
+            </p>
+          </>
+        )}
       </div>
     </div>
   );
 };
 
-function groupFormValuesBySections(formValues: Record<string, any>): SectionedValues {
+function groupFormValuesBySections(formValues: Record<string, any>): { sectionedValues: SectionedValues; hasEvenly: boolean } {
   const sectionedValues: SectionedValues = {};
+  let hasEvenly = false;
 
   Object.keys(formValues).forEach((key) => {
     const value = formValues[key];
@@ -142,17 +157,26 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
       sectionedValues[section] = sectionedValues[section] || [];
       const price = calculatePriceForItem(key, value);
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
+
+      if (value === 'Evenly') {
+        hasEvenly = true;
+      }
+
       if (value) {
         sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
       }
     } else {
-      // Handle specialty meats
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
       if (specialtyMeatConfig) {
         const section = specialtyMeatConfig.section;
         sectionedValues[section] = sectionedValues[section] || [];
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
+
+        if (value === 'Evenly') {
+          hasEvenly = true;
+        }
+
         if (value) {
           sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
         }
@@ -160,7 +184,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
     }
   });
 
-  return sectionedValues;
+  return { sectionedValues, hasEvenly };
 }
 
 export default Summary;

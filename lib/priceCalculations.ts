@@ -58,7 +58,9 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
       if (specialtyMeatConfig) {
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, formValues[key]);
-        total += price;
+        if (formValues[key] !== 'Evenly') {
+          total += price;
+        }
       }
     }
   }
