@@ -119,7 +119,7 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
           )}
         </div>
       ))}
-      <div className='text-right'>
+      <div className='flex flex-col items-end text-right'>
         <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
 
         {hasEvenly && (
@@ -127,13 +127,13 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
             Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
           </p>
         )}
-        <p className='mb-10 mt-1 text-display-sm font-bold'>
+        <p className='mb-6 mt-1 text-display-sm font-bold'>
           <span className=''>$</span>
           {calculateTotalPrice(formValues).toFixed(2)}
         </p>
         {hasEvenly && (
           <>
-            <h4 className='mt-4 text-lg font-bold'>Specialty Meat Price</h4>
+            <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
             <p className='mb-10 mt-1 text-display-sm font-bold'>
               <span className=''> TBD</span>
             </p>
