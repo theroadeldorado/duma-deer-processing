@@ -215,18 +215,38 @@ export default function EditDeer({ data, isNew }: Props) {
             <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div className='flex flex-col gap-2'>
                 <div>
+                  <p className='mb-1 font-bold'>Cape for shoulder mount</p>
+                  <Select
+                    className='w-full'
+                    name='cape'
+                    required
+                    options={[
+                      { value: '', label: 'Select Option' },
+                      { value: 'Cape for shoulder mount', label: 'Cape for shoulder mount - Additional $50' },
+                    ]}
+                  ></Select>
                   {/* <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Cape for shoulder mount - Additional $50' }]} /> */}
-                  <label>
+                  {/* <label>
                     <input type='checkbox' name='cape' className='mr-2' />
                     Cape for shoulder mount - Additional $50
-                  </label>
+                  </label> */}
                 </div>
                 <div>
+                  <p className='mb-1 font-bold'>Keep skinned hide</p>
+                  <Select
+                    className='w-full'
+                    name='hide'
+                    required
+                    options={[
+                      { value: '', label: 'Select Option' },
+                      { value: 'Keep skinned hide', label: 'Keep skinned hide - Additional $15' },
+                    ]}
+                  ></Select>
                   {/* <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Keep skinned hide - Additional $15' }]} /> */}
-                  <label>
+                  {/* <label>
                     <input type='checkbox' name='hide' className='mr-2' />
                     Keep skinned hide - Additional $15
-                  </label>
+                  </label> */}
                 </div>
                 <p className='font-bold'>Euro Mount Options</p>
                 <Select
