@@ -119,7 +119,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   const { sectionedValues, hasEvenly } = groupFormValuesBySections(data);
 
   return (
-    <div className='print-container aspect-[11/8.5] w-[1400px] p-8'>
+    <div className='print-container w-[1400px] p-8'>
       <div className='grid grid-cols-2 gap-x-12'>
         <div>
           <div className={clsx((data.cape || data.euroMount || data.hide) && 'border-[6px] border-red-500 p-2')}>
