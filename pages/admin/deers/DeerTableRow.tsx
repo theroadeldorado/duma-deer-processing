@@ -67,7 +67,7 @@ export default function DeerTableRow({ data }: Props) {
   return (
     <>
       <tr key={_id}>
-        <Cell suppressHydrationWarning>{createdAt && dayjs(createdAt).format('M/D/YY')}</Cell>
+        <Cell suppressHydrationWarning>{createdAt && dayjs(createdAt).format('M/D/YY  h:mm A')}</Cell>
         <Cell>{name}</Cell>
         <Cell>{phone}</Cell>
         <Cell>{communication}</Cell>

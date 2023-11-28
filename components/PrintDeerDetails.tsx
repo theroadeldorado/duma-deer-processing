@@ -95,7 +95,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   };
 
   const renderContactInformation = () => {
-    const contactInfo = sectionedFormValues['Contact Information'] || [];
+    const contactInfo = sectionedValues['Contact Information'] || [];
     return contactInfo.map(({ label, value }, index) => (
       <div key={index} className='flex flex-col '>
         <div className='font-bold'>{label}:</div>
@@ -105,43 +105,19 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   };
 
   const renderOtherInformation = (name: keyof SectionedValues) => {
-    const contactInfo = sectionedFormValues[name] || [];
+    const contactInfo = sectionedValues[name] || [];
+
     return contactInfo.map(({ key, label, value, price, pricePer5lb, notes }, index) => (
-      <div key={index}>
-        {notes ? (
-          <p className='-my-1 text-xs'>
-            <span className='block text-xs font-bold uppercase'>{label}:</span>
-            <span>{value}</span>
-          </p>
-        ) : (
-          <>
-            <p className='text-xs font-bold uppercase'>{label}: </p>
-            {pricePer5lb ? (
-              <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
-                {value === 'Evenly' ? (
-                  <span className='text-[24px] leading-[26px]'>Evenly Distribute</span>
-                ) : (
-                  <span className='text-[24px] leading-[26px]'>{value}lbs</span>
-                )}
-                {price && <span className='text-sm'>(${price / 5}/lb)</span>}
-                <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
-              </p>
-            ) : (
-              <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
-                <span className='text-[24px] leading-[26px]'>{value}</span>
-                <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
-              </p>
-            )}
-          </>
-        )}
-      </div>
+      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} notes={notes} />
     ));
   };
 
   const checkForPrice = (price: any) => {
     return price ? price : 0;
   };
-  const sectionedFormValues = groupFormValuesBySections(data);
+
+  const { sectionedValues, hasEvenly } = groupFormValuesBySections(data);
+
   return (
     <div className='print-container aspect-[11/8.5] w-[1400px] p-8'>
       <div className='grid grid-cols-2 gap-x-12'>
@@ -164,13 +140,34 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
             <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
             <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
           </div>
-          <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+          <div className='mb-6 gap-3 pb-6 last:border-0'>
             <h4 className='my-4 text-xl font-bold'>Specialty Meats</h4>
             <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats')}</div>
           </div>
           <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
             <h4 className='my-4 text-xl font-bold'>Notes:</h4>
             <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats Notes')}</div>
+          </div>
+          <div className='flex flex-col items-end text-right'>
+            <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
+
+            {hasEvenly && (
+              <p className='max-w-[400px] text-sm italic'>
+                Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
+              </p>
+            )}
+            <p className='mb-6 mt-1 text-display-sm font-bold'>
+              <span className=''>$</span>
+              {calculateTotalPrice(data).toFixed(2)}
+            </p>
+            {hasEvenly && (
+              <>
+                <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
+                <p className='mb-10 mt-1 text-display-sm font-bold'>
+                  <span className=''> TBD</span>
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>
@@ -180,8 +177,9 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
 
 export default PrintDeerDetails;
 
-function groupFormValuesBySections(formValues: Record<string, any>): SectionedValues {
+function groupFormValuesBySections(formValues: Record<string, any>): { sectionedValues: SectionedValues; hasEvenly: boolean } {
   const sectionedValues: SectionedValues = {};
+  let hasEvenly = false;
 
   Object.keys(formValues).forEach((key) => {
     const value = formValues[key];
@@ -192,17 +190,26 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
       sectionedValues[section] = sectionedValues[section] || [];
       const price = calculatePriceForItem(key, value);
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
+
+      if (value === 'Evenly') {
+        hasEvenly = true;
+      }
+
       if (value) {
         sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
       }
     } else {
-      // Handle specialty meats
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
       if (specialtyMeatConfig) {
         const section = specialtyMeatConfig.section;
         sectionedValues[section] = sectionedValues[section] || [];
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
+        console.log(section, value);
+        if (value === 'Evenly') {
+          hasEvenly = true;
+        }
+
         if (value) {
           sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
         }
@@ -210,5 +217,5 @@ function groupFormValuesBySections(formValues: Record<string, any>): SectionedVa
     }
   });
 
-  return sectionedValues;
+  return { sectionedValues, hasEvenly };
 }

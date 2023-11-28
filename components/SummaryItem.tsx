@@ -14,8 +14,9 @@ const calculatePricePerPound = (price: number, value: string | number) => {
 };
 
 const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer5lb, section, notes }) =>
-  value && (
-    <li className=''>
+  value &&
+  value !== 'false' && (
+    <div className=''>
       {notes ? (
         <p className='-my-1 text-xs'>
           <span className='block text-xs font-bold uppercase'>{label}:</span>
@@ -47,7 +48,7 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
           )}
         </>
       )}
-    </li>
+    </div>
   );
 
 export default SummaryItem;

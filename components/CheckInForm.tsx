@@ -252,7 +252,7 @@ const CheckInForm = () => {
                     name='euroMount'
                     register={register}
                     options={[
-                      { value: 'none', label: 'Select Option' },
+                      { value: 'false', label: 'Select Option' },
                       { value: 'Keep head', label: 'Keep Head  - Take Today' },
                       { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
                       { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
@@ -497,7 +497,7 @@ const CheckInForm = () => {
                       options={[
                         { value: 'Remainder', label: 'Remainder of meat' },
                         { value: 'Evenly distribute', label: 'Evenly distribute with specialty meat' },
-                        { value: 'None', label: 'None - All specialty meat' },
+                        { value: 'None - All specialty meat', label: 'None - All specialty meat' },
                       ]}
                     ></Select>
                   </div>
