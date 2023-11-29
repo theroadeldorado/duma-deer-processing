@@ -121,8 +121,15 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   return (
     <div className='print-container flex flex-col'>
       <div className='break-after-page bg-white'>
-        <div className='aspect-[5/8] w-[712px] break-inside-avoid-page bg-white'>
-          <div className={clsx((data.cape || data.euroMount || data.hide) && 'border-[6px] border-red-500', 'p-2')}>
+        <div className='aspect-[5/8] w-[720px] break-inside-avoid-page bg-white'>
+          <div
+            className={clsx(
+              (data.cape && data.cape !== 'false') || (data.euroMount && data.euroMount !== 'false') || (data.hide && data.hide !== 'false')
+                ? 'border-red-500'
+                : 'border-white',
+              'border-[6px] p-2'
+            )}
+          >
             <h4 className='mb-4 text-xl font-bold'>Contact Information</h4>
             <div className='grid grid-cols-3 gap-x-8 gap-y-1'>{renderContactInformation()}</div>
             <div className='gap-3 '>
@@ -137,8 +144,15 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
         </div>
       </div>
       <div className='break-after-page bg-white'>
-        <div className='relative z-[1] aspect-[5/8] w-[712px] break-inside-avoid-page bg-white'>
-          <div className={clsx((data.cape || data.euroMount || data.hide) && 'border-[6px] border-red-500', 'p-2')}>
+        <div className='relative z-[1] aspect-[5/8] w-[720px] break-inside-avoid-page bg-white'>
+          <div
+            className={clsx(
+              (data.cape && data.cape !== 'false') || (data.euroMount && data.euroMount !== 'false') || (data.hide && data.hide !== 'false')
+                ? 'border-red-500'
+                : 'border-white',
+              'border-[6px] p-2'
+            )}
+          >
             <div className='mb-6 gap-3'>
               <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
               <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
