@@ -170,7 +170,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
 
               {hasEvenly && (
                 <p className='max-w-[400px] text-sm italic'>
-                  Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
+                  Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500+
                 </p>
               )}
               <p className='mb-6 mt-1 text-display-sm font-bold'>
