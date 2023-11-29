@@ -138,7 +138,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
       </div>
       <div className='break-after-page bg-white'>
         <div className='relative z-[1] aspect-[5/8] w-[712px] break-inside-avoid-page bg-white'>
-          <div className='p-2'>
+          <div className={clsx((data.cape || data.euroMount || data.hide) && 'border-[6px] border-red-500', 'p-2')}>
             <div className='mb-6 gap-3'>
               <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
               <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
