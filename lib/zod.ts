@@ -77,7 +77,7 @@ export const Deer = {
   snackSticksCheddarCheese: z.string().optional(),
   snackSticksHotPepperJackCheese: z.string().optional(),
   snackSticksHotHotPepperJackCheese: z.string().optional(),
-  snackSticksHoneyBbq: z.string().optional(),
+  snackSticksHoneyBBQ: z.string().optional(),
   snackSticksNotes: z.string().optional(),
   hotDogsRegular: z.string().optional(),
   hotDogsCheddarCheese: z.string().optional(),

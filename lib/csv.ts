@@ -56,7 +56,7 @@ export const exportDeers = async (data: DeerT[]) => {
     snackSticksCheddarCheese: 'Snack Sticks Cheddar Cheese',
     snackSticksHotPepperJackCheese: 'Snack Sticks Hot Pepper Jack Cheese',
     snackSticksHotHotPepperJackCheese: 'Snack Sticks Hot Hot Pepper Jack Cheese',
-    snackSticksHoneyBbq: 'Snack Sticks Honey BBQ',
+    snackSticksHoneyBBQ: 'Snack Sticks Honey BBQ',
     snackSticksNotes: 'Snack Sticks Notes',
     hotDogsRegular: 'Hot Dogs Regular',
     hotDogsCheddarCheese: 'Hot Dogs Cheddar Cheese',

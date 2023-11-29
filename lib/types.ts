@@ -74,7 +74,7 @@ export type DeerT = {
   snackSticksCheddarCheese?: number | string;
   snackSticksHotPepperJackCheese?: number | string;
   snackSticksHotHotPepperJackCheese?: number | string;
-  snackSticksHoneyBbq?: number | string;
+  snackSticksHoneyBBQ?: number | string;
   snackSticksNotes?: string;
   hotDogsRegular?: number | string;
   hotDogsCheddarCheese?: number | string;

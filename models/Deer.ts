@@ -183,7 +183,7 @@ const fields: DeerSchemaT = {
   snackSticksHotHotPepperJackCheese: {
     type: String,
   },
-  snackSticksHoneyBbq: {
+  snackSticksHoneyBBQ: {
     type: String,
   },
   snackSticksNotes: {
