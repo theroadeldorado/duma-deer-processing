@@ -97,9 +97,9 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   const renderContactInformation = () => {
     const contactInfo = sectionedValues['Contact Information'] || [];
     return contactInfo.map(({ label, value }, index) => (
-      <div key={index} className='flex flex-col '>
+      <div key={index} className='flex flex-col'>
         <div className='font-bold'>{label}:</div>
-        <div className='text-md'>{value}</div>
+        <div className={clsx((label == 'Name' || label == 'Phone') && 'text-xl font-bold', 'text-md')}>{value}</div>
       </div>
     ));
   };
@@ -119,55 +119,59 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   const { sectionedValues, hasEvenly } = groupFormValuesBySections(data);
 
   return (
-    <div className='print-container w-[1400px] p-8'>
-      <div className='grid grid-cols-2 gap-x-12'>
-        <div>
-          <div className={clsx((data.cape || data.euroMount || data.hide) && 'border-[6px] border-red-500 p-2')}>
+    <div className='print-container flex flex-col'>
+      <div className='break-after-page bg-white'>
+        <div className='aspect-[5/8] w-[712px] break-inside-avoid-page bg-white'>
+          <div className={clsx((data.cape || data.euroMount || data.hide) && 'border-[6px] border-red-500', 'p-2')}>
             <h4 className='mb-4 text-xl font-bold'>Contact Information</h4>
             <div className='grid grid-cols-3 gap-x-8 gap-y-1'>{renderContactInformation()}</div>
             <div className='gap-3 '>
               <h4 className='my-4 text-xl font-bold'>Cutting Instructions</h4>
               <div className='grid grid-cols-1 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions')}</div>
             </div>
-            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0 '>
               <h4 className='my-4 text-xl font-bold'>Notes:</h4>
               <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions Notes')}</div>
             </div>
           </div>
         </div>
-        <div>
-          <div className='mb-6 gap-3'>
-            <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
-            <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
-          </div>
-          <div className='mb-6 gap-3 pb-6 last:border-0'>
-            <h4 className='my-4 text-xl font-bold'>Specialty Meats</h4>
-            <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats')}</div>
-          </div>
-          <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
-            <h4 className='my-4 text-xl font-bold'>Notes:</h4>
-            <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats Notes')}</div>
-          </div>
-          <div className='flex flex-col items-end text-right'>
-            <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
+      </div>
+      <div className='break-after-page bg-white'>
+        <div className='relative z-[1] aspect-[5/8] w-[712px] break-inside-avoid-page bg-white'>
+          <div className='p-2'>
+            <div className='mb-6 gap-3'>
+              <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
+              <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
+            </div>
+            <div className='mb-6 gap-3 pb-6 last:border-0'>
+              <h4 className='my-4 text-xl font-bold'>Specialty Meats</h4>
+              <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats')}</div>
+            </div>
+            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+              <h4 className='my-4 text-xl font-bold'>Notes:</h4>
+              <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats Notes')}</div>
+            </div>
+            <div className='flex flex-col items-end text-right'>
+              <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
 
-            {hasEvenly && (
-              <p className='max-w-[400px] text-sm italic'>
-                Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
-              </p>
-            )}
-            <p className='mb-6 mt-1 text-display-sm font-bold'>
-              <span className=''>$</span>
-              {calculateTotalPrice(data).toFixed(2)}
-            </p>
-            {hasEvenly && (
-              <>
-                <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
-                <p className='mb-10 mt-1 text-display-sm font-bold'>
-                  <span className=''> TBD</span>
+              {hasEvenly && (
+                <p className='max-w-[400px] text-sm italic'>
+                  Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
                 </p>
-              </>
-            )}
+              )}
+              <p className='mb-6 mt-1 text-display-sm font-bold'>
+                <span className=''>$</span>
+                {calculateTotalPrice(data).toFixed(2)}
+              </p>
+              {hasEvenly && (
+                <>
+                  <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
+                  <p className='mb-10 mt-1 text-display-sm font-bold'>
+                    <span className=''> TBD</span>
+                  </p>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

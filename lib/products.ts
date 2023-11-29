@@ -36,8 +36,8 @@ export interface ProductsConfig {
 
 export const productsConfig: ProductsConfig = {
   name: { label: 'Name', type: 'text', required: true, section: 'Contact Information' },
-  fullAddress: { label: 'Address', type: 'text', required: true, section: 'Contact Information' },
   phone: { label: 'Phone', type: 'text', required: true, section: 'Contact Information' },
+  fullAddress: { label: 'Address', type: 'text', required: true, section: 'Contact Information' },
   communication: {
     label: 'Communication',
     type: 'radio',

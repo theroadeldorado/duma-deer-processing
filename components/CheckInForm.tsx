@@ -99,6 +99,21 @@ const CheckInForm = () => {
                   }}
                 />
               </div>
+              <div className='grid grid-cols-2 gap-4'>
+                <Input label='Phone' type='tel' name='phone' register={register} required />
+                <RadioButtonGroup
+                  name='communication'
+                  required
+                  options={[
+                    { value: 'Call', label: 'Call' },
+                    { value: 'Text', label: 'Text' },
+                  ]}
+                  defaultCheckedValue='Text'
+                  register={register}
+                  wrapperLabel='Communication'
+                />
+              </div>
+
               <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
 
               <Select
@@ -172,19 +187,6 @@ const CheckInForm = () => {
                   />
                 </div>
               </div>
-
-              <Input label='Phone' type='tel' name='phone' register={register} required />
-              <RadioButtonGroup
-                name='communication'
-                required
-                options={[
-                  { value: 'Call', label: 'Call' },
-                  { value: 'Text', label: 'Text' },
-                ]}
-                defaultCheckedValue='Text'
-                register={register}
-                wrapperLabel='Communication'
-              />
             </>
           )}
           {currentStep === 2 && (
