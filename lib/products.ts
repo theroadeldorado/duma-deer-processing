@@ -46,7 +46,6 @@ export const productsConfig: ProductsConfig = {
     section: 'Contact Information',
   },
   tagNumber: { label: 'Tag Number', type: 'text', required: true, section: 'Contact Information' },
-np
   buckOrDoe: {
     label: 'Deer Type',
     type: 'select',
