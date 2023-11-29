@@ -24,6 +24,9 @@ const fields: DeerSchemaT = {
   stateHarvestedIn: {
     type: String,
   },
+  buckOrDoe: {
+    type: String,
+  },
   fullAddress: {
     type: String,
   },
@@ -112,100 +115,100 @@ const fields: DeerSchemaT = {
     type: String,
   },
   trailBolognaRegular: {
-    type: Number,
+    type: String,
   },
   trailBolognaCheddarCheese: {
-    type: Number,
+    type: String,
   },
   trailBolognaHotPepperJackCheese: {
-    type: Number,
+    type: String,
   },
   trailBolognaNotes: {
     type: String,
   },
   garlicRingBologna: {
-    type: Number,
+    type: String,
   },
   garlicRingBolognaNotes: {
     type: String,
   },
   summerSausageMild: {
-    type: Number,
+    type: String,
   },
   summerSausageHot: {
-    type: Number,
+    type: String,
   },
   summerSausageNotes: {
     type: String,
   },
   smokedKielbasaSausage: {
-    type: Number,
+    type: String,
   },
   smokedKielbasaSausageNotes: {
     type: String,
   },
   italianSausageLinksMild: {
-    type: Number,
+    type: String,
   },
   italianSausageLinksHot: {
-    type: Number,
+    type: String,
   },
   italianSausageLinksNotes: {
     type: String,
   },
   countryBreakfastSausage: {
-    type: Number,
+    type: String,
   },
   countryBreakfastSausageNotes: {
     type: String,
   },
   babyLinksCountry: {
-    type: Number,
+    type: String,
   },
   babyLinksMaple: {
-    type: Number,
+    type: String,
   },
   babyLinksNotes: {
     type: String,
   },
   snackSticksRegular: {
-    type: Number,
+    type: String,
   },
   snackSticksCheddarCheese: {
-    type: Number,
+    type: String,
   },
   snackSticksHotPepperJackCheese: {
-    type: Number,
+    type: String,
   },
   snackSticksHotHotPepperJackCheese: {
-    type: Number,
+    type: String,
   },
   snackSticksHoneyBbq: {
-    type: Number,
+    type: String,
   },
   snackSticksNotes: {
     type: String,
   },
   hotDogsRegular: {
-    type: Number,
+    type: String,
   },
   hotDogsCheddarCheese: {
-    type: Number,
+    type: String,
   },
   hotDogsHotPepperJackCheese: {
-    type: Number,
+    type: String,
   },
   hotDogsNotes: {
     type: String,
   },
   jerkyRestructuredHot: {
-    type: Number,
+    type: String,
   },
   jerkyRestructuredMild: {
-    type: Number,
+    type: String,
   },
   jerkyRestructuredTeriyaki: {
-    type: Number,
+    type: String,
   },
   jerkyRestructuredNotes: {
     type: String,

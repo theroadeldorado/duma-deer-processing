@@ -132,6 +132,20 @@ export default function EditDeer({ data, isNew }: Props) {
               ]}
             ></Select>
 
+            <Select
+              name='buckOrDoe'
+              label='Deer Type'
+              placeholder='Select Type'
+              required
+              options={[
+                { value: 'Doe', label: 'Doe' },
+                { value: 'Buck', label: 'Buck' },
+                { value: 'Button Buck', label: 'Button Buck' },
+                { value: 'Boneless', label: 'Boneless' },
+                { value: 'Other', label: 'Other' },
+              ]}
+            ></Select>
+
             <Input
               label='Address'
               type='text'

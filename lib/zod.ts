@@ -37,6 +37,7 @@ export const Deer = {
   communication: z.string().min(1, 'Communication is required'),
   cape: z.any().optional(),
   hide: z.any().optional(),
+  buckOrDoe: z.string().optional(),
   capeHideNotes: z.string().optional(),
   isSkinned: z.string().optional(),
   skinnedBonelessNotes: z.string().optional(),

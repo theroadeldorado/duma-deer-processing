@@ -30,6 +30,7 @@ export type DeerT = {
   phone: string;
   communication: string;
   stateHarvestedIn: string;
+  buckOrDoe: string;
   cape?: boolean | string | number;
   hide?: boolean | string | number;
   euroMount?: string;

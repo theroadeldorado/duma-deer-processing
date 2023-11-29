@@ -115,20 +115,37 @@ const CheckInForm = () => {
               </div>
 
               <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
+              <div className='grid grid-cols-2 gap-4'>
+                <Select
+                  name='stateHarvestedIn'
+                  label='State Harvested In*'
+                  register={register}
+                  placeholder='Select State'
+                  defaultValue='OH'
+                  required
+                  options={[
+                    { value: 'OH', label: 'Ohio' },
+                    { value: 'WV', label: 'West Virginia' },
+                    { value: 'PA', label: 'Pennsylvania' },
+                    { value: 'Other', label: 'Other' },
+                  ]}
+                ></Select>
 
-              <Select
-                name='stateHarvestedIn'
-                label='State Harvested In*'
-                register={register}
-                placeholder='Select State'
-                required
-                options={[
-                  { value: 'OH', label: 'Ohio' },
-                  { value: 'WV', label: 'West Virginia' },
-                  { value: 'PA', label: 'Pennsylvania' },
-                  { value: 'Other', label: 'Other' },
-                ]}
-              ></Select>
+                <Select
+                  name='buckOrDoe'
+                  label='Deer Type'
+                  register={register}
+                  placeholder='Select Type'
+                  required
+                  options={[
+                    { value: 'Doe', label: 'Doe' },
+                    { value: 'Buck', label: 'Buck' },
+                    { value: 'Button Buck', label: 'Button Buck' },
+                    { value: 'Boneless', label: 'Boneless' },
+                    { value: 'Other', label: 'Other' },
+                  ]}
+                ></Select>
+              </div>
 
               <Input
                 label='Address'
