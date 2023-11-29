@@ -46,11 +46,12 @@ export const productsConfig: ProductsConfig = {
     section: 'Contact Information',
   },
   tagNumber: { label: 'Tag Number', type: 'text', required: true, section: 'Contact Information' },
-  stateHarvestedIn: {
-    label: 'State Harvested In',
+np
+  buckOrDoe: {
+    label: 'Deer Type',
     type: 'select',
     required: true,
-    options: ['OH', 'WV', 'PA', 'Other'],
+    options: ['Doe', 'Buck', 'Button Buck', 'Boneless', 'Other'],
     section: 'Contact Information',
   },
 
