@@ -14,6 +14,7 @@ import { DeerT } from 'lib/types';
 import Select from './Select';
 import Summary from './Summary';
 import { calculateTotalPrice } from 'lib/priceCalculations';
+import PhoneInput from './PhoneInput';
 
 const TOTAL_STEPS = 7;
 
@@ -22,14 +23,19 @@ const CheckInForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [isHindLegPreference1, setIsHindLegPreference1] = useState('Grind');
   const [isHindLegPreference2, setIsHindLegPreference2] = useState('Grind');
-  const [isFirstStepValid, setIsFirstStepValid] = useState(false);
 
   const handleHindLegPreference1 = (event: any) => {
     setIsHindLegPreference1(event);
+    if (event !== 'Steaks' && isHindLegPreference2 !== 'Steaks') {
+      form.setValue('tenderizedCubedSteaks', '');
+    }
   };
 
   const handleHindLegPreference2 = (event: any) => {
     setIsHindLegPreference2(event);
+    if (event !== 'Steaks' && isHindLegPreference1 !== 'Steaks') {
+      form.setValue('tenderizedCubedSteaks', '');
+    }
   };
 
   const progressPercentage = ((currentStep - 1) / TOTAL_STEPS) * 100;
@@ -57,12 +63,6 @@ const CheckInForm = () => {
     mutation.mutate(data as any);
   };
 
-  useEffect(() => {
-    if (currentStep === 1) {
-      setIsFirstStepValid(form.formState.isValid);
-    }
-  }, [form.formState.isValid]);
-
   return (
     <>
       <div className='flex flex-col gap-6'>
@@ -75,7 +75,7 @@ const CheckInForm = () => {
             <>
               <div className='grid grid-cols-2 gap-4'>
                 <div className='hidden'>
-                  <Input label='Name' type='text' name='name' register={register} />
+                  <Input label='Name' type='text' name='name' />
                 </div>
                 <div className='hidden'>
                   <Input label='fullAddress' type='text' name='fullAddress' />
@@ -100,7 +100,9 @@ const CheckInForm = () => {
                 />
               </div>
               <div className='grid grid-cols-2 gap-4'>
-                <Input label='Phone' type='tel' name='phone' register={register} required />
+                {/* <Input label='Phone' type='text' name='phone' required placeholder='123-456-7890' /> */}
+                <PhoneInput label='Phone' name='phone' required />
+
                 <RadioButtonGroup
                   name='communication'
                   required
@@ -109,17 +111,15 @@ const CheckInForm = () => {
                     { value: 'Text', label: 'Text' },
                   ]}
                   defaultCheckedValue='Text'
-                  register={register}
                   wrapperLabel='Communication'
                 />
               </div>
 
-              <Input label='Tag Number' type='text' name='tagNumber' register={register} required />
+              <Input label='Tag Number' type='text' name='tagNumber' required />
               <div className='grid grid-cols-2 gap-4'>
                 <Select
                   name='stateHarvestedIn'
                   label='State Harvested In*'
-                  register={register}
                   placeholder='Select State'
                   defaultValue='OH'
                   required
@@ -133,8 +133,7 @@ const CheckInForm = () => {
 
                 <Select
                   name='buckOrDoe'
-                  label='Deer Type'
-                  register={register}
+                  label='Deer Type*'
                   placeholder='Select Type'
                   required
                   options={[
@@ -151,7 +150,6 @@ const CheckInForm = () => {
                 label='Address'
                 type='text'
                 name='address'
-                register={register}
                 required
                 onChange={(e) => {
                   form.setValue('fullAddress', e.target.value + '\n ' + form.watch('city') + ', ' + form.watch('state') + ' ' + form.watch('zip'));
@@ -163,7 +161,6 @@ const CheckInForm = () => {
                     label='City'
                     type='text'
                     name='city'
-                    register={register}
                     required
                     onChange={(e) => {
                       form.setValue(
@@ -177,7 +174,6 @@ const CheckInForm = () => {
                   label='State'
                   type='text'
                   name='state'
-                  register={register}
                   defaultValue='OH'
                   required
                   onChange={(e) => {
@@ -191,9 +187,7 @@ const CheckInForm = () => {
                   <Input
                     label='Zip'
                     type='number'
-                    maxLength={5}
                     name='zip'
-                    register={register}
                     required
                     onChange={(e) => {
                       form.setValue(
@@ -204,6 +198,7 @@ const CheckInForm = () => {
                   />
                 </div>
               </div>
+              <p className='text-center italic'>All fields on this page are required to continue.</p>
             </>
           )}
           {currentStep === 2 && (
@@ -217,7 +212,6 @@ const CheckInForm = () => {
                   <Select
                     className='w-full'
                     name='skinnedOrBoneless'
-                    register={register}
                     required
                     options={[
                       { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
@@ -233,7 +227,7 @@ const CheckInForm = () => {
                   </p>
                 </div>
                 {/* <div>
-                  <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`skinnedBonelessNotes`} label='Special Instructions'  />
                 </div> */}
               </div>
             </>
@@ -246,14 +240,14 @@ const CheckInForm = () => {
                     <Image src={'/cape.png'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'cape'} />
                   </div>
                   <p className='mb-1 w-full text-center font-bold'>Cape for shoulder mount</p>
-                  <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50' }]} register={register} />
+                  <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50' }]} />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
                   <div className='relative aspect-square w-full overflow-hidden rounded-md'>
                     <Image src={'/hide.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'hide'} />
                   </div>
                   <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
-                  <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} register={register} />
+                  <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
                   <div className='relative aspect-square w-full overflow-hidden rounded-md'>
@@ -269,7 +263,6 @@ const CheckInForm = () => {
                   <Select
                     className='w-full'
                     name='euroMount'
-                    register={register}
                     options={[
                       { value: 'false', label: 'Select Option' },
                       { value: 'Keep head', label: 'Keep Head  - Take Today' },
@@ -281,7 +274,7 @@ const CheckInForm = () => {
 
                 <p className='col-span-3 mt-2 text-center italic'>NOT MOUNTED just the cape for a mounting. Hide and saved for you, NOT TANNED.</p>
                 {/* <div className='col-span-3'>
-                  <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`capeHideNotes`} label='Special Instructions'  />
                 </div> */}
               </div>
             </>
@@ -299,7 +292,6 @@ const CheckInForm = () => {
                     <Select
                       className='w-full'
                       name='backStrapsPreference'
-                      register={register}
                       required
                       options={[
                         { value: 'Cut in half', label: 'Cut in half' },
@@ -315,7 +307,7 @@ const CheckInForm = () => {
                 <p className='col-span-3 mt-2 text-center italic'>Inner Tenderloins always left whole.</p>
 
                 <div className='w-full'>
-                  <Textarea rows={2} name={`backStrapNotes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`backStrapNotes`} label='Special Instructions' />
                 </div>
               </div>
             </>
@@ -339,77 +331,42 @@ const CheckInForm = () => {
                     <Select
                       className='w-full'
                       name='hindLegPreference1'
-                      register={register}
                       onChange={handleHindLegPreference1}
                       required
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
                         { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                        { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
+                        { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
+                        { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
+                        { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
                         { value: 'Grind', label: 'Ground Venison' },
                       ]}
                       defaultValue='Grind'
                     ></Select>
-
-                    {isHindLegPreference1 === 'Whole Muscle Jerky' && (
-                      <div className='mt-5'>
-                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
-                        <Select
-                          className='w-full'
-                          name='hindLegJerky1'
-                          register={register}
-                          required
-                          options={[
-                            { value: 'Mild', label: 'Mild' },
-                            { value: 'Hot', label: 'Hot' },
-                            { value: 'Teriyaki', label: 'Teriyaki' },
-                          ]}
-                          defaultValue='Mild'
-                        ></Select>
-                      </div>
-                    )}
                   </div>
                   <div>
                     <p className='mb-1 w-full font-bold'>Hind Leg Preference Leg 2</p>
                     <Select
                       className='w-full'
                       name='hindLegPreference2'
-                      register={register}
                       onChange={handleHindLegPreference2}
                       required
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
                         { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                        { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
+                        { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
+                        { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
+                        { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
                         { value: 'Grind', label: 'Ground Venison' },
                       ]}
                       defaultValue='Grind'
                     ></Select>
-
-                    {isHindLegPreference2 === 'Whole Muscle Jerky' && (
-                      <div className='mt-5'>
-                        <p className='mb-1 w-full font-bold'>Jerky flavor</p>
-                        <Select
-                          className='w-full'
-                          name='hindLegJerky2'
-                          register={register}
-                          required
-                          options={[
-                            { value: 'Mild', label: 'Mild' },
-                            { value: 'Hot', label: 'Hot' },
-                            { value: 'Teriyaki', label: 'Teriyaki' },
-                          ]}
-                          defaultValue='Mild'
-                        ></Select>
-                      </div>
-                    )}
                   </div>
                   {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
                     <div className='col-span-2'>
                       <CheckboxGroup
                         name='tenderizedCubedSteaks'
                         options={[{ value: 'Tenderized Cubed Steaks', label: 'Tenderized Cubed Steaks - $5' }]}
-                        register={register}
                       />
                     </div>
                   )}
@@ -435,7 +392,7 @@ const CheckInForm = () => {
               </div>
 
               <div className='w-full'>
-                <Textarea rows={2} name={`hindLegNotes`} label='Special Instructions' register={register} />
+                <Textarea rows={2} name={`hindLegNotes`} label='Special Instructions' />
               </div>
             </>
           )}
@@ -457,7 +414,6 @@ const CheckInForm = () => {
                   <Select
                     className='w-full'
                     name='roast'
-                    register={register}
                     required
                     options={[
                       { value: '2 Roasts, Grind Rest', label: '2 Roasts, Ground Venison for the rest' },
@@ -469,7 +425,7 @@ const CheckInForm = () => {
                 </div>
 
                 <div className='w-full'>
-                  <Textarea rows={2} name={`roastNotes`} label='Special Instructions' register={register} />
+                  <Textarea rows={2} name={`roastNotes`} label='Special Instructions' />
                 </div>
               </div>
             </>
@@ -495,7 +451,6 @@ const CheckInForm = () => {
                     <Select
                       name='groundVenison'
                       label='Ground Venison Options'
-                      register={register}
                       placeholder='Select Option'
                       defaultValue='Plain'
                       options={[
@@ -510,7 +465,6 @@ const CheckInForm = () => {
                     <Select
                       name='groundVenisonAmount'
                       label='Ground Venison Amount'
-                      register={register}
                       placeholder='Select Option'
                       defaultValue='Remainder'
                       options={[
@@ -520,7 +474,7 @@ const CheckInForm = () => {
                       ]}
                     ></Select>
                   </div>
-                  {/* <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions' register={register} /> */}
+                  {/* <Textarea rows={3} name={`groundVenisonNotes`} label='Special Instructions'  /> */}
                   <p className='text-md italic'>
                     If you do not select any other specialty meats you will receive all ground venison. If you select only specific weights for
                     specialty meat you will receive the remainder in ground venison.
@@ -640,7 +594,7 @@ const CheckInForm = () => {
                 type='button'
                 className='inline-flex gap-2 disabled:cursor-not-allowed'
                 onClick={() => setCurrentStep((prevStep) => prevStep + 1)}
-                disabled={currentStep === 1 && !isFirstStepValid}
+                disabled={currentStep === 1 && !form.formState.isValid}
               >
                 Next
                 <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>

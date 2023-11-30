@@ -141,7 +141,9 @@ export const productsConfig: ProductsConfig = {
     options: [
       { value: 'Steaks', label: 'Steaks' },
       { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
+      { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - Mild', price: 35 },
+      { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerk - Hot', price: 35 },
+      { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - Teriyaki', price: 35 },
       { value: 'Grind', label: 'Ground Venison' },
     ],
     defaultValue: 'Grind',
@@ -164,7 +166,9 @@ export const productsConfig: ProductsConfig = {
     options: [
       { value: 'Steaks', label: 'Steaks' },
       { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
+      { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - Mild', price: 35 },
+      { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerk - Hot', price: 35 },
+      { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - Teriyaki', price: 35 },
       { value: 'Grind', label: 'Ground Venison' },
     ],
     defaultValue: 'Grind',

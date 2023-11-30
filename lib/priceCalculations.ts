@@ -105,7 +105,7 @@ export function calculatePriceForItem(key: string, value: any): number {
 }
 
 export function getSpecialtyMeatPrice(meatName: string, optionName: string, value: number | string): number {
-  if (value === undefined) return 0;
+  if (value === undefined || value === 'false') return 0;
   const specialtyMeatsConfig = productsConfig.specialtyMeats as SpecialtyMeatsConfig;
   const meat = specialtyMeatsConfig.meats.find((meat) => meat.name === meatName);
   if (meat) {

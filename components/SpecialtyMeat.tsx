@@ -16,6 +16,7 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
 
   const getSelectOptions = (price: number) => {
     let baseOptions = [
+      { value: 'false', label: 'None' },
       { value: '5', label: '5lbs' },
       { value: '10', label: '10lbs' },
       { value: '15', label: '15lbs' },
@@ -78,7 +79,6 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
                     label={option.label}
                     register={register}
                     options={getSelectOptions(option.price)}
-                    isClearable
                     placeholder={`Select Amount - ${printPrice(option.price)}`}
                   />
                 </div>

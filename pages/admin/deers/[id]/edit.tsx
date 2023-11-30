@@ -308,27 +308,13 @@ export default function EditDeer({ data, isNew }: Props) {
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                    { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
+                    { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
+                    { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
+                    { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
                     { value: 'Grind', label: 'Ground Venison' },
                   ]}
                   defaultValue='Grind'
                 ></Select>
-
-                {isHindLegPreference1 === 'Whole Muscle Jerky' && (
-                  <>
-                    <p className='mb-1 mt-3 font-bold'>Jerky Flavor</p>
-                    <Select
-                      className='w-full'
-                      name='hindLegJerky1'
-                      options={[
-                        { value: 'Mild', label: 'Mild' },
-                        { value: 'Hot', label: 'Hot' },
-                        { value: 'Teriyaki', label: 'Teriyaki' },
-                      ]}
-                      defaultValue='Mild'
-                    ></Select>
-                  </>
-                )}
               </div>
               <div>
                 <p className='mb-1 font-bold'>Hind Leg 2 Preference</p>
@@ -339,27 +325,13 @@ export default function EditDeer({ data, isNew }: Props) {
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                    { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
+                    { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
+                    { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
+                    { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
                     { value: 'Grind', label: 'Ground Venison' },
                   ]}
                   defaultValue='Grind'
                 ></Select>
-
-                {isHindLegPreference2 === 'Whole Muscle Jerky' && (
-                  <>
-                    <p className='mb-1 mt-3 font-bold'>Jerky Flavor</p>
-                    <Select
-                      className='w-full'
-                      name='hindLegJerky2'
-                      options={[
-                        { value: 'Mild', label: 'Mild' },
-                        { value: 'Hot', label: 'Hot' },
-                        { value: 'Teriyaki', label: 'Teriyaki' },
-                      ]}
-                      defaultValue='Mild'
-                    ></Select>
-                  </>
-                )}
               </div>
 
               <div className='col-span-2'>
