@@ -7,6 +7,7 @@ import SummaryItemsGeneral from './SummaryItemsGeneral';
 import SummaryItem from './SummaryItem';
 import Logo from './Logo';
 import clsx from 'clsx';
+import dayjs from 'dayjs';
 
 interface PrintDeerDetailsProps {
   data: DeerT;
@@ -108,7 +109,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
     const contactInfo = sectionedValues[name] || [];
 
     return contactInfo.map(({ key, label, value, price, pricePer5lb, notes }, index) => (
-      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} notes={notes} />
+      <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} notes={notes} print />
     ));
   };
 
@@ -130,7 +131,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
               'border-[6px] p-2'
             )}
           >
-            <h4 className='mb-4 text-xl font-bold'>Contact Information</h4>
+            <h4 className='mb-2 font-bold'>{data.createdAt && dayjs(data.createdAt).format('M/D/YY  h:mm A')}</h4>
             <div className='grid grid-cols-3 gap-x-8 gap-y-1'>{renderContactInformation()}</div>
             <div className='gap-3 '>
               <h4 className='my-4 text-xl font-bold'>Cutting Instructions</h4>
@@ -153,6 +154,7 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
               'border-[6px] p-2'
             )}
           >
+            <h4 className='mb-2 font-bold'></h4>
             <div className='mb-6 gap-3'>
               <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
               <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
@@ -234,6 +236,21 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       }
     }
   });
+
+  // reorder sections so name, phone are first two in their group
+  const contactInfo = sectionedValues['Contact Information'];
+  if (contactInfo) {
+    const nameIndex = contactInfo.findIndex((item) => item.key === 'name');
+    const phoneIndex = contactInfo.findIndex((item) => item.key === 'phone');
+    if (nameIndex > -1) {
+      const name = contactInfo.splice(nameIndex, 1)[0];
+      contactInfo.unshift(name);
+    }
+    if (phoneIndex > -1) {
+      const phone = contactInfo.splice(phoneIndex, 1)[0];
+      contactInfo.splice(1, 0, phone);
+    }
+  }
 
   return { sectionedValues, hasEvenly };
 }
