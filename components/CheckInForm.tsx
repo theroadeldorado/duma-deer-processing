@@ -469,7 +469,6 @@ const CheckInForm = () => {
                       defaultValue='Remainder'
                       options={[
                         { value: 'Remainder', label: 'Remainder of meat' },
-                        { value: 'Evenly distribute', label: 'Evenly distribute with specialty meat' },
                         { value: 'None - All specialty meat', label: 'None - All specialty meat' },
                       ]}
                     ></Select>
