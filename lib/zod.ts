@@ -39,7 +39,7 @@ export const Deer = {
   hide: z.any().optional(),
   buckOrDoe: z.string().optional(),
   capeHideNotes: z.string().optional(),
-  isSkinned: z.string().optional(),
+  skinnedOrBoneless: z.string().optional(),
   skinnedBonelessNotes: z.string().optional(),
   backStrapsPreference: z.string().optional(),
   backStrap2Preference: z.string().optional(),

@@ -219,7 +219,6 @@ export default function EditDeer({ data, isNew }: Props) {
                     { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
                     { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                   ]}
-                  defaultValue='Skinned'
                 ></Select>
               </div>
               <Textarea rows={3} name={`skinnedBonelessNotes`} label='Special Instructions' />
@@ -267,8 +266,8 @@ export default function EditDeer({ data, isNew }: Props) {
                   className='w-full'
                   name='euroMount'
                   options={[
-                    { value: 'none', label: 'Select Option' },
-                    { value: 'Keep head', label: 'Keep Head' },
+                    { value: 'false', label: 'Select Option' },
+                    { value: 'Keep head', label: 'Keep Head  - Take Today' },
                     { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
                     { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
                   ]}
@@ -305,6 +304,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   className='w-full'
                   name='hindLegPreference1'
                   onChange={handleHindLegPreference1}
+                  required
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
@@ -377,13 +377,14 @@ export default function EditDeer({ data, isNew }: Props) {
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10 '>
               <Select
                 name='groundVenison'
-                label='Ground Venison'
+                label='Ground Venison Options'
                 placeholder='Select Option'
+                defaultValue='Plain'
                 options={[
-                  { value: 'plain', label: 'Plain' },
-                  { value: 'beef', label: 'Add Beef Trim - $5' },
-                  { value: 'pork', label: 'Add Pork Trim - $5' },
-                  { value: 'both', label: 'Add Beef & Pork Trim - $10' },
+                  { value: 'Plain', label: 'Plain' },
+                  { value: 'Add Beef Trim', label: 'Add Beef Trim - $5' },
+                  { value: 'Add Pork Trim', label: 'Add Pork Trim - $5' },
+                  { value: 'Add Beef & Pork Trim', label: 'Add Beef & Pork Trim - $10' },
                 ]}
               ></Select>
 
@@ -394,8 +395,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 defaultValue='Remainder'
                 options={[
                   { value: 'Remainder', label: 'Remainder of meat' },
-                  { value: 'Evenly distribute', label: 'Evenly distribute with specialty meat' },
-                  { value: 'None', label: 'None - All specialty meat' },
+                  { value: 'None - All specialty meat', label: 'None - All specialty meat' },
                 ]}
               ></Select>
               <div className='col-span-3'>

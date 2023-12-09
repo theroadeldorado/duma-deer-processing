@@ -62,7 +62,7 @@ export const productsConfig: ProductsConfig = {
     required: true,
     options: [
       { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed', price: 95 },
-      { value: 'Boneless', label: 'Boneless, 100% deboned already' },
+      { value: 'Boneless', label: 'Boneless, 100% deboned already', price: 0 },
     ],
     defaultValue: 'Skinned, Cut, Ground, Vacuum packed',
   },
