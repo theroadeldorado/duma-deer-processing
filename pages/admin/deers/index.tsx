@@ -11,6 +11,8 @@ import Icon from '@/components/Icon';
 import { debounce } from '@/lib/helpers';
 import { DeerT } from 'lib/types';
 import DeerTableRow from './DeerTableRow';
+import { useUser } from '@/providers/UserProvider';
+import clsx from 'clsx';
 
 const cols = [
   { id: 'createdAt', label: 'Submitted' },
@@ -28,11 +30,14 @@ const cols = [
 ];
 
 export default function Deers() {
+  const { name, email, profileId } = useUser();
   const { results, tableProps, updateFilters, onExport } = useTableSearch<DeerT>({
     url: '/api/deers',
     defaultFilters: { status: 'both' },
     defaultSortBy: 'createdAt',
   });
+
+  console.log('profileId', profileId);
 
   const form = useForm<any>();
 
@@ -41,18 +46,21 @@ export default function Deers() {
     updateFilters(data);
   };
 
+  const isSuperAdmin = profileId === '652006a63e37d2edd04bf2ee' || profileId === '654e4c0ecbc9f6187296c9a3';
+
   const handleSearch = debounce(handleFilterUpdate, 300);
 
   return (
     <AdminPage title='Deers'>
       <Form form={form} onSubmit={() => null} className='flex flex-col gap-4 lg:flex-row'>
         <Input type='search' name='search' placeholder='Search' onChange={handleSearch} className='min-w-[250px]' />
-
-        <Button type='button' onClick={onExport} className='gap-2 lg:ml-auto' color='default'>
-          <Icon name='download' />
-          Export
-        </Button>
-        <Button href='/admin/deers/new/edit' color='primary' className='gap-2'>
+        {isSuperAdmin && (
+          <Button type='button' onClick={onExport} className='gap-2 lg:ml-auto' color='default'>
+            <Icon name='download' />
+            Export
+          </Button>
+        )}
+        <Button href='/admin/deers/new/edit' color='primary' className={clsx(!isSuperAdmin && 'lg:ml-auto', 'gap-2')}>
           <Icon name='plus' />
           Add Deer
         </Button>

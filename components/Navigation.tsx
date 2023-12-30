@@ -18,7 +18,6 @@ const Navigation = ({ className }: Props) => {
     // { href: '/admin', label: 'Dashboard' },
     { href: '/admin/deers', label: 'Deers' },
     { href: '/admin/users', label: 'Users' },
-    { href: '/admin/templates', label: 'Email Templates' },
   ];
 
   useEffect(() => {

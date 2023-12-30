@@ -13,11 +13,7 @@ export default function Dashboard() {
       |{' '}
       <Link href='/admin/users' className='font-bold text-green'>
         Users
-      </Link>{' '}
-      |{' '}
-      {/* <Link href='/admin/templates' className='font-bold text-green'>
-        Email Templates
-      </Link> */}
+      </Link>
     </AdminPage>
   );
 }
