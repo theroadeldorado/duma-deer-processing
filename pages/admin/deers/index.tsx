@@ -37,8 +37,6 @@ export default function Deers() {
     defaultSortBy: 'createdAt',
   });
 
-  console.log('profileId', profileId);
-
   const form = useForm<any>();
 
   const handleFilterUpdate = () => {

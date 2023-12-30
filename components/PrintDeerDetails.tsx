@@ -225,7 +225,6 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
         sectionedValues[section] = sectionedValues[section] || [];
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
-        console.log(section, value);
         if (value === 'Evenly') {
           hasEvenly = true;
         }
