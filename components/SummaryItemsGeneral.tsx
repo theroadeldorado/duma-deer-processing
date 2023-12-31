@@ -5,7 +5,8 @@ interface SummaryItemsGeneralProps {
     label: string;
     value: string | number;
   }[];
-  section: string;
+  section?: string;
+  print?: boolean;
 }
 
 const renderWithLineBreaks = (text: string) => {
@@ -17,7 +18,7 @@ const renderWithLineBreaks = (text: string) => {
   ));
 };
 
-const SummaryItemsGeneral: React.FC<SummaryItemsGeneralProps> = ({ values, section }) => {
+const SummaryItemsGeneral: React.FC<SummaryItemsGeneralProps> = ({ values, section, print }) => {
   return (
     <div className='grid grid-cols-3 gap-x-8 gap-y-3'>
       {values.map(({ label, value }) => (
@@ -32,8 +33,12 @@ const SummaryItemsGeneral: React.FC<SummaryItemsGeneralProps> = ({ values, secti
             label === 'State Harvested In' && 'col-start-3 row-start-2'
           )}
         >
-          <p className='text-xs font-bold uppercase'>{label}: </p>
-          <p className='text-base'>{renderWithLineBreaks(String(value))}</p>
+          {!print && <p className='text-xs font-bold uppercase'>{label}: </p>}
+          <p className={clsx(print ? 'text-xl font-bold leading-[1.2]' : 'text-md')}>
+            {print && label === 'Tag Number' && <span className='font-bold'>Tag#: </span>}
+
+            {renderWithLineBreaks(String(value))}
+          </p>
         </div>
       ))}
     </div>

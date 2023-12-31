@@ -31,20 +31,20 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
   value !== 'false' && (
     <div className=''>
       {notes ? (
-        <p className='-my-1 text-xs'>
-          <span className='block text-xs font-bold uppercase'>{label}:</span>
+        <p className='-my-1 text-sm'>
+          <span className='block text-sm font-bold uppercase'>{label}:</span>
           <span>{value}</span>
         </p>
       ) : (
         <>
-          {!print && <p className='text-xs font-bold uppercase'>{label}: </p>}
+          {!print && <p className='text-sm font-bold uppercase'>{label}: </p>}
+          {print && <p className='text-[28px] font-bold leading-[1.2]'>{removeWordsFromLabel(label)}: </p>}
           {pricePer5lb ? (
             <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
-              {print && <span className='text-[24px] font-bold leading-[26px]'>{removeWordsFromLabel(label)}: </span>}
               {value === 'Evenly' ? (
-                <span className='text-[24px] leading-[26px]'>Evenly</span>
+                <span className='text-[28px] leading-[1.2]'>Evenly</span>
               ) : (
-                <span className='text-[24px] leading-[26px]'>{value}lbs</span>
+                <span className='text-[28px] leading-[1.2]'>{value}lbs</span>
               )}
 
               {price && <span className='text-sm'>(${calculatePricePerPound(price, value)}/lb)</span>}
@@ -56,8 +56,7 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
             </p>
           ) : (
             <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
-              {print && <span className='text-[24px] font-bold leading-[26px]'>{removeWordsFromLabel(label)}: </span>}
-              <span className='text-[24px] leading-[26px]'>{value}</span>
+              <span className='text-[28px] leading-[1.2]'>{value}</span>
               <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
             </p>
           )}

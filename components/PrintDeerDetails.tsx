@@ -97,9 +97,10 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
 
   const renderContactInformation = () => {
     const contactInfo = sectionedValues['Contact Information'] || [];
+    return <SummaryItemsGeneral values={contactInfo} print />;
     return contactInfo.map(({ label, value }, index) => (
       <div key={index} className='flex flex-col'>
-        <div className='font-bold'>{label}:</div>
+        {/* <div className='font-bold'>{label}:</div> */}
         <div className={clsx((label == 'Name' || label == 'Phone') && 'text-xl font-bold', 'text-md')}>{value}</div>
       </div>
     ));
@@ -132,15 +133,17 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
             )}
           >
             <h4 className='mb-2 font-bold'>{data.createdAt && dayjs(data.createdAt).format('M/D/YY  h:mm A')}</h4>
-            <div className='grid grid-cols-3 gap-x-8 gap-y-1'>{renderContactInformation()}</div>
+            <div className='border-b border-dashed border-gray-900 pb-3'>{renderContactInformation()}</div>
             <div className='gap-3 '>
               <h4 className='my-4 text-xl font-bold'>Cutting Instructions</h4>
               <div className='grid grid-cols-1 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions')}</div>
             </div>
-            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0 '>
-              <h4 className='my-4 text-xl font-bold'>Notes:</h4>
-              <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions Notes')}</div>
-            </div>
+            {sectionedValues['Cutting Instructions Notes'] && (
+              <div className='mb-4 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+                <h4 className='mb-4 mt-2 text-xl font-bold'>Notes:</h4>
+                <div className='grid grid-cols-1 gap-x-8 gap-y-3'>{renderOtherInformation('Cutting Instructions Notes')}</div>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -151,42 +154,75 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
               (data.cape && data.cape !== 'false') || (data.euroMount && data.euroMount !== 'false') || (data.hide && data.hide !== 'false')
                 ? 'border-red-500'
                 : 'border-white',
-              'border-[6px] p-2'
+              'flex flex-col justify-between border-[6px] p-2'
             )}
           >
-            <h4 className='mb-2 font-bold'></h4>
-            <div className='mb-6 gap-3'>
-              <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
-              <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
-            </div>
-            <div className='mb-6 gap-3 pb-6 last:border-0'>
-              <h4 className='my-4 text-xl font-bold'>Specialty Meats</h4>
-              <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats')}</div>
-            </div>
-            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
-              <h4 className='my-4 text-xl font-bold'>Notes:</h4>
-              <div className='grid grid-cols-2 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats Notes')}</div>
-            </div>
-            <div className='flex flex-col items-end text-right'>
-              <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
+            <div>
+              <h4 className='mb-2 font-bold'></h4>
+              <div className='mb-6 gap-3'>
+                <h4 className='my-4 text-xl font-bold'>Ground Venison</h4>
+                <div className='grid gap-x-8 gap-y-3'>{renderOtherInformation('Ground Venison')}</div>
+              </div>
+              <div className='mb-6 gap-3 pb-6 last:border-0'>
+                <h4 className='my-4 text-xl font-bold'>Specialty Meats</h4>
+                <div className='grid grid-cols-1 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats')}</div>
+              </div>
 
-              {hasEvenly && (
-                <p className='max-w-[400px] text-sm italic'>
-                  Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500+
-                </p>
+              {sectionedValues['Specialty Meats Notes'] && (
+                <div className='mb-4 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+                  <h4 className='mb-4 mt-2 text-xl font-bold'>Notes:</h4>
+                  <div className='grid grid-cols-1 gap-x-8 gap-y-3'>{renderOtherInformation('Specialty Meats Notes')}</div>
+                </div>
               )}
-              <p className='mb-6 mt-1 text-display-sm font-bold'>
-                <span className=''>$</span>
-                {calculateTotalPrice(data).toFixed(2)}
-              </p>
-              {hasEvenly && (
-                <>
-                  <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
-                  <p className='mb-10 mt-1 text-display-sm font-bold'>
-                    <span className=''> TBD</span>
+              <div className='flex flex-col items-end text-right'>
+                <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
+
+                {hasEvenly && (
+                  <p className='max-w-[400px] text-sm italic'>
+                    Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500+
                   </p>
-                </>
-              )}
+                )}
+                <p className='mb-6 mt-1 text-display-sm font-bold'>
+                  <span className=''>$</span>
+                  {calculateTotalPrice(data).toFixed(2)}
+                </p>
+                {hasEvenly && (
+                  <>
+                    <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
+                    <p className='mb-10 mt-1 text-display-sm font-bold'>
+                      <span className=''> TBD</span>
+                    </p>
+                  </>
+                )}
+              </div>
+            </div>
+            <div className='flex items-start gap-10'>
+              <div className='flex-1'>
+                <div className='my-4 flex items-end gap-1'>
+                  <h4 className='shrink-0 grow text-xl font-bold'>$50 Deposit:</h4>
+                  <span className='block w-full grow border-b border-dashed border-gray-900'></span>
+                </div>
+                <div className='flex items-start gap-6 text-[14px]'>
+                  <span>Cash</span>
+                  <span>Check</span>
+                  <span>
+                    CC <strong>$1.99 Fee</strong> Initials:
+                  </span>
+                </div>
+              </div>
+              <div className='flex-1'>
+                <div className='my-4 flex items-end gap-1'>
+                  <h4 className='shrink-0 grow text-xl font-bold'>Balance Due:</h4>
+                  <span className='block w-full grow border-b border-dashed border-gray-900'></span>
+                </div>
+                <div className='flex items-start gap-6  text-[14px]'>
+                  <span>Cash</span>
+                  <span>Check</span>
+                  <span>
+                    <strong>CC $1.99</strong> Initials:
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
