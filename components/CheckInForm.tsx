@@ -64,6 +64,15 @@ const CheckInForm = () => {
     mutation.mutate(data as any);
   };
 
+  const onNext = async () => {
+    const result = await form.trigger(); // Notice the await here
+    if (result) {
+      setCurrentStep((prevStep) => prevStep + 1);
+    } else {
+      // Handle the validation failure
+    }
+  };
+
   return (
     <>
       <div className='flex flex-col gap-6'>
@@ -590,12 +599,7 @@ const CheckInForm = () => {
 
             {/* Next Button */}
             {currentStep < 8 ? (
-              <Button
-                type='button'
-                className='inline-flex gap-2 disabled:cursor-not-allowed'
-                onClick={() => setCurrentStep((prevStep) => prevStep + 1)}
-                disabled={currentStep === 1 && !form.formState.isValid}
-              >
+              <Button type='button' className='inline-flex gap-2 disabled:cursor-not-allowed' onClick={onNext}>
                 Next
                 <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>
                   <path

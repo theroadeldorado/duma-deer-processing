@@ -21,7 +21,7 @@ export const FieldWrapper = ({ name, className, label, children, required, isRad
         <ErrorMessage
           errors={errors}
           name={name}
-          render={({ message }) => <span className='relative flex-grow text-sm text-primary-blue'>{message}</span>}
+          render={({ message }) => <span className='relative flex-grow text-sm text-red-600'>{message}</span>}
         />
       </div>
     );
@@ -35,7 +35,7 @@ export const FieldWrapper = ({ name, className, label, children, required, isRad
       <ErrorMessage
         errors={errors}
         name={name}
-        render={({ message }) => <span className='relative flex-grow text-sm text-primary-blue'>{message}</span>}
+        render={({ message }) => <span className='relative flex-grow text-sm text-red-600'>{message}</span>}
       />
     </label>
   );

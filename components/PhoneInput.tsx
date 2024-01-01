@@ -1,8 +1,9 @@
-import clsx from 'clsx';
-import { FieldWrapper } from 'components/FieldWrapper';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { FieldWrapper } from 'components/FieldWrapper';
+import clsx from 'clsx';
 
+// Define the props type for the PhoneInput component
 type InputProps = {
   className?: string;
   name: string;
@@ -10,27 +11,41 @@ type InputProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   hint?: string;
-  [x: string]: any;
+  [x: string]: any; // for additional props
 };
 
+// Function to format phone number
+function formatPhoneNumber(value) {
+  const phoneNumber = value.replace(/\D/g, ''); // Remove non-numeric characters
+  const phoneNumberMatch = phoneNumber.match(/(\d{1,3})(\d{0,3})(\d{0,4})/);
+
+  // Format the phone number parts
+  let formatted = '';
+  if (phoneNumberMatch) {
+    const [, areaCode, firstThree, lastFour] = phoneNumberMatch;
+    if (areaCode) {
+      formatted = `(${areaCode}`;
+    }
+    if (firstThree) {
+      formatted += `) ${firstThree}`;
+    }
+    if (lastFour) {
+      formatted += `-${lastFour}`;
+    }
+  }
+
+  return formatted;
+}
+
+// PhoneInput component
 const PhoneInput = ({ className, name, required, onChange, label, hint, ...props }: InputProps) => {
   const [formattedValue, setFormattedValue] = useState('');
   const { register } = useFormContext();
 
   const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // Check if the event is from the tel input
-    if (e.target && e.target.type === 'tel') {
-      const value = e.target.value;
-      if (value) {
-        const phone = value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
-        if (phone) {
-          const formatted = !phone[2] ? phone[1] : `(${phone[1]}) ${phone[2]}${phone[3] ? `-${phone[3]}` : ''}`;
-          setFormattedValue(formatted);
-        }
-      } else {
-        setFormattedValue('');
-      }
-    }
+    const value = e.target.value;
+    const formatted = formatPhoneNumber(value);
+    setFormattedValue(formatted);
   };
 
   return (
