@@ -147,7 +147,7 @@ export default function DeerTableRow({ data }: Props) {
               leaveFrom='scale-100 opacity-100'
               leaveTo='scale-95 opacity-0'
             >
-              <Menu.Button className='ml-2 flex items-center justify-center rounded-lg border border-gray-50 bg-gray-50 px-[0.875rem] py-2 text-sm font-semibold text-gray-800 hover:border-gray-100 hover:bg-gray-100 focus:ring-4 focus:ring-gray-100'>
+              <Menu.Button className='ml-2 flex items-center justify-center rounded-lg border border-gray-200 bg-gray-200 px-[0.875rem] py-2 text-sm font-semibold text-gray-800 hover:border-gray-300 hover:bg-gray-300 focus:ring-4 focus:ring-gray-100'>
                 Manage
                 <Icon name='angleDown' className='text-base -mr-0.5 ml-1.5' />
               </Menu.Button>
