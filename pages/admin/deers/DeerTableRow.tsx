@@ -20,6 +20,15 @@ type Props = {
 };
 
 export default function DeerTableRow({ data }: Props) {
+  const mutation = useMutation({
+    url: `/api/deers/${data?._id}/update`, // adjust the URL as necessary
+    method: 'PUT',
+    successMessage: 'Deer updated successfully',
+    onSuccess: () => {
+      // any success logic, like refreshing data or redirecting
+    },
+  });
+  const [hasPrinted, setHasPrinted] = useState(data?.hasPrinted === 'true');
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [printId, setPrintId] = useState(null);
   const router = useRouter();
@@ -64,9 +73,27 @@ export default function DeerTableRow({ data }: Props) {
     setPrintId(null);
   };
 
+  const handleHasPrintedChange = async (isChecked: boolean) => {
+    // Convert boolean to 'true' or 'false' string
+    const hasPrintedValue = isChecked ? 'true' : 'false';
+    setHasPrinted(isChecked);
+
+    // Update local state or form state as necessary
+    // ... your code to update local state/form
+
+    // Prepare the data payload for updating
+    const updatedData = {
+      ...data, // spread the existing data
+      hasPrinted: hasPrintedValue, // update the hasPrinted field
+    };
+
+    // Send update request to your API
+    mutation.mutate(updatedData);
+  };
+
   return (
     <>
-      <tr key={_id}>
+      <tr key={_id} className='transition-colors duration-200 ease-in-out hover:bg-slate-100'>
         <Cell suppressHydrationWarning>{createdAt && dayjs(createdAt).format('M/D/YY  h:mm A')}</Cell>
         <Cell>{name}</Cell>
         <Cell>{phone}</Cell>
@@ -85,6 +112,17 @@ export default function DeerTableRow({ data }: Props) {
           {amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}
         </Cell>
         <Cell className='font-bold'>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
+        <Cell>
+          <div className='hs-tooltip flex items-center'>
+            <input
+              type='checkbox'
+              id='hasPrintedInput'
+              checked={hasPrinted}
+              onChange={(e) => handleHasPrintedChange(e.target.checked)}
+              className='relative h-7 w-[3.25rem] cursor-pointer rounded-full border-transparent bg-gray-300 !bg-none p-px text-transparent transition-colors duration-200 ease-in-out before:inline-block before:h-6 before:w-6 before:translate-x-0 before:transform before:rounded-full before:bg-white before:shadow before:ring-0 before:transition before:duration-200 before:ease-in-out checked:border-primary-blue checked:bg-primary-blue checked:text-primary-blue checked:before:translate-x-full focus:ring-primary-blue focus:checked:border-primary-blue disabled:pointer-events-none disabled:opacity-50'
+            />
+          </div>
+        </Cell>
 
         <Cell className='flex justify-end gap-4'>
           <Button onClick={() => handlePrintDetails(`${data._id}`)}>

@@ -23,6 +23,10 @@ export default secureApi(async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(404).json({ error: 'Deer not found' });
     }
 
+    if (data.hasPrinted !== undefined) {
+      deer.hasPrinted = data.hasPrinted;
+    }
+
     // Add your update logic here.
     // For example, you might want to prevent certain fields from being updated or handle specific updates in a custom way.
 

@@ -14,6 +14,9 @@ const fields: DeerSchemaT = {
   firstName: {
     type: String,
   },
+  hasPrinted: {
+    type: String,
+  },
   lastName: {
     type: String,
   },

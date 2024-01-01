@@ -56,6 +56,7 @@ const CheckInForm = () => {
     const data = {
       ...formData,
       _id: formData.tagNumber + Date.now(),
+      hasPrinted: 'false',
       name: formData.firstName + ' ' + formData.lastName,
       totalPrice: totalPrice,
     };

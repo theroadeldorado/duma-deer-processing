@@ -26,6 +26,7 @@ const cols = [
   { id: 'tagNumber', label: 'Tag Number' },
   { id: 'amountPaid', label: 'Amount Paid' },
   { id: 'totalAmount', label: 'Total' },
+  { id: 'hasPrinted', label: 'Printed' },
   { id: 'actions', label: '', sortable: false },
 ];
 
