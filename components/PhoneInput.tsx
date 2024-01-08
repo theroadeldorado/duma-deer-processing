@@ -15,7 +15,7 @@ type InputProps = {
 };
 
 // Function to format phone number
-function formatPhoneNumber(value) {
+function formatPhoneNumber(value: string) {
   const phoneNumber = value.replace(/\D/g, ''); // Remove non-numeric characters
   const phoneNumberMatch = phoneNumber.match(/(\d{1,3})(\d{0,3})(\d{0,4})/);
 
