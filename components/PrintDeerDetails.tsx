@@ -202,13 +202,18 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
                   <h4 className='text-xl font-bold shrink-0 grow'>$50 Deposit:</h4>
                   <span className='block w-full border-b border-gray-900 border-dashed grow'></span>
                 </div>
+                <div className='flex items-start gap-6 text-[14px]'>
+                  <span>Cash</span>
+                  <span>Check</span>
+                  <span>CC</span>
+                </div>
               </div>
               <div className='flex-1'>
                 <div className='flex items-end gap-1 my-4'>
                   <h4 className='text-xl font-bold shrink-0 grow'>Balance Due:</h4>
                   <span className='block w-full border-b border-gray-900 border-dashed grow'></span>
                 </div>
-                <div className='flex items-start gap-6 text-[14px]'>
+                <div className='flex items-start gap-6  text-[14px]'>
                   <span>Cash</span>
                   <span>Check</span>
                   <span>
