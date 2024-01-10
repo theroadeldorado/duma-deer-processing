@@ -345,7 +345,7 @@ const CheckInForm = () => {
                       required
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
-                        { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
+                        // { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
                         { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
                         { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
                         { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
@@ -363,7 +363,7 @@ const CheckInForm = () => {
                       required
                       options={[
                         { value: 'Steaks', label: 'Steaks' },
-                        { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
+                        // { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
                         { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
                         { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
                         { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
@@ -380,7 +380,7 @@ const CheckInForm = () => {
                       />
                     </div>
                   )}
-                  <div>
+                  <div className='col-span-2'>
                     <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
                       <Image
                         src={'/whole-muscle-jerky.jpg'}
@@ -392,12 +392,12 @@ const CheckInForm = () => {
                     </div>
                     <p className='mb-1 w-full text-center font-bold'>Whole Muscle Jerky</p>
                   </div>
-                  <div>
+                  {/* <div>
                     <div className='relative aspect-[3/2] w-full overflow-hidden rounded-md'>
-                      <Image src={'/ham.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'Ham'} />
+                      <Image src={'/ham.jpg'} className='absolute inset-0 object-cover w-full h-full' width={500} height={300} alt={'Ham'} />
                     </div>
-                    <p className='mb-1 w-full text-center font-bold'>Smoked Whole Ham</p>
-                  </div>
+                    <p className='w-full mb-1 font-bold text-center'>Smoked Whole Ham</p>
+                  </div> */}
                 </div>
               </div>
 
