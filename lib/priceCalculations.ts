@@ -52,6 +52,7 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
 
       if (config) {
         const price = calculatePriceForItem(key, formValues[key]);
+        console.log(total, price, key, formValues[key]);
         total += price;
       }
     } else {
@@ -75,7 +76,7 @@ function isProductConfigKey(key: string): key is StringKeyOf<ProductsConfig> {
 }
 
 export function calculatePriceForItem(key: string, value: any): number {
-  if (!isProductConfigKey(key)) {
+  if (!isProductConfigKey(key) || value === undefined || value === 'false') {
     return 0;
   }
 
