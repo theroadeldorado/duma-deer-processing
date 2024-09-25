@@ -61,7 +61,7 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     required: true,
     options: [
-      { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed', price: 95 },
+      { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed', price: 110 },
       { value: 'Boneless', label: 'Boneless, 100% deboned already', price: 0 },
     ],
     defaultValue: 'Skinned, Cut, Ground, Vacuum packed',
@@ -267,11 +267,11 @@ export const productsConfig: ProductsConfig = {
         options: [{ name: 'countryBreakfastSausage', label: 'Country Breakfast Sausage', price: 15, pricePer5lb: true }],
       },
       {
-        name: 'Baby Links',
+        name: 'Breakfast Linkss',
         image: '/baby_link.jpg',
         options: [
-          { name: 'babyLinksCountry', label: 'Country Baby Links', price: 20, pricePer5lb: true },
-          { name: 'babyLinksMaple', label: 'Maple Baby Links', price: 20, pricePer5lb: true },
+          { name: 'babyLinksCountry', label: 'Country Breakfast Linkss', price: 20, pricePer5lb: true },
+          { name: 'babyLinksMaple', label: 'Maple Breakfast Linkss', price: 20, pricePer5lb: true },
         ],
       },
       {
@@ -343,7 +343,7 @@ export const productsConfig: ProductsConfig = {
   },
   babyLinksNotes: {
     section: 'Specialty Meats Notes',
-    label: 'Baby Links Notes',
+    label: 'Breakfast Linkss Notes',
     type: 'textarea',
     notes: true,
   },

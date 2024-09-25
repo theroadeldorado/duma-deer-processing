@@ -85,13 +85,13 @@ export default function EditDeer({ data, isNew }: Props) {
 
   return (
     <AdminPage title={isNew ? 'Add Deer' : 'Edit Deer'}>
-      <Form form={form} onSubmit={handleSubmit} className='max-w-6xl mx-auto bg-white shadow sm:rounded-lg'>
-        <div className='flex flex-col gap-12 p-8 mb-20'>
+      <Form form={form} onSubmit={handleSubmit} className='mx-auto max-w-6xl bg-white shadow sm:rounded-lg'>
+        <div className='mb-20 flex flex-col gap-12 p-8'>
           <div className='grid grid-cols-4 gap-4'>
-            <div className='flex items-center justify-start col-span-4 gap-4 mb-10'>
-              <div className='w-full h-px mt-2 bg-gray-500 grow'></div>
-              <h3 className='font-bold text-center shrink-0 text-display-md'>Customer Information</h3>
-              <div className='w-full h-px mt-2 bg-gray-500 grow'></div>
+            <div className='col-span-4 mb-10 flex items-center justify-start gap-4'>
+              <div className='mt-2 h-px w-full grow bg-gray-500'></div>
+              <h3 className='shrink-0 text-center text-display-md font-bold'>Customer Information</h3>
+              <div className='mt-2 h-px w-full grow bg-gray-500'></div>
             </div>
             <div className='hidden'>
               <Input label='Full Address' type='text' name='fullAddress' />
@@ -201,14 +201,14 @@ export default function EditDeer({ data, isNew }: Props) {
             />
           </div>
           <div className='flex flex-col'>
-            <div className='flex items-center justify-start gap-4 mb-10'>
-              <div className='w-full h-px mt-2 bg-gray-500 grow'></div>
-              <h3 className='font-bold text-center shrink-0 text-display-md'>Cutting Instructions</h3>
-              <div className='w-full h-px mt-2 bg-gray-500 grow'></div>
+            <div className='mb-10 flex items-center justify-start gap-4'>
+              <div className='mt-2 h-px w-full grow bg-gray-500'></div>
+              <h3 className='shrink-0 text-center text-display-md font-bold'>Cutting Instructions</h3>
+              <div className='mt-2 h-px w-full grow bg-gray-500'></div>
             </div>
 
             {/* Skinned or Boneless */}
-            <div className='grid grid-cols-2 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
+            <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div>
                 <p className='mb-1 font-bold'>Skinned or Boneless</p>
                 <Select
@@ -216,7 +216,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   name='skinnedOrBoneless'
                   required
                   options={[
-                    { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                    { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $110' },
                     { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                   ]}
                 ></Select>
@@ -225,7 +225,7 @@ export default function EditDeer({ data, isNew }: Props) {
             </div>
 
             {/* Cape, Hide and Euro Mount */}
-            <div className='grid grid-cols-2 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
+            <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div className='flex flex-col gap-2'>
                 <div>
                   <p className='mb-1 font-bold'>Cape for shoulder mount</p>
@@ -278,7 +278,7 @@ export default function EditDeer({ data, isNew }: Props) {
             </div>
 
             {/* Back Straps */}
-            <div className='grid grid-cols-2 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
+            <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div>
                 <p className='mb-1 font-bold'>Back Straps Preference</p>
                 <Select
@@ -298,7 +298,7 @@ export default function EditDeer({ data, isNew }: Props) {
             </div>
 
             {/* Hind Legs Preference */}
-            <div className='grid grid-cols-2 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
+            <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div>
                 <p className='mb-1 font-bold'>Hind Leg 1 Preference</p>
                 <Select
@@ -350,7 +350,7 @@ export default function EditDeer({ data, isNew }: Props) {
             </div>
 
             {/* Roasts Preference */}
-            <div className='grid grid-cols-2 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
+            <div className='mb-10 grid grid-cols-2 gap-4 border-b border-dashed border-gray-300 pb-10'>
               <div>
                 <p className='mb-1 font-bold'>Roasts Preference</p>
                 <Select
@@ -369,13 +369,13 @@ export default function EditDeer({ data, isNew }: Props) {
           </div>
 
           <div className='flex items-center justify-start '>
-            <div className='w-full h-px mt-2 bg-gray-500 grow'></div>
-            <h3 className='font-bold text-center shrink-0 text-display-md'>Specialty Meats</h3>
-            <div className='w-full h-px mt-2 bg-gray-500 grow'></div>
+            <div className='mt-2 h-px w-full grow bg-gray-500'></div>
+            <h3 className='shrink-0 text-center text-display-md font-bold'>Specialty Meats</h3>
+            <div className='mt-2 h-px w-full grow bg-gray-500'></div>
           </div>
 
           <div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed '>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10 '>
               <Select
                 name='groundVenison'
                 label='Ground Venison Options'
@@ -403,8 +403,8 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`groundVenisonNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Trail Bologna</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Trail Bologna</h3>
               <SpecialtyMeat
                 admin
                 name='Trail Bologna'
@@ -419,15 +419,15 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`trailBolognaNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Garlic Ring Bologna</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Garlic Ring Bologna</h3>
               <SpecialtyMeat admin name='Garlic Ring Bologna' options={[{ name: 'garlicRingBologna', label: '', price: 20 }]} />
               <div className='col-span-3'>
                 <Textarea rows={2} name={`garlicRingBolognaNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Summer Sausage</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Summer Sausage</h3>
               <SpecialtyMeat
                 admin
                 name='Summer Sausage'
@@ -440,15 +440,15 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`summerSausageNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Smoked Kielbasa Sausage</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Smoked Kielbasa Sausage</h3>
               <SpecialtyMeat admin name='Smoked Kielbasa Sausage' options={[{ name: 'smokedKielbasaSausage', label: '', price: 17.5 }]} />
               <div className='col-span-3'>
                 <Textarea rows={2} name={`smokedKielbasaSausageNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Italian Sausage Links</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Italian Sausage Links</h3>
               <SpecialtyMeat
                 admin
                 name='Italian Sausage Links'
@@ -461,8 +461,8 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`italianSausageLinksNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Country Breakfast Sausage</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Country Breakfast Sausage</h3>
               <SpecialtyMeat
                 admin
                 name='Country Breakfast Sausage'
@@ -472,11 +472,11 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`countryBreakfastSausageNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Baby Links</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Breakfast Linkss</h3>
               <SpecialtyMeat
                 admin
-                name='Baby Links'
+                name='Breakfast Linkss'
                 options={[
                   { name: 'babyLinksCountry', label: 'Country', price: 20 },
                   { name: 'babyLinksMaple', label: 'Maple', price: 20 },
@@ -486,8 +486,8 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`babyLinksNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Snack Sticks</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Snack Sticks</h3>
               <SpecialtyMeat
                 admin
                 name='Snack Sticks'
@@ -503,8 +503,8 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`snackSticksNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Hot Dogs</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Hot Dogs</h3>
               <SpecialtyMeat
                 admin
                 name='Hot Dogs'
@@ -518,8 +518,8 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`hotDogsNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='grid grid-cols-3 gap-4 pb-10 mb-10 border-b border-gray-300 border-dashed'>
-              <h3 className='col-span-3 font-bold shrink-0 text-display-xs'>Jerky Restructured</h3>
+            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Jerky Restructured</h3>
               <SpecialtyMeat
                 admin
                 name='Jerky Restructured'
@@ -539,14 +539,14 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Input label='Amount Paid' type='number' name='amountPaid' />
               </div>
               <div>
-                <p className='mb-1 font-bold text-right'>Estimated Price</p>
-                <p className='text-xl text-right'>${calculatedPrice.toFixed(2)}</p>
+                <p className='mb-1 text-right font-bold'>Estimated Price</p>
+                <p className='text-right text-xl'>${calculatedPrice.toFixed(2)}</p>
               </div>
             </div>
           </div>
         </div>
 
-        <div className='flex px-4 py-3 rounded-b-lg bg-gray-50 sm:px-6'>
+        <div className='flex rounded-b-lg bg-gray-50 px-4 py-3 sm:px-6'>
           {!isNew && (
             <Button color='danger' onClick={deleteDeer} disabled={del.isLoading}>
               Delete Entry

@@ -224,7 +224,7 @@ const CheckInForm = () => {
                     name='skinnedOrBoneless'
                     required
                     options={[
-                      { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $95' },
+                      { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $110' },
                       { value: 'Boneless', label: 'Boneless, 100% deboned already' },
                     ]}
                     defaultValue='Skinned, Cut, Ground, Vacuum packed'
@@ -538,11 +538,11 @@ const CheckInForm = () => {
               />
 
               <SpecialtyMeat
-                name='Baby Links'
+                name='Breakfast Linkss'
                 image='/baby_link.jpg'
                 options={[
-                  { name: 'babyLinksCountry', label: 'Country Baby Links', price: 20 },
-                  { name: 'babyLinksMaple', label: 'Maple Baby Links', price: 20 },
+                  { name: 'babyLinksCountry', label: 'Country Breakfast Linkss', price: 20 },
+                  { name: 'babyLinksMaple', label: 'Maple Breakfast Linkss', price: 20 },
                 ]}
               />
 
