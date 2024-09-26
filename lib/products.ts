@@ -267,11 +267,11 @@ export const productsConfig: ProductsConfig = {
         options: [{ name: 'countryBreakfastSausage', label: 'Country Breakfast Sausage', price: 15, pricePer5lb: true }],
       },
       {
-        name: 'Breakfast Linkss',
+        name: 'Breakfast Links',
         image: '/baby_link.jpg',
         options: [
-          { name: 'babyLinksCountry', label: 'Country Breakfast Linkss', price: 20, pricePer5lb: true },
-          { name: 'babyLinksMaple', label: 'Maple Breakfast Linkss', price: 20, pricePer5lb: true },
+          { name: 'babyLinksCountry', label: 'Country Breakfast Links', price: 20, pricePer5lb: true },
+          { name: 'babyLinksMaple', label: 'Maple Breakfast Links', price: 20, pricePer5lb: true },
         ],
       },
       {
