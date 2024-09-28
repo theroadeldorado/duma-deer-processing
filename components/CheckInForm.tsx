@@ -80,15 +80,6 @@ const CheckInForm = () => {
           <div className='absolute left-0 top-0 h-4 bg-primary-blue transition-all duration-500' style={{ width: `${progressPercentage}%` }}></div>
         </div>
 
-        <div className='relative h-64 w-full'>
-          <Image src='/snack_sticks.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='Snack Sticks' />
-          <div className='absolute inset-0 flex items-center justify-center'>
-            <Button type='button' className='text-2xl rounded-lg bg-blue-500 px-8 py-4 text-white' onClick={() => setCurrentStep(1)}>
-              Start Order
-            </Button>
-          </div>
-        </div>
-
         <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
           {currentStep === 1 && (
             <>
