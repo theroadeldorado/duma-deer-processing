@@ -12,7 +12,7 @@ type PropTypes = {
 
 export default function AdminPage({ title, children }: PropTypes) {
   return (
-    <div className='flex min-h-screen flex-col'>
+    <div className='flex min-h-[2000px] flex-col'>
       <Title>{title}</Title>
       <header className='mb-8 border-b border-gray-200 bg-white text-lg print:hidden'>
         <div className='flex items-center justify-between gap-8 px-8 py-4'>
