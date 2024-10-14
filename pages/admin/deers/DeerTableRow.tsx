@@ -103,14 +103,14 @@ export default function DeerTableRow({ data }: Props) {
         <Cell>{state}</Cell>
         <Cell>{zip}</Cell>
         <Cell>{tagNumber}</Cell>
-        <Cell
+        {/* <Cell
           className={clsx({
             'font-bold !text-[#008000]': amountPaid && totalPrice && amountPaid === totalPrice,
             'font-bold !text-red-500': amountPaid && totalPrice && amountPaid < totalPrice,
           })}
         >
           {amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}
-        </Cell>
+        </Cell> */}
         <Cell className='font-bold'>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
         <Cell>
           <div className='hs-tooltip flex items-center'>
