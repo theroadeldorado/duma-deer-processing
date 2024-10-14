@@ -22,7 +22,7 @@ export default secureApi(async (req, res) => {
   if (search) {
     query.$or = [
       { name: { $regex: search, $options: 'i' } },
-      { phoneNumber: { $regex: search, $options: 'i' } },
+      { phone: { $regex: search, $options: 'i' } },
       { tagNumber: { $regex: search, $options: 'i' } },
     ];
   }
