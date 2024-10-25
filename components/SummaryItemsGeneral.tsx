@@ -29,13 +29,13 @@ const SummaryItemsGeneral: React.FC<SummaryItemsGeneralProps> = ({ values, secti
             label === 'Address' && 'col-start-1 row-start-2',
             label === 'Phone' && 'col-start-2 row-start-1',
             label === 'Communication' && 'col-start-2 row-start-2',
-            label === 'Tag Number' && 'col-start-3 row-start-1',
+            label === 'Confirmation Number' && 'col-start-3 row-start-1',
             label === 'State Harvested In' && 'col-start-3 row-start-2'
           )}
         >
           {!print && <p className='text-xs font-bold uppercase'>{label}: </p>}
           <p className={clsx(print ? 'text-xl font-bold leading-[1.2]' : 'text-md')}>
-            {print && label === 'Tag Number' && <span className='font-bold'>Tag#: </span>}
+            {print && label === 'Confirmation Number' && <span className='font-bold'>Tag#: </span>}
 
             {renderWithLineBreaks(String(value))}
           </p>

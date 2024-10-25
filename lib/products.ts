@@ -45,7 +45,7 @@ export const productsConfig: ProductsConfig = {
     options: ['Call', 'Text'],
     section: 'Contact Information',
   },
-  tagNumber: { label: 'Tag Number', type: 'text', required: true, section: 'Contact Information' },
+  tagNumber: { label: 'Confirmation Number', type: 'text', required: true, section: 'Contact Information' },
   buckOrDoe: {
     label: 'Deer Type',
     type: 'select',

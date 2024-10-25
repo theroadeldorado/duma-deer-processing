@@ -23,7 +23,7 @@ const cols = [
   { id: 'city', label: 'City' },
   { id: 'state', label: 'State' },
   { id: 'zip', label: 'Zip' },
-  { id: 'tagNumber', label: 'Tag Number' },
+  { id: 'tagNumber', label: 'Confirmation Number' },
   // { id: 'amountPaid', label: 'Amount Paid' },
   { id: 'totalAmount', label: 'Total' },
   { id: 'hasPrinted', label: 'Printed' },

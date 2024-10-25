@@ -125,7 +125,7 @@ const CheckInForm = () => {
                 />
               </div>
 
-              <Input label='Tag Number' type='text' name='tagNumber' required />
+              <Input label='Confirmation Number' type='text' name='tagNumber' required />
               <div className='grid grid-cols-2 gap-4'>
                 <Select
                   name='stateHarvestedIn'

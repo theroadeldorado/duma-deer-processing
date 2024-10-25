@@ -28,7 +28,7 @@ export const Deer = {
   name: z.string().min(1, 'Name is required'),
   firstName: z.string().min(1, 'Name is required'),
   lastName: z.string().min(1, 'Name is required'),
-  tagNumber: z.string().min(1, 'Tag Number is required'),
+  tagNumber: z.string().min(1, 'Confirmation Number is required'),
   address: z.string().min(1, 'Address is required'),
   city: z.string().min(1, 'City is required'),
   state: z.string().min(1, 'State is required'),

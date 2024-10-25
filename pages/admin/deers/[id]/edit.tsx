@@ -117,7 +117,7 @@ export default function EditDeer({ data, isNew }: Props) {
               }}
             />
 
-            <Input label='Tag Number' type='text' name='tagNumber' required />
+            <Input label='Confirmation Number' type='text' name='tagNumber' required />
             <Select
               name='stateHarvestedIn'
               label='State Harvested In'
