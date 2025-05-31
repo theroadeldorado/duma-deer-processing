@@ -5,7 +5,7 @@ import { WizardProps } from './types';
 import Form from '@/components/Form';
 import Button from '@/components/Button';
 
-export default function FormWizard({ steps, onSubmit, initialData }: WizardProps) {
+export default function FormWizard({ steps, onSubmit, initialData, onFormDataChange }: WizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
   const form = useForm<DeerT>({
     defaultValues: initialData,
@@ -19,6 +19,23 @@ export default function FormWizard({ steps, onSubmit, initialData }: WizardProps
   const deerType = form.watch('buckOrDoe');
   const quickOption = form.watch('quickOption');
   const groundVenisonAmount = form.watch('groundVenisonAmount');
+
+  // Watch all form values to detect if any data has been entered
+  const formValues = form.watch();
+
+  // Check if form has any data
+  useEffect(() => {
+    if (!onFormDataChange) return;
+
+    const hasData = Object.values(formValues).some((value) => {
+      if (typeof value === 'string') return value.trim() !== '';
+      if (typeof value === 'number') return value !== 0;
+      if (Array.isArray(value)) return value.length > 0;
+      return value != null;
+    });
+
+    onFormDataChange(hasData);
+  }, [formValues, onFormDataChange]);
 
   // Function to get shortened step names
   const getShortStepName = (title: string): string => {

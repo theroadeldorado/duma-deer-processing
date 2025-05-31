@@ -4,7 +4,11 @@ import { DeerT } from '@/lib/types';
 import { calculateTotalPrice } from '@/lib/priceCalculations';
 import { FormWizard, stepConfigs } from './checkin-steps';
 
-const CheckInFormRefactored = () => {
+interface CheckInFormRefactoredProps {
+  onFormDataChange?: (hasData: boolean) => void;
+}
+
+const CheckInFormRefactored = ({ onFormDataChange }: CheckInFormRefactoredProps) => {
   const router = useRouter();
 
   const mutation = useMutation({
@@ -29,7 +33,7 @@ const CheckInFormRefactored = () => {
     mutation.mutate(data as any);
   };
 
-  return <FormWizard steps={stepConfigs} onSubmit={handleSubmit} initialData={{}} />;
+  return <FormWizard steps={stepConfigs} onSubmit={handleSubmit} initialData={{}} onFormDataChange={onFormDataChange} />;
 };
 
 export default CheckInFormRefactored;

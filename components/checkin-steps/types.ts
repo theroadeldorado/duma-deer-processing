@@ -16,4 +16,5 @@ export interface WizardProps {
   steps: StepConfig[];
   onSubmit: (data: DeerT) => void;
   initialData?: Partial<DeerT>;
+  onFormDataChange?: (hasData: boolean) => void;
 }
