@@ -75,6 +75,9 @@ const fields: DeerSchemaT = {
   skinnedBonelessNotes: {
     type: String,
   },
+  quickOption: {
+    type: String,
+  },
   backStrapsPreference: {
     type: String,
   },
@@ -100,6 +103,12 @@ const fields: DeerSchemaT = {
     type: String,
   },
   hindLegJerky2: {
+    type: String,
+  },
+  hindLegJerky1Flavor: {
+    type: String,
+  },
+  hindLegJerky2Flavor: {
     type: String,
   },
   roast: {

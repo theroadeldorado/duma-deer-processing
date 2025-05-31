@@ -101,6 +101,16 @@ export const productsConfig: ProductsConfig = {
     type: 'textarea',
     notes: true,
   },
+  quickOption: {
+    section: 'Processing Options',
+    label: 'Processing Option',
+    type: 'select',
+    options: [
+      { value: 'Customize Cuts and Specialty Meats', label: 'Customize Cuts and Specialty Meats' },
+      { value: 'Grind Everything - All Burger', label: 'Grind Everything - All Burger' },
+    ],
+    defaultValue: 'Customize Cuts and Specialty Meats',
+  },
   backStrapNotes: {
     section: 'Cutting Instructions Notes',
     label: 'Back Strap Notes',
@@ -158,6 +168,16 @@ export const productsConfig: ProductsConfig = {
       { value: 'Teriyaki', label: 'Teriyaki' },
     ],
   },
+  hindLegJerky1Flavor: {
+    section: 'Cutting Instructions',
+    label: 'Hind Leg 1 Jerky Flavor',
+    type: 'select',
+    options: [
+      { value: 'Mild', label: 'Mild' },
+      { value: 'Hot', label: 'Hot' },
+      { value: 'Teriyaki', label: 'Teriyaki' },
+    ],
+  },
   hindLegPreference2: {
     section: 'Cutting Instructions',
     label: 'Hind Leg 2 Preference',
@@ -176,6 +196,16 @@ export const productsConfig: ProductsConfig = {
   hindLegJerky2: {
     section: 'Cutting Instructions',
     label: 'Whole Muscle Jerky (leg 2)',
+    type: 'select',
+    options: [
+      { value: 'Mild', label: 'Mild' },
+      { value: 'Hot', label: 'Hot' },
+      { value: 'Teriyaki', label: 'Teriyaki' },
+    ],
+  },
+  hindLegJerky2Flavor: {
+    section: 'Cutting Instructions',
+    label: 'Hind Leg 2 Jerky Flavor',
     type: 'select',
     options: [
       { value: 'Mild', label: 'Mild' },
