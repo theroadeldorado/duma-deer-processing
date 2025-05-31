@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import getSecureServerSideProps from '@/lib/getSecureServerSideProps';
-import CheckInForm from '@/components/CheckInForm';
+import CheckInFormRefactored from '@/components/CheckInFormRefactored';
 import Title from '@/components/Title';
 import Logo from '@/components/Logo';
 
@@ -13,7 +13,7 @@ export default function UserDashboard() {
       </div>
 
       <div className='bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10'>
-        <CheckInForm />
+        <CheckInFormRefactored />
       </div>
     </div>
   );

@@ -32,6 +32,8 @@ export type DeerT = {
   stateHarvestedIn: string;
   hasPrinted: string;
   buckOrDoe: string;
+  dateHarvested?: string;
+  dateFound?: string;
   cape?: boolean | string | number;
   hide?: boolean | string | number;
   euroMount?: string;
