@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { DeerT } from '@/lib/types';
 import { WizardProps } from './types';
 import Form from '@/components/Form';
+import Button from '@/components/Button';
 
 export default function FormWizard({ steps, onSubmit, initialData }: WizardProps) {
   const [currentStep, setCurrentStep] = useState(0);
@@ -18,6 +19,24 @@ export default function FormWizard({ steps, onSubmit, initialData }: WizardProps
   const deerType = form.watch('buckOrDoe');
   const quickOption = form.watch('quickOption');
   const groundVenisonAmount = form.watch('groundVenisonAmount');
+
+  // Function to get shortened step names
+  const getShortStepName = (title: string): string => {
+    const shortNames: Record<string, string> = {
+      'Customer Information': 'Customer',
+      'Deer Information': 'Deer Info',
+      'Processing Type': 'Processing',
+      'Cape & Hide Options': 'Cape/Hide',
+      'Quick Options': 'Quick',
+      'Back Straps': 'Straps',
+      'Hind Legs': 'Legs',
+      Roasts: 'Roasts',
+      'Ground Venison': 'Ground',
+      'Specialty Meats': 'Specialty',
+      Summary: 'Summary',
+    };
+    return shortNames[title] || title;
+  };
 
   // Function to check if a step should be skipped
   const shouldSkipStep = (stepIndex: number) => {
@@ -126,30 +145,141 @@ export default function FormWizard({ steps, onSubmit, initialData }: WizardProps
     onSubmit(data);
   };
 
-  // Calculate progress excluding skipped steps
-  const totalSteps = steps.filter((_, index) => !shouldSkipStep(index)).length;
-  const completedSteps = steps.slice(0, currentStep + 1).filter((_, index) => !shouldSkipStep(index)).length;
-  const progressPercentage = ((completedSteps - 1) / (totalSteps - 1)) * 100;
+  // Get step status for display
+  const getStepStatus = (stepIndex: number) => {
+    if (shouldSkipStep(stepIndex)) return 'skipped';
+    if (stepIndex < currentStep) return 'completed';
+    if (stepIndex === currentStep) return 'current';
+    return 'upcoming';
+  };
+
+  // Check if we're on first/last step (excluding skipped steps)
+  const isFirstStep = getPreviousStep(currentStep) < 0;
+  const isLastStep = getNextStep(currentStep) >= steps.length;
 
   return (
     <div className='flex flex-col gap-6'>
-      {/* Progress Bar */}
-      <div className='relative h-4 w-full overflow-hidden rounded-full bg-tan-1'>
-        <div
-          className='absolute left-0 top-0 h-4 bg-primary-blue transition-all duration-500'
-          style={{ width: `${Math.max(0, progressPercentage)}%` }}
-        />
+      {/* Step Indicators */}
+      <div className='flex flex-wrap items-center justify-center'>
+        {steps.map((step, index) => {
+          const status = getStepStatus(index);
+          if (status === 'skipped') return null;
+
+          return (
+            <div key={step.id} className='flex items-start'>
+              <div className='flex flex-col items-center'>
+                <div
+                  className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                    status === 'completed'
+                      ? 'bg-primary-blue text-white'
+                      : status === 'current'
+                      ? 'bg-primary-blue text-white ring-2 ring-primary-blue ring-offset-2'
+                      : 'bg-tan-1 text-gray-600'
+                  }`}
+                >
+                  {status === 'completed' ? (
+                    <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
+                      <path
+                        fillRule='evenodd'
+                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                        clipRule='evenodd'
+                      />
+                    </svg>
+                  ) : (
+                    <span className='inline-block -translate-y-px'>{index + 1}</span>
+                  )}
+                </div>
+                <span className={`mt-1 inline-block text-xs font-medium ${status === 'current' ? 'text-primary-blue' : 'text-gray-600'}`}>
+                  {getShortStepName(step.title)}
+                </span>
+              </div>
+              {index < steps.length - 1 && getStepStatus(index + 1) !== 'skipped' && (
+                <div className={`mx-1 mt-4 h-0.5 w-4 ${status === 'completed' ? 'bg-primary-blue' : 'bg-tan-1'}`} />
+              )}
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Top Navigation Buttons */}
+      <div className='flex hidden justify-between gap-4'>
+        {/* Back Button */}
+        {!isFirstStep ? (
+          <Button type='button' className='inline-flex gap-2' onClick={handleBack}>
+            <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>
+              <path
+                fill='currentColor'
+                d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'
+              />
+            </svg>
+            Back
+          </Button>
+        ) : (
+          <div></div>
+        )}
+
+        {/* Next/Submit Button */}
+        {!isLastStep ? (
+          <Button type='button' className='inline-flex gap-2' onClick={handleNext}>
+            Next
+            <svg className='rotate-180' xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>
+              <path
+                fill='currentColor'
+                d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'
+              />
+            </svg>
+          </Button>
+        ) : (
+          <>
+            <Button type='submit' className='inline-flex origin-right scale-150 gap-2 bg-[#E28532]'>
+              Submit Order
+            </Button>
+            <div className='w-20'></div>
+          </>
+        )}
       </div>
 
       <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
-        <CurrentStepComponent
-          form={form}
-          onNext={handleNext}
-          onBack={handleBack}
-          isFirstStep={currentStep === 0}
-          isLastStep={currentStep === steps.length - 1}
-        />
+        <CurrentStepComponent form={form} />
       </Form>
+
+      {/* Bottom Navigation Buttons */}
+      <div className='flex justify-between gap-4'>
+        {/* Back Button */}
+        {!isFirstStep ? (
+          <Button type='button' className='inline-flex gap-2' onClick={handleBack}>
+            <svg xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>
+              <path
+                fill='currentColor'
+                d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'
+              />
+            </svg>
+            Back
+          </Button>
+        ) : (
+          <div></div>
+        )}
+
+        {/* Next/Submit Button */}
+        {!isLastStep ? (
+          <Button type='button' className='inline-flex gap-2' onClick={handleNext}>
+            Next
+            <svg className='rotate-180' xmlns='http://www.w3.org/2000/svg' height='1em' viewBox='0 0 320 512'>
+              <path
+                fill='currentColor'
+                d='M9.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l192 192c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L77.3 256 246.6 86.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192z'
+              />
+            </svg>
+          </Button>
+        ) : (
+          <>
+            <Button type='submit' className='inline-flex origin-right scale-150 gap-2 bg-[#E28532]'>
+              Submit Order
+            </Button>
+            <div className='w-20'></div>
+          </>
+        )}
+      </div>
     </div>
   );
 }

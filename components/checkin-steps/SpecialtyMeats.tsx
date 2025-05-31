@@ -213,7 +213,7 @@ export default function SpecialtyMeats(props: StepProps) {
                 <div className='absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-200 group-hover:bg-opacity-30' />
                 {/* Text overlay */}
                 <div className='absolute inset-0 flex flex-col items-center justify-center p-4 text-center'>
-                  <h3 className='text-3xl font-bold leading-snug text-white'>{meat.name}</h3>
+                  <h3 className='text-display-xs  font-bold leading-snug text-white'>{meat.name}</h3>
                   {hasSelections(meat.name) && (
                     <div className='mt-2 rounded-full bg-blue-500 px-2 py-1 text-xs font-medium text-white'>{getSelectionSummary(meat.name)}</div>
                   )}
