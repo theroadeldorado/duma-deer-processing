@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import SpecialtyMeat from '@/components/SpecialtyMeat';
 import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
@@ -92,11 +92,11 @@ const specialtyMeats: SpecialtyMeatOption[] = [
 ];
 
 const weightOptions = [
-  { value: 'false', label: 'None', description: 'Skip this item' },
-  { value: '5', label: '5 lbs', description: 'Small batch' },
-  { value: '10', label: '10 lbs', description: 'Medium batch' },
-  { value: '15', label: '15 lbs', description: 'Large batch' },
-  { value: '20', label: '20 lbs', description: 'Extra large batch' },
+  { value: 'false', label: 'None' },
+  { value: '5', label: '5 lbs' },
+  { value: '10', label: '10 lbs' },
+  { value: '15', label: '15 lbs' },
+  { value: '20', label: '20 lbs' },
   { value: 'Evenly', label: 'Evenly Distribute', description: 'Split available meat evenly' },
 ];
 
@@ -106,15 +106,35 @@ export default function SpecialtyMeats(props: StepProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selections, setSelections] = useState<Record<string, any>>({});
 
-  // Watch all form values to track selections
-  const formValues = form.watch();
+  // Create a list of all field names to watch
+  const fieldNames = useMemo(() => {
+    return specialtyMeats.flatMap((meat) => meat.options.map((option) => option.name.replace(/\s+/g, '')));
+  }, []);
+
+  // Watch specific fields instead of all form values
+  const formValues = form.watch(fieldNames);
+
+  // Lock/unlock body scroll when modal opens/closes
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup function to ensure scroll is restored if component unmounts
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isModalOpen]);
 
   // Update selections when form values change
   useEffect(() => {
     const newSelections: Record<string, any> = {};
     specialtyMeats.forEach((meat) => {
       meat.options.forEach((option) => {
-        const value = formValues[option.name.replace(/\s+/g, '')];
+        const fieldName = option.name.replace(/\s+/g, '');
+        const value = formValues[fieldNames.indexOf(fieldName)];
         if (value && value !== 'false' && value !== '0') {
           if (!newSelections[meat.name]) {
             newSelections[meat.name] = [];
@@ -128,7 +148,7 @@ export default function SpecialtyMeats(props: StepProps) {
       });
     });
     setSelections(newSelections);
-  }, [formValues]);
+  }, [formValues, fieldNames]);
 
   const openModal = (meat: SpecialtyMeatOption) => {
     setSelectedMeat(meat);
@@ -193,7 +213,7 @@ export default function SpecialtyMeats(props: StepProps) {
                 <div className='absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-200 group-hover:bg-opacity-30' />
                 {/* Text overlay */}
                 <div className='absolute inset-0 flex flex-col items-center justify-center p-4 text-center'>
-                  <h3 className='md:text-base text-sm font-bold leading-snug text-white lg:text-lg'>{meat.name}</h3>
+                  <h3 className='text-3xl font-bold leading-snug text-white'>{meat.name}</h3>
                   {hasSelections(meat.name) && (
                     <div className='mt-2 rounded-full bg-blue-500 px-2 py-1 text-xs font-medium text-white'>{getSelectionSummary(meat.name)}</div>
                   )}
@@ -206,15 +226,15 @@ export default function SpecialtyMeats(props: StepProps) {
         {/* Selection Summary */}
         {Object.keys(selections).length > 0 && (
           <div className='rounded-md border border-gray-200 bg-gray-50 p-4'>
-            <h3 className='mb-3 text-lg font-semibold text-gray-800'>Selected Specialty Meats</h3>
-            <div className='space-y-2'>
+            <h3 className='mb-3 text-center text-lg font-semibold text-gray-800'>Selected Specialty Meats</h3>
+            <div className='grid grid-cols-2 gap-4'>
               {Object.entries(selections).map(([meatName, items]: [string, any]) => (
-                <div key={meatName} className='flex items-center justify-between'>
-                  <span className='font-medium text-gray-700'>{meatName}:</span>
-                  <span className='text-gray-600'>
+                <div key={meatName} className='flex flex-col items-start justify-start'>
+                  <span className='shrink-0 font-medium text-gray-700'>{meatName}:</span>
+                  <span className='ml-3 flex flex-col items-start justify-start text-sm text-gray-600'>
                     {items.map((item: any, index: number) => (
-                      <span key={index} className='mr-2'>
-                        {item.label} ({item.amount === 'Evenly' ? 'Evenly Distribute' : `${item.amount}lbs`}){index < items.length - 1 && ', '}
+                      <span key={index}>
+                        {item.label} ({item.amount === 'Evenly' ? 'Evenly Distribute' : `${item.amount}lbs`}){index < items.length - 1 && ''}
                       </span>
                     ))}
                   </span>
@@ -266,7 +286,7 @@ export default function SpecialtyMeats(props: StepProps) {
                             <div className='flex items-center justify-between'>
                               <div>
                                 <div className='text-sm font-semibold text-gray-900'>{weight.label}</div>
-                                <div className='text-xs text-gray-600'>{weight.description}</div>
+                                {weight.description && <div className='text-xs text-gray-600'>{weight.description}</div>}
                               </div>
                               <div
                                 className={`h-4 w-4 rounded-full border-2 transition-all ${
@@ -282,6 +302,17 @@ export default function SpecialtyMeats(props: StepProps) {
                     </div>
                   </div>
                 ))}
+              </div>
+
+              {/* Confirm and Close Button */}
+              <div className='sticky bottom-0 mt-8 border-t bg-white pt-4'>
+                <button
+                  type='button'
+                  onClick={closeModal}
+                  className='w-full rounded-lg bg-[#E28532] px-6 py-3 font-semibold text-white transition-colors duration-200 hover:bg-[#E28532]/90 focus:outline-none focus:ring-2 focus:ring-[#E28532] focus:ring-offset-2'
+                >
+                  Confirm and Close
+                </button>
               </div>
             </div>
           </div>
