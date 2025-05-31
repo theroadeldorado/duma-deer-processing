@@ -3,13 +3,12 @@ import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
-import { useState } from 'react';
 
 export default function HindLegs(props: StepProps) {
   const form = useFormContext();
 
   const hindLegOptions = [
-    { value: 'Steaks', label: 'Steaks', description: 'Cut into steaks' },
+    { value: 'Steaks', label: 'Steaks', description: 'approx. 4-6 steaks per leg' },
     { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', description: 'Jerky - $35' },
     { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
   ];
@@ -76,48 +75,6 @@ export default function HindLegs(props: StepProps) {
     form.setValue('tenderizedCubedSteaks', value);
   };
 
-  const ButtonGroup = ({
-    options,
-    selectedValue,
-    onSelect,
-    title,
-  }: {
-    options: any[];
-    selectedValue: string;
-    onSelect: (value: string) => void;
-    title: string;
-  }) => (
-    <div className='space-y-3'>
-      <p className='text-center text-lg font-bold'>{title}</p>
-      <div className='grid grid-cols-2 gap-2'>
-        {options.map((option) => (
-          <button
-            key={option.value}
-            type='button'
-            onClick={() => onSelect(option.value)}
-            className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-              selectedValue === option.value ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
-            }`}
-          >
-            <div className='flex items-center justify-between'>
-              <div>
-                <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                <div className='text-xs text-gray-600'>{option.description}</div>
-              </div>
-              <div
-                className={`h-4 w-4 rounded-full border-2 transition-all ${
-                  selectedValue === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
-                }`}
-              >
-                {selectedValue === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-              </div>
-            </div>
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-
   return (
     <StepWrapper {...props} title='Hind Legs'>
       <div className='flex flex-col items-center justify-center gap-6'>
@@ -132,38 +89,191 @@ export default function HindLegs(props: StepProps) {
         </div>
 
         <div className='grid w-full grid-cols-1 gap-6 md:grid-cols-2'>
-          <ButtonGroup options={hindLegOptions} selectedValue={hindLeg1} onSelect={handleHindLeg1Select} title='Hind Leg (1) Preference' />
+          {/* Hind Leg 1 */}
+          <div className='w-full'>
+            <p className='mb-4 text-center text-lg font-bold'>Hind Leg (1) Preference</p>
+            <div className='grid grid-cols-2 gap-2'>
+              {hindLegOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type='button'
+                  onClick={() => handleHindLeg1Select(option.value)}
+                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                    hindLeg1 === option.value ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                      <div className='text-xs text-gray-600'>{option.description}</div>
+                    </div>
+                    <div
+                      className={`h-4 w-4 rounded-full border-2 transition-all ${
+                        hindLeg1 === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                      }`}
+                    >
+                      {hindLeg1 === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
 
-          <ButtonGroup options={hindLegOptions} selectedValue={hindLeg2} onSelect={handleHindLeg2Select} title='Hind Leg (2) Preference' />
+          {/* Hind Leg 2 */}
+          <div className='w-full'>
+            <p className='mb-4 text-center text-lg font-bold'>Hind Leg (2) Preference</p>
+            <div className='grid grid-cols-2 gap-2'>
+              {hindLegOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type='button'
+                  onClick={() => handleHindLeg2Select(option.value)}
+                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                    hindLeg2 === option.value ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                      <div className='text-xs text-gray-600'>{option.description}</div>
+                    </div>
+                    <div
+                      className={`h-4 w-4 rounded-full border-2 transition-all ${
+                        hindLeg2 === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                      }`}
+                    >
+                      {hindLeg2 === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
         </div>
 
         {/* Jerky Flavor Options */}
         {hindLeg1 === 'Whole Muscle Jerky' && (
           <div className='w-full'>
-            <ButtonGroup
-              options={jerkyFlavorOptions}
-              selectedValue={jerky1Flavor || ''}
-              onSelect={handleJerky1FlavorSelect}
-              title='Hind Leg (1) Jerky Flavor'
-            />
+            <p className='mb-4 text-center text-lg font-bold'>Hind Leg (1) Jerky Flavor</p>
+            <div className='grid grid-cols-2 gap-2'>
+              {jerkyFlavorOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type='button'
+                  onClick={() => handleJerky1FlavorSelect(option.value)}
+                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                    (jerky1Flavor || '') === option.value
+                      ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                      : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                      <div className='text-xs text-gray-600'>{option.description}</div>
+                    </div>
+                    <div
+                      className={`h-4 w-4 rounded-full border-2 transition-all ${
+                        (jerky1Flavor || '') === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                      }`}
+                    >
+                      {(jerky1Flavor || '') === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
         {hindLeg2 === 'Whole Muscle Jerky' && (
           <div className='w-full'>
-            <ButtonGroup
-              options={jerkyFlavorOptions}
-              selectedValue={jerky2Flavor || ''}
-              onSelect={handleJerky2FlavorSelect}
-              title='Hind Leg (2) Jerky Flavor'
-            />
+            <p className='mb-4 text-center text-lg font-bold'>Hind Leg (2) Jerky Flavor</p>
+            <div className='grid grid-cols-2 gap-2'>
+              {jerkyFlavorOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type='button'
+                  onClick={() => handleJerky2FlavorSelect(option.value)}
+                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                    (jerky2Flavor || '') === option.value
+                      ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                      : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                      <div className='text-xs text-gray-600'>{option.description}</div>
+                    </div>
+                    <div
+                      className={`h-4 w-4 rounded-full border-2 transition-all ${
+                        (jerky2Flavor || '') === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                      }`}
+                    >
+                      {(jerky2Flavor || '') === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Jerky Information - Show if either leg is jerky */}
+        {(hindLeg1 === 'Whole Muscle Jerky' || hindLeg2 === 'Whole Muscle Jerky') && (
+          <div className='w-full rounded-md border border-blue-200 bg-blue-50 p-4'>
+            <div className='flex'>
+              <div className='flex-shrink-0'>
+                <svg className='h-5 w-5 text-blue-400' viewBox='0 0 20 20' fill='currentColor'>
+                  <path
+                    fillRule='evenodd'
+                    d='M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z'
+                    clipRule='evenodd'
+                  />
+                </svg>
+              </div>
+              <div className='ml-3'>
+                <h3 className='text-sm font-medium text-blue-800'>Jerky Information</h3>
+                <div className='mt-2 text-sm text-blue-700'>
+                  <p>Jerky weight per leg 5lb. Cooking loss on whole muscle jerky 65%</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
         {/* Tenderized Cubed Steaks - Only show if steaks selected */}
         {showTenderizedOption && (
           <div className='w-full'>
-            <ButtonGroup options={tenderizedOptions} selectedValue={tenderized} onSelect={handleTenderizedSelect} title='Tenderized Cubed Steaks' />
+            <p className='mb-4 text-center text-lg font-bold'>Tenderized Cubed Steaks</p>
+            <div className='grid grid-cols-2 gap-2'>
+              {tenderizedOptions.map((option) => (
+                <button
+                  key={option.value}
+                  type='button'
+                  onClick={() => handleTenderizedSelect(option.value)}
+                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                    tenderized === option.value ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                      <div className='text-xs text-gray-600'>{option.description}</div>
+                    </div>
+                    <div
+                      className={`h-4 w-4 rounded-full border-2 transition-all ${
+                        tenderized === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                      }`}
+                    >
+                      {tenderized === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         )}
 
