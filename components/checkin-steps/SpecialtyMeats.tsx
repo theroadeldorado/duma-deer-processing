@@ -106,10 +106,10 @@ export default function SpecialtyMeats(props: StepProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selections, setSelections] = useState<Record<string, any>>({});
 
-  // Create a list of all field names to watch
+  // Create a stable list of all field names to watch
   const fieldNames = useMemo(() => {
     return specialtyMeats.flatMap((meat) => meat.options.map((option) => option.name.replace(/\s+/g, '')));
-  }, []);
+  }, []); // Empty dependency array since specialtyMeats is static
 
   // Watch specific fields instead of all form values
   const formValues = form.watch(fieldNames);
@@ -131,21 +131,26 @@ export default function SpecialtyMeats(props: StepProps) {
   // Update selections when form values change
   useEffect(() => {
     const newSelections: Record<string, any> = {};
-    specialtyMeats.forEach((meat) => {
-      meat.options.forEach((option) => {
-        const fieldName = option.name.replace(/\s+/g, '');
-        const value = formValues[fieldNames.indexOf(fieldName)];
-        if (value && value !== 'false' && value !== '0') {
-          if (!newSelections[meat.name]) {
-            newSelections[meat.name] = [];
+    fieldNames.forEach((fieldName, index) => {
+      const value = formValues[index];
+      if (value && value !== 'false' && value !== '0') {
+        // Find the meat and option that corresponds to this field
+        for (const meat of specialtyMeats) {
+          for (const option of meat.options) {
+            if (option.name.replace(/\s+/g, '') === fieldName) {
+              if (!newSelections[meat.name]) {
+                newSelections[meat.name] = [];
+              }
+              newSelections[meat.name].push({
+                label: option.label,
+                amount: value,
+                price: option.price,
+              });
+              break;
+            }
           }
-          newSelections[meat.name].push({
-            label: option.label,
-            amount: value,
-            price: option.price,
-          });
         }
-      });
+      }
     });
     setSelections(newSelections);
   }, [formValues, fieldNames]);

@@ -36,7 +36,11 @@ export default function HindLegs(props: StepProps) {
 
   const handleHindLeg1Select = (value: string) => {
     form.setValue('hindLegPreference1', value);
-    if (value !== 'Whole Muscle Jerky') {
+    if (value === 'Whole Muscle Jerky') {
+      // Default to Mild when jerky is selected
+      form.setValue('hindLegJerky1Flavor', 'Mild');
+    } else {
+      // Clear jerky flavor when jerky is not selected
       form.setValue('hindLegJerky1Flavor', '');
     }
     // Reset tenderized option if no steaks selected
@@ -47,7 +51,11 @@ export default function HindLegs(props: StepProps) {
 
   const handleHindLeg2Select = (value: string) => {
     form.setValue('hindLegPreference2', value);
-    if (value !== 'Whole Muscle Jerky') {
+    if (value === 'Whole Muscle Jerky') {
+      // Default to Mild when jerky is selected
+      form.setValue('hindLegJerky2Flavor', 'Mild');
+    } else {
+      // Clear jerky flavor when jerky is not selected
       form.setValue('hindLegJerky2Flavor', '');
     }
     // Reset tenderized option if no steaks selected

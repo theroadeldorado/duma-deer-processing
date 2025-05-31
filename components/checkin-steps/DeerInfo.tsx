@@ -90,6 +90,7 @@ export default function DeerInfo(props: StepProps) {
             name='dateHarvested'
             placeholder='Select date deer was harvested'
             max={new Date().toISOString().split('T')[0]} // Can't be in the future
+            required
           />
           <Input
             label='Date Found'
@@ -98,6 +99,7 @@ export default function DeerInfo(props: StepProps) {
             placeholder='Select date deer was found'
             min={dateHarvested || undefined} // Can't be before harvest date
             max={new Date().toISOString().split('T')[0]} // Can't be in the future
+            required
           />
         </div>
 

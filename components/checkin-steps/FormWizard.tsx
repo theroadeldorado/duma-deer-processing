@@ -29,9 +29,9 @@ export default function FormWizard({ steps, onSubmit, initialData }: WizardProps
       'Cape & Hide Options': 'Cape/Hide',
       'Quick Options': 'Quick',
       'Back Straps': 'Straps',
-      'Hind Legs': 'Legs',
+      'Hind Legs': 'Steaks',
       Roasts: 'Roasts',
-      'Ground Venison': 'Ground',
+      'Ground Venison': 'Burger',
       'Specialty Meats': 'Specialty',
       Summary: 'Summary',
     };
