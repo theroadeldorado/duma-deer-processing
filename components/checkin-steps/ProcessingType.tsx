@@ -17,6 +17,11 @@ export default function ProcessingType(props: StepProps) {
       label: 'Boneless',
       description: '100% deboned already - No cost',
     },
+    {
+      value: 'Donation',
+      label: 'Donation',
+      description: '$0 - Donated deer processing',
+    },
   ];
 
   const handleOptionSelect = (value: string) => {

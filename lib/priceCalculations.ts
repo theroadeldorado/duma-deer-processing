@@ -45,6 +45,11 @@ export function findSpecialtyMeatConfig(optionName: string): { section: string; 
 }
 
 export function calculateTotalPrice(formValues: DeerInputT): number {
+  // If this is a donation, return $0
+  if (formValues.skinnedOrBoneless === 'Donation') {
+    return 0;
+  }
+
   let total = 0;
   for (const key in formValues) {
     if (key in productsConfig) {

@@ -19,6 +19,7 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
   const deerType = form.watch('buckOrDoe');
   const quickOption = form.watch('quickOption');
   const groundVenisonAmount = form.watch('groundVenisonAmount');
+  const processingType = form.watch('skinnedOrBoneless');
 
   // Watch all form values to detect if any data has been entered
   const formValues = form.watch();
@@ -64,6 +65,21 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
       return true;
     }
 
+    // Skip all detail steps if "Donation" is selected
+    if (processingType === 'Donation') {
+      if (
+        step.title === 'Cape & Hide Options' ||
+        step.title === 'Quick Options' ||
+        step.title === 'Back Straps' ||
+        step.title === 'Hind Legs' ||
+        step.title === 'Roasts' ||
+        step.title === 'Ground Venison' ||
+        step.title === 'Specialty Meats'
+      ) {
+        return true;
+      }
+    }
+
     // Skip detail steps if "Grind Everything" is selected
     if (quickOption === 'Grind Everything - All Burger') {
       if (
@@ -89,6 +105,11 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
   const getNextStep = (fromStep: number): number => {
     let nextStep = fromStep + 1;
 
+    // Special case: if we're on ProcessingType and "Donation" is selected, jump to Summary
+    if (steps[fromStep].title === 'Processing Type' && processingType === 'Donation') {
+      return steps.findIndex((step) => step.title === 'Summary');
+    }
+
     // Special case: if we're on Quick Options and "Grind Everything" is selected, jump to Summary
     if (steps[fromStep].title === 'Quick Options' && quickOption === 'Grind Everything - All Burger') {
       return steps.findIndex((step) => step.title === 'Summary');
@@ -109,6 +130,11 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
   // Function to find the previous valid step
   const getPreviousStep = (fromStep: number): number => {
     let prevStep = fromStep - 1;
+
+    // Special case: if we're on Summary and came from ProcessingType with "Donation"
+    if (steps[fromStep].title === 'Summary' && processingType === 'Donation') {
+      return steps.findIndex((step) => step.title === 'Processing Type');
+    }
 
     // Special case: if we're on Summary and came from Quick Options with "Grind Everything"
     if (steps[fromStep].title === 'Summary' && quickOption === 'Grind Everything - All Burger') {
