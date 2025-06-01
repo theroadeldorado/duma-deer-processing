@@ -45,6 +45,11 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
   let hasEvenly = false;
 
   Object.keys(formValues).forEach((key) => {
+    // Skip quickOption from appearing in summary
+    if (key === 'quickOption') {
+      return;
+    }
+
     const value = formValues[key];
     const config = productsConfig[key] as Product | undefined;
 
