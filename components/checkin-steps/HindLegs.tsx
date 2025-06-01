@@ -21,7 +21,7 @@ export default function HindLegs(props: StepProps) {
 
   const tenderizedOptions = [
     { value: 'false', label: 'No', description: 'Standard steaks' },
-    { value: 'true', label: 'Yes', description: 'Tenderized cubed - $20' },
+    { value: 'true', label: 'Yes', description: 'Tenderized cubed steaks - $5' },
   ];
 
   const hindLeg1 = form.watch('hindLegPreference1') || 'Grind';
@@ -152,74 +152,120 @@ export default function HindLegs(props: StepProps) {
           </div>
         </div>
 
-        {/* Jerky Flavor Options */}
-        {hindLeg1 === 'Whole Muscle Jerky' && (
-          <div className='w-full'>
-            <p className='mb-4 text-center text-lg font-bold'>Hind Leg (1) Jerky Flavor</p>
-            <div className='grid grid-cols-2 gap-2'>
-              {jerkyFlavorOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type='button'
-                  onClick={() => handleJerky1FlavorSelect(option.value)}
-                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-                    (jerky1Flavor || '') === option.value
-                      ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
-                      : 'border-gray-300 bg-white hover:border-[#E28532]/50'
-                  }`}
-                >
-                  <div className='flex items-center justify-between'>
-                    <div>
-                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                      <div className='text-xs text-gray-600'>{option.description}</div>
+        <div className='grid w-full grid-cols-1 gap-6 md:grid-cols-2'>
+          {/* Tenderized Cubed Steaks - Only show if steaks selected */}
+          {showTenderizedOption && (
+            <div
+              className={`w-full md:row-start-1 ${
+                hindLeg1 === 'Steaks' && hindLeg2 === 'Steaks'
+                  ? 'md:col-span-full'
+                  : hindLeg1 === 'Steaks'
+                  ? 'md:col-start-1'
+                  : hindLeg2 === 'Steaks'
+                  ? 'md:col-start-2'
+                  : ''
+              }`}
+            >
+              <p className='mb-4 text-center text-lg font-bold'>Tenderized Cubed Steaks</p>
+              <div className='grid grid-cols-2 gap-2'>
+                {tenderizedOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type='button'
+                    onClick={() => handleTenderizedSelect(option.value)}
+                    className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                      tenderized === option.value
+                        ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                        : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    <div className='flex items-center justify-between'>
+                      <div>
+                        <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                        <div className='text-xs text-gray-600'>{option.description}</div>
+                      </div>
+                      <div
+                        className={`h-4 w-4 rounded-full border-2 transition-all ${
+                          tenderized === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                        }`}
+                      >
+                        {tenderized === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                      </div>
                     </div>
-                    <div
-                      className={`h-4 w-4 rounded-full border-2 transition-all ${
-                        (jerky1Flavor || '') === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
-                      }`}
-                    >
-                      {(jerky1Flavor || '') === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-                    </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+          {/* Jerky Flavor Options */}
+          {hindLeg1 === 'Whole Muscle Jerky' && (
+            <div className='w-full'>
+              <p className='mb-4 text-center text-lg font-bold'>Hind Leg (1) Jerky Flavor</p>
+              <div className='grid grid-cols-2 gap-2'>
+                {jerkyFlavorOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type='button'
+                    onClick={() => handleJerky1FlavorSelect(option.value)}
+                    className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                      (jerky1Flavor || '') === option.value
+                        ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                        : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    <div className='flex items-center justify-between'>
+                      <div>
+                        <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                        <div className='text-xs text-gray-600'>{option.description}</div>
+                      </div>
+                      <div
+                        className={`h-4 w-4 rounded-full border-2 transition-all ${
+                          (jerky1Flavor || '') === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                        }`}
+                      >
+                        {(jerky1Flavor || '') === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
-        {hindLeg2 === 'Whole Muscle Jerky' && (
-          <div className='w-full'>
-            <p className='mb-4 text-center text-lg font-bold'>Hind Leg (2) Jerky Flavor</p>
-            <div className='grid grid-cols-2 gap-2'>
-              {jerkyFlavorOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type='button'
-                  onClick={() => handleJerky2FlavorSelect(option.value)}
-                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-                    (jerky2Flavor || '') === option.value
-                      ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
-                      : 'border-gray-300 bg-white hover:border-[#E28532]/50'
-                  }`}
-                >
-                  <div className='flex items-center justify-between'>
-                    <div>
-                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                      <div className='text-xs text-gray-600'>{option.description}</div>
+          {hindLeg2 === 'Whole Muscle Jerky' && (
+            <div className='w-full md:col-start-2'>
+              <p className='mb-4 text-center text-lg font-bold'>Hind Leg (2) Jerky Flavor</p>
+              <div className='grid grid-cols-2 gap-2'>
+                {jerkyFlavorOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type='button'
+                    onClick={() => handleJerky2FlavorSelect(option.value)}
+                    className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                      (jerky2Flavor || '') === option.value
+                        ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                        : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    <div className='flex items-center justify-between'>
+                      <div>
+                        <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                        <div className='text-xs text-gray-600'>{option.description}</div>
+                      </div>
+                      <div
+                        className={`h-4 w-4 rounded-full border-2 transition-all ${
+                          (jerky2Flavor || '') === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                        }`}
+                      >
+                        {(jerky2Flavor || '') === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                      </div>
                     </div>
-                    <div
-                      className={`h-4 w-4 rounded-full border-2 transition-all ${
-                        (jerky2Flavor || '') === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
-                      }`}
-                    >
-                      {(jerky2Flavor || '') === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-                    </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
 
         {/* Jerky Information - Show if either leg is jerky */}
         {(hindLeg1 === 'Whole Muscle Jerky' || hindLeg2 === 'Whole Muscle Jerky') && (
@@ -240,39 +286,6 @@ export default function HindLegs(props: StepProps) {
                   <p>Jerky weight per leg 5lb. Cooking loss on whole muscle jerky 65%</p>
                 </div>
               </div>
-            </div>
-          </div>
-        )}
-
-        {/* Tenderized Cubed Steaks - Only show if steaks selected */}
-        {showTenderizedOption && (
-          <div className='w-full'>
-            <p className='mb-4 text-center text-lg font-bold'>Tenderized Cubed Steaks</p>
-            <div className='grid grid-cols-2 gap-2'>
-              {tenderizedOptions.map((option) => (
-                <button
-                  key={option.value}
-                  type='button'
-                  onClick={() => handleTenderizedSelect(option.value)}
-                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-                    tenderized === option.value ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
-                  }`}
-                >
-                  <div className='flex items-center justify-between'>
-                    <div>
-                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                      <div className='text-xs text-gray-600'>{option.description}</div>
-                    </div>
-                    <div
-                      className={`h-4 w-4 rounded-full border-2 transition-all ${
-                        tenderized === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
-                      }`}
-                    >
-                      {tenderized === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-                    </div>
-                  </div>
-                </button>
-              ))}
             </div>
           </div>
         )}

@@ -50,7 +50,6 @@ export default function GroundVenison(props: StepProps) {
                 options={[
                   { value: 'Remainder', label: 'Remainder of meat' },
                   { value: 'None - All specialty meat', label: 'None - All specialty meat' },
-                  { value: 'All Burger - No Specialty Meat', label: 'All Burger - No Specialty Meat' },
                 ]}
                 defaultValue='Remainder'
               />
@@ -82,10 +81,10 @@ export default function GroundVenison(props: StepProps) {
         )}
 
         {groundVenisonAmountSelected === 'None - All specialty meat' && (
-          <div className='border-green-200 bg-green-50 rounded-md border p-4'>
+          <div className='rounded-md border border-blue-200 bg-blue-50 p-4'>
             <div className='flex'>
               <div className='flex-shrink-0'>
-                <svg className='text-green-400 h-5 w-5' viewBox='0 0 20 20' fill='currentColor'>
+                <svg className='h-5 w-5 text-blue-400' viewBox='0 0 20 20' fill='currentColor'>
                   <path
                     fillRule='evenodd'
                     d='M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z'
@@ -94,8 +93,8 @@ export default function GroundVenison(props: StepProps) {
                 </svg>
               </div>
               <div className='ml-3'>
-                <h3 className='text-green-800 text-sm font-medium'>All Specialty Meat</h3>
-                <div className='text-green-700 mt-2 text-sm'>
+                <h3 className='text-sm font-medium text-blue-800'>All Specialty Meat</h3>
+                <div className='mt-2 text-sm text-blue-700'>
                   <p>No ground venison will be made. All meat will be processed into specialty products on the next page.</p>
                 </div>
               </div>

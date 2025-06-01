@@ -24,6 +24,43 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
   // Watch all form values to detect if any data has been entered
   const formValues = form.watch();
 
+  // Initialize all specialty meat fields to 'false' (None) by default
+  useEffect(() => {
+    const specialtyMeatFields = [
+      'trailBolognaRegular',
+      'trailBolognaCheddarCheese',
+      'trailBolognaHotPepperJackCheese',
+      'garlicRingBologna',
+      'summerSausageMild',
+      'summerSausageHot',
+      'smokedKielbasaSausage',
+      'italianSausageLinksMild',
+      'italianSausageLinksHot',
+      'countryBreakfastSausage',
+      'babyLinksCountry',
+      'babyLinksMaple',
+      'snackSticksRegular',
+      'snackSticksCheddarCheese',
+      'snackSticksHotPepperJackCheese',
+      'snackSticksHotHotPepperJackCheese',
+      'snackSticksHoneyBBQ',
+      'hotDogsRegular',
+      'hotDogsCheddarCheese',
+      'hotDogsHotPepperJackCheese',
+      'jerkyRestructuredHot',
+      'jerkyRestructuredMild',
+      'jerkyRestructuredTeriyaki',
+    ];
+
+    specialtyMeatFields.forEach((fieldName) => {
+      const currentValue = form.getValues(fieldName);
+      // Only set default if the field is undefined or null
+      if (currentValue === undefined || currentValue === null) {
+        form.setValue(fieldName, 'false');
+      }
+    });
+  }, [form]);
+
   // Check if form has any data
   useEffect(() => {
     if (!onFormDataChange) return;

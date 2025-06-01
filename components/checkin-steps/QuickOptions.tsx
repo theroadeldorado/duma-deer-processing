@@ -34,28 +34,28 @@ export default function QuickOptions(props: StepProps) {
       form.setValue('groundVenisonAmount', 'Remainder of meat');
 
       // Clear all specialty meat selections
-      form.setValue('trailBolognaRegular', '0');
-      form.setValue('trailBolognaCheddarCheese', '0');
-      form.setValue('trailBolognaHotPepperJackCheese', '0');
-      form.setValue('garlicRingBologna', '0');
-      form.setValue('summerSausageMild', '0');
-      form.setValue('summerSausageHot', '0');
-      form.setValue('smokedKielbasaSausage', '0');
-      form.setValue('italianSausageLinksMild', '0');
-      form.setValue('italianSausageLinksHot', '0');
-      form.setValue('countryBreakfastSausage', '0');
-      form.setValue('babyLinksCountry', '0');
-      form.setValue('babyLinksMaple', '0');
-      form.setValue('snackSticksRegular', '0');
-      form.setValue('snackSticksCheddarCheese', '0');
-      form.setValue('snackSticksHotPepperJackCheese', '0');
-      form.setValue('snackSticksHoneyBBQ', '0');
-      form.setValue('hotDogsRegular', '0');
-      form.setValue('hotDogsCheddarCheese', '0');
-      form.setValue('hotDogsHotPepperJackCheese', '0');
-      form.setValue('jerkyRestructuredHot', '0');
-      form.setValue('jerkyRestructuredMild', '0');
-      form.setValue('jerkyRestructuredTeriyaki', '0');
+      form.setValue('trailBolognaRegular', 'false');
+      form.setValue('trailBolognaCheddarCheese', 'false');
+      form.setValue('trailBolognaHotPepperJackCheese', 'false');
+      form.setValue('garlicRingBologna', 'false');
+      form.setValue('summerSausageMild', 'false');
+      form.setValue('summerSausageHot', 'false');
+      form.setValue('smokedKielbasaSausage', 'false');
+      form.setValue('italianSausageLinksMild', 'false');
+      form.setValue('italianSausageLinksHot', 'false');
+      form.setValue('countryBreakfastSausage', 'false');
+      form.setValue('babyLinksCountry', 'false');
+      form.setValue('babyLinksMaple', 'false');
+      form.setValue('snackSticksRegular', 'false');
+      form.setValue('snackSticksCheddarCheese', 'false');
+      form.setValue('snackSticksHotPepperJackCheese', 'false');
+      form.setValue('snackSticksHoneyBBQ', 'false');
+      form.setValue('hotDogsRegular', 'false');
+      form.setValue('hotDogsCheddarCheese', 'false');
+      form.setValue('hotDogsHotPepperJackCheese', 'false');
+      form.setValue('jerkyRestructuredHot', 'false');
+      form.setValue('jerkyRestructuredMild', 'false');
+      form.setValue('jerkyRestructuredTeriyaki', 'false');
     }
   };
 

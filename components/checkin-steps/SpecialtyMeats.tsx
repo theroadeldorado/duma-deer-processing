@@ -111,6 +111,17 @@ export default function SpecialtyMeats(props: StepProps) {
     return specialtyMeats.flatMap((meat) => meat.options.map((option) => option.name.replace(/\s+/g, '')));
   }, []); // Empty dependency array since specialtyMeats is static
 
+  // Initialize all specialty meat fields to 'false' (None) by default
+  useEffect(() => {
+    fieldNames.forEach((fieldName) => {
+      const currentValue = form.getValues(fieldName);
+      // Only set default if the field is undefined or null
+      if (currentValue === undefined || currentValue === null) {
+        form.setValue(fieldName, 'false');
+      }
+    });
+  }, [form, fieldNames]);
+
   // Watch specific fields instead of all form values
   const formValues = form.watch(fieldNames);
 
@@ -133,7 +144,8 @@ export default function SpecialtyMeats(props: StepProps) {
     const newSelections: Record<string, any> = {};
     fieldNames.forEach((fieldName, index) => {
       const value = formValues[index];
-      if (value && value !== 'false' && value !== '0') {
+      // Only include if value exists and is not 'false', '0', empty string, null, or undefined
+      if (value && value !== 'false' && value !== '0' && value !== '' && value !== null && value !== undefined) {
         // Find the meat and option that corresponds to this field
         for (const meat of specialtyMeats) {
           for (const option of meat.options) {
