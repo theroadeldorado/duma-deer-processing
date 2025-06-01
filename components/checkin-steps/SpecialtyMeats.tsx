@@ -48,7 +48,7 @@ const specialtyMeats: SpecialtyMeatOption[] = [
     ],
   },
   {
-    name: 'Country Breakfast Sausage',
+    name: 'BULK Country Breakfast Sausage',
     image: '/country_breakfast_sausage.jpg',
     options: [{ name: 'countryBreakfastSausage', label: 'Country Breakfast Sausage', price: 15 }],
   },

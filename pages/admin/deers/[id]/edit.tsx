@@ -71,6 +71,10 @@ export default function EditDeer({ data, isNew }: Props) {
   });
 
   const deleteDeer = async () => {
+    if (!data?._id) {
+      console.error('No deer ID available for deletion');
+      return;
+    }
     if (!confirm('Are you sure you want to permanently delete this deer record?')) return;
     del.mutate({});
   };
@@ -218,6 +222,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   options={[
                     { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $110' },
                     { value: 'Boneless', label: 'Boneless, 100% deboned already' },
+                    { value: 'Donation', label: 'Donation - $0' },
                   ]}
                 ></Select>
               </div>

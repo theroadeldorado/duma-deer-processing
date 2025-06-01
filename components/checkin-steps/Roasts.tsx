@@ -8,15 +8,15 @@ export default function Roasts(props: StepProps) {
   const form = useFormContext();
 
   const roastOptions = [
-    { value: 'Roasts', label: 'Roasts', description: 'Keep as roasts' },
     { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
+    { value: 'Roasts', label: 'Roasts', description: 'Keep as roasts' },
   ];
 
   const handleOptionSelect = (value: string) => {
     form.setValue('roast', value);
   };
 
-  const selectedValue = form.watch('roast') || 'Roasts';
+  const selectedValue = form.watch('roast') || 'Grind';
 
   return (
     <StepWrapper {...props} title='Roasts'>

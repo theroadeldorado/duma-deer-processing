@@ -8,18 +8,18 @@ export default function BackStraps(props: StepProps) {
   const form = useFormContext();
 
   const backStrapOptions = [
+    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
     { value: 'Cut in half', label: 'Cut in half', description: 'Cut into two pieces' },
     { value: 'Sliced', label: 'Sliced', description: 'Cut into thin slices' },
     { value: 'Butterfly', label: 'Butterfly', description: 'Butterflied for quick cooking' },
     { value: 'Whole', label: 'Whole', description: 'Keep as whole pieces' },
-    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
   ];
 
   const handleOptionSelect = (value: string) => {
     form.setValue('backStrapsPreference', value);
   };
 
-  const selectedValue = form.watch('backStrapsPreference') || 'Cut in half';
+  const selectedValue = form.watch('backStrapsPreference') || 'Grind';
 
   return (
     <StepWrapper {...props} title='Back Straps'>

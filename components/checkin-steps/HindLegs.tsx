@@ -8,9 +8,9 @@ export default function HindLegs(props: StepProps) {
   const form = useFormContext();
 
   const hindLegOptions = [
+    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
     { value: 'Steaks', label: 'Steaks', description: 'approx. 4-6 steaks per leg' },
     { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', description: 'Jerky - $35' },
-    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
   ];
 
   const jerkyFlavorOptions = [
@@ -24,8 +24,8 @@ export default function HindLegs(props: StepProps) {
     { value: 'true', label: 'Yes', description: 'Tenderized cubed - $20' },
   ];
 
-  const hindLeg1 = form.watch('hindLegPreference1') || 'Steaks';
-  const hindLeg2 = form.watch('hindLegPreference2') || 'Steaks';
+  const hindLeg1 = form.watch('hindLegPreference1') || 'Grind';
+  const hindLeg2 = form.watch('hindLegPreference2') || 'Grind';
   const tenderized = form.watch('tenderizedCubedSteaks') || 'false';
   const jerky1Flavor = form.watch('hindLegJerky1Flavor');
   const jerky2Flavor = form.watch('hindLegJerky2Flavor');

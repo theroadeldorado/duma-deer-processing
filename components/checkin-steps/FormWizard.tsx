@@ -208,6 +208,10 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
           const status = getStepStatus(index);
           if (status === 'skipped') return null;
 
+          // Find the next visible step
+          const nextVisibleStepIndex = steps.findIndex((_, nextIndex) => nextIndex > index && getStepStatus(nextIndex) !== 'skipped');
+          const hasNextVisibleStep = nextVisibleStepIndex !== -1;
+
           return (
             <div key={step.id} className='flex items-start'>
               <div className='flex flex-col items-center'>
@@ -236,9 +240,7 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
                   {getShortStepName(step.title)}
                 </span>
               </div>
-              {index < steps.length - 1 && getStepStatus(index + 1) !== 'skipped' && (
-                <div className={`mx-1 mt-4 h-0.5 w-4 ${status === 'completed' ? 'bg-primary-blue' : 'bg-tan-1'}`} />
-              )}
+              {hasNextVisibleStep && <div className={`mx-1 mt-4 h-0.5 w-4 ${status === 'completed' ? 'bg-primary-blue' : 'bg-tan-1'}`} />}
             </div>
           );
         })}
