@@ -2,6 +2,7 @@ import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
 import Image from 'next/image';
 import { useFormContext } from 'react-hook-form';
+import { useEffect } from 'react';
 
 export default function ProcessingType(props: StepProps) {
   const form = useFormContext();
@@ -23,6 +24,14 @@ export default function ProcessingType(props: StepProps) {
       description: '$0 - Donated deer processing',
     },
   ];
+
+  // Set default value when component mounts
+  useEffect(() => {
+    const currentValue = form.getValues('skinnedOrBoneless');
+    if (currentValue === undefined || currentValue === null || currentValue === '') {
+      form.setValue('skinnedOrBoneless', 'Skinned, Cut, Ground, Vacuum packed');
+    }
+  }, [form]);
 
   const handleOptionSelect = (value: string) => {
     form.setValue('skinnedOrBoneless', value);

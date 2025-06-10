@@ -73,7 +73,7 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     options: [
       { value: '', label: 'Select Option' },
-      { value: 'Cape for shoulder mount', label: 'Additional', price: 50 },
+      { value: 'Cape for shoulder mount', label: 'Keep Cape', price: 50 },
       { value: 'Shoulder mount', label: 'Shoulder Mount', price: 111 },
     ],
   },

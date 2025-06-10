@@ -2,11 +2,21 @@ import Select from '@/components/Select';
 import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
 import Image from 'next/image';
+import { useEffect } from 'react';
 
 export default function CapeHideOptions(props: StepProps) {
   const { form } = props;
   const capeSelected = form.watch('cape');
   const hideSelected = form.watch('hide');
+
+  // Disable euroMount when shoulder mount is selected
+  useEffect(() => {
+    if (capeSelected === 'Shoulder mount') {
+      form.setValue('euroMount', 'false');
+    }
+  }, [capeSelected, form]);
+
+  const isEuroMountDisabled = capeSelected === 'Shoulder mount';
 
   return (
     <StepWrapper {...props} title='Cape & Hide Options'>
@@ -22,7 +32,7 @@ export default function CapeHideOptions(props: StepProps) {
               name='cape'
               options={[
                 { value: '', label: 'Select Option' },
-                { value: 'Cape for shoulder mount', label: 'Additional $50' },
+                { value: 'Cape for shoulder mount', label: 'Keep Cape - $50' },
                 { value: 'Shoulder mount', label: 'Shoulder Mount - $111' },
               ]}
             />
@@ -43,7 +53,7 @@ export default function CapeHideOptions(props: StepProps) {
             />
           </div>
 
-          <div className='flex flex-col items-center justify-start gap-1'>
+          <div className={`flex flex-col items-center justify-start gap-1 ${isEuroMountDisabled ? 'pointer-events-none opacity-50' : ''}`}>
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
               <Image src='/euro-mount.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='euro-mount' />
             </div>
@@ -78,7 +88,9 @@ export default function CapeHideOptions(props: StepProps) {
                 <h3 className='text-sm font-medium text-blue-800'>Cape Information</h3>
                 <div className='mt-2 text-sm text-blue-700'>
                   {capeSelected === 'Cape for shoulder mount' && <p>NOT MOUNTED just the cape for a mounting.</p>}
-                  {capeSelected === 'Shoulder mount' && <p>Full shoulder mount service - includes cape preparation and mounting.</p>}
+                  {capeSelected === 'Shoulder mount' && (
+                    <p>Full shoulder mount service - includes cape preparation and mounting. You cannot choose euro mount with this option.</p>
+                  )}
                 </div>
               </div>
             </div>
