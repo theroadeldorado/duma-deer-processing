@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { FieldWrapper } from 'components/FieldWrapper';
 import clsx from 'clsx';
@@ -39,13 +39,31 @@ function formatPhoneNumber(value: string) {
 
 // PhoneInput component
 const PhoneInput = ({ className, name, required, onChange, label, hint, ...props }: InputProps) => {
+  const { register, watch, setValue } = useFormContext();
+  const currentValue = watch(name);
   const [formattedValue, setFormattedValue] = useState('');
-  const { register } = useFormContext();
+
+  // Initialize and sync formatted value with form value
+  useEffect(() => {
+    if (currentValue) {
+      const formatted = formatPhoneNumber(currentValue);
+      setFormattedValue(formatted);
+    }
+  }, [currentValue]);
 
   const handlePhoneInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     const formatted = formatPhoneNumber(value);
     setFormattedValue(formatted);
+
+    // Update the form with the raw phone number (digits only)
+    const rawPhoneNumber = value.replace(/\D/g, '');
+    setValue(name, rawPhoneNumber);
+
+    // Call the onChange prop if provided
+    if (onChange) {
+      onChange(e);
+    }
   };
 
   return (

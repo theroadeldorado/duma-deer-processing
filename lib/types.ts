@@ -32,12 +32,15 @@ export type DeerT = {
   stateHarvestedIn: string;
   hasPrinted: string;
   buckOrDoe: string;
+  dateHarvested?: string;
+  dateFound?: string;
   cape?: boolean | string | number;
   hide?: boolean | string | number;
   euroMount?: string;
   capeHideNotes?: string;
   skinnedOrBoneless?: string;
   skinnedBonelessNotes?: string;
+  quickOption?: string;
   backStrapsPreference?: string;
   backStrap2Preference?: string;
   backStrapNotes?: string;
@@ -47,6 +50,8 @@ export type DeerT = {
   tenderizedCubedSteaks?: boolean | string | number;
   hindLegJerky1?: boolean;
   hindLegJerky2?: boolean;
+  hindLegJerky1Flavor?: string;
+  hindLegJerky2Flavor?: string;
   roast?: string;
   roastNotes?: string;
   groundVenison?: string;

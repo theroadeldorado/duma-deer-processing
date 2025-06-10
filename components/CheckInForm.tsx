@@ -250,14 +250,29 @@ const CheckInForm = () => {
                     <Image src={'/cape.png'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'cape'} />
                   </div>
                   <p className='mb-1 w-full text-center font-bold'>Cape for shoulder mount</p>
-                  <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50' }]} />
+                  <Select
+                    className='w-full'
+                    name='cape'
+                    options={[
+                      { value: '', label: 'Select Option' },
+                      { value: 'Cape for shoulder mount', label: 'Additional $50' },
+                      { value: 'Shoulder mount', label: 'Shoulder Mount - $111' },
+                    ]}
+                  />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
                   <div className='relative aspect-square w-full overflow-hidden rounded-md'>
                     <Image src={'/hide.jpg'} className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt={'hide'} />
                   </div>
                   <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
-                  <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} />
+                  <Select
+                    className='w-full'
+                    name='hide'
+                    options={[
+                      { value: '', label: 'Select Option' },
+                      { value: 'Keep skinned hide', label: 'Additional $15' },
+                    ]}
+                  />
                 </div>
                 <div className='flex flex-col items-center justify-start gap-1'>
                   <div className='relative aspect-square w-full overflow-hidden rounded-md'>
