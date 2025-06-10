@@ -1,4 +1,3 @@
-import CheckboxGroup from '@/components/CheckboxGroup';
 import Select from '@/components/Select';
 import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
@@ -17,8 +16,16 @@ export default function CapeHideOptions(props: StepProps) {
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
               <Image src='/cape.png' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='cape' />
             </div>
-            <p className='mb-1 w-full text-center font-bold'>Cape for shoulder mount</p>
-            <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Additional $50' }]} />
+            <p className='mb-1 w-full text-center font-bold'>Shoulder Mount Options</p>
+            <Select
+              className='w-full'
+              name='cape'
+              options={[
+                { value: '', label: 'Select Option' },
+                { value: 'Cape for shoulder mount', label: 'Additional $50' },
+                { value: 'Shoulder mount', label: 'Shoulder Mount - $111' },
+              ]}
+            />
           </div>
 
           <div className='flex flex-col items-center justify-start gap-1'>
@@ -26,7 +33,14 @@ export default function CapeHideOptions(props: StepProps) {
               <Image src='/hide.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='hide' />
             </div>
             <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
-            <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Additional $15' }]} />
+            <Select
+              className='w-full'
+              name='hide'
+              options={[
+                { value: '', label: 'Select Option' },
+                { value: 'Keep skinned hide', label: 'Additional $15' },
+              ]}
+            />
           </div>
 
           <div className='flex flex-col items-center justify-start gap-1'>
@@ -48,7 +62,7 @@ export default function CapeHideOptions(props: StepProps) {
         </div>
 
         {/* Cape selected message */}
-        {capeSelected && (
+        {capeSelected && capeSelected !== '' && (
           <div className='rounded-md border border-blue-200 bg-blue-50 p-4'>
             <div className='flex'>
               <div className='flex-shrink-0'>
@@ -63,7 +77,8 @@ export default function CapeHideOptions(props: StepProps) {
               <div className='ml-3'>
                 <h3 className='text-sm font-medium text-blue-800'>Cape Information</h3>
                 <div className='mt-2 text-sm text-blue-700'>
-                  <p>NOT MOUNTED just the cape for a mounting.</p>
+                  {capeSelected === 'Cape for shoulder mount' && <p>NOT MOUNTED just the cape for a mounting.</p>}
+                  {capeSelected === 'Shoulder mount' && <p>Full shoulder mount service - includes cape preparation and mounting.</p>}
                 </div>
               </div>
             </div>
@@ -71,7 +86,7 @@ export default function CapeHideOptions(props: StepProps) {
         )}
 
         {/* Hide selected message */}
-        {hideSelected && (
+        {hideSelected && hideSelected !== '' && (
           <div className='rounded-md border border-blue-200 bg-blue-50 p-4'>
             <div className='flex'>
               <div className='flex-shrink-0'>

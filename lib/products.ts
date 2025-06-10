@@ -69,15 +69,22 @@ export const productsConfig: ProductsConfig = {
   },
   cape: {
     section: 'Cutting Instructions',
-    label: 'Cape for shoulder mount',
-    type: 'checkbox',
-    options: [{ value: 'Cape for shoulder mount', label: 'Additional', price: 50 }],
+    label: 'Shoulder Mount Options',
+    type: 'select',
+    options: [
+      { value: '', label: 'Select Option' },
+      { value: 'Cape for shoulder mount', label: 'Additional', price: 50 },
+      { value: 'Shoulder mount', label: 'Shoulder Mount', price: 111 },
+    ],
   },
   hide: {
     section: 'Cutting Instructions',
     label: 'Keep skinned hide',
-    type: 'checkbox',
-    options: [{ value: 'Keep skinned hide', label: 'Additional', price: 15 }],
+    type: 'select',
+    options: [
+      { value: '', label: 'Select Option' },
+      { value: 'Keep skinned hide', label: 'Additional', price: 15 },
+    ],
   },
   euroMount: {
     section: 'Cutting Instructions',
