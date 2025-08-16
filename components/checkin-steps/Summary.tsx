@@ -43,10 +43,14 @@ interface SectionedValues {
 function groupFormValuesBySections(formValues: Record<string, any>): { sectionedValues: SectionedValues; hasEvenly: boolean } {
   const sectionedValues: SectionedValues = {};
   let hasEvenly = false;
+  const hindLegEntries = processHindLegs(formValues);
 
   Object.keys(formValues).forEach((key) => {
     // Skip quickOption from appearing in summary
     if (key === 'quickOption') {
+      return;
+    }
+    if (key.startsWith('hindLeg') || key === 'tenderizedCubedSteaks') {
       return;
     }
 
@@ -67,11 +71,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       let displayValue = value;
       let actualPrice = price;
 
-      // Special handling for tenderized cubed steaks
-      if (key === 'tenderizedCubedSteaks' && value === 'true') {
-        displayValue = 'Yes';
-        actualPrice = 5; // Set the correct price for tenderized cubed steaks
-      } else if (value === 'true') {
+      if (value === 'true') {
         displayValue = 'Yes';
       } else if (value === 'false') {
         return; // Skip false values
@@ -106,7 +106,85 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
     }
   });
 
+  // Add processed hind leg entries
+  if (hindLegEntries.length > 0) {
+    const section = 'Cutting Instructions';
+    sectionedValues[section] = sectionedValues[section] || [];
+    sectionedValues[section].push(...hindLegEntries);
+  }
+
   return { sectionedValues, hasEvenly };
+}
+
+function processHindLegs(formValues: Record<string, any>): Array<{
+  key: string;
+  label: string;
+  value: string;
+  price: number;
+  pricePer5lb?: boolean;
+  notes?: boolean;
+}> {
+  const entries = [];
+
+  // Process Hind Leg 1
+  const hindLeg1 = formValues.hindLegPreference1;
+  if (hindLeg1 && hindLeg1 !== 'Grind') {
+    let displayValue = hindLeg1;
+    let price = 0;
+
+    if (hindLeg1 === 'Whole Muscle Jerky') {
+      const flavor = formValues.hindLegJerky1Flavor;
+      if (flavor) {
+        displayValue = `Whole Muscle Jerky - ${flavor}`;
+      }
+      price = 35;
+    } else if (hindLeg1 === 'Steaks') {
+      const tenderized = formValues.tenderizedCubedSteaks;
+      if (tenderized === 'true') {
+        displayValue = 'Steaks - Tenderized Cubed';
+        price = 5;
+      }
+    }
+
+    entries.push({
+      key: 'hindLegPreference1',
+      label: 'Hind Leg 1 Preference',
+      value: displayValue,
+      price: price,
+    });
+  }
+
+  // Process Hind Leg 2
+  const hindLeg2 = formValues.hindLegPreference2;
+  if (hindLeg2 && hindLeg2 !== 'Grind') {
+    let displayValue = hindLeg2;
+    let price = 0;
+
+    if (hindLeg2 === 'Whole Muscle Jerky') {
+      const flavor = formValues.hindLegJerky2Flavor;
+      if (flavor) {
+        displayValue = `Whole Muscle Jerky - ${flavor}`;
+      }
+      price = 35;
+    } else if (hindLeg2 === 'Steaks') {
+      // Only show tenderized price if leg 1 is not steaks (to avoid double charging)
+      const tenderized = formValues.tenderizedCubedSteaks;
+      const leg1IsAlsoSteaks = formValues.hindLegPreference1 === 'Steaks';
+      if (tenderized === 'true') {
+        displayValue = 'Steaks - Tenderized Cubed';
+        price = leg1IsAlsoSteaks ? 0 : 5; // Only charge once for tenderized
+      }
+    }
+
+    entries.push({
+      key: 'hindLegPreference2',
+      label: 'Hind Leg 2 Preference',
+      value: displayValue,
+      price: price,
+    });
+  }
+
+  return entries;
 }
 
 export default function Summary(props: StepProps) {

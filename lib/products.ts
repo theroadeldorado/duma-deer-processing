@@ -158,24 +158,11 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     required: true,
     options: [
+      { value: 'Grind', label: 'Grind' },
       { value: 'Steaks', label: 'Steaks' },
-      { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - Mild', price: 35 },
-      { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerk - Hot', price: 35 },
-      { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - Teriyaki', price: 35 },
-      { value: 'Grind', label: 'Ground Venison' },
+      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
     ],
     defaultValue: 'Grind',
-  },
-  hindLegJerky1: {
-    section: 'Cutting Instructions',
-    label: 'Whole Muscle Jerky (leg 1)',
-    type: 'select',
-    options: [
-      { value: 'Mild', label: 'Mild' },
-      { value: 'Hot', label: 'Hot' },
-      { value: 'Teriyaki', label: 'Teriyaki' },
-    ],
   },
   hindLegJerky1Flavor: {
     section: 'Cutting Instructions',
@@ -193,24 +180,11 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     required: true,
     options: [
+      { value: 'Grind', label: 'Grind' },
       { value: 'Steaks', label: 'Steaks' },
-      { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham', price: 40 },
-      { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - Mild', price: 35 },
-      { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerk - Hot', price: 35 },
-      { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - Teriyaki', price: 35 },
-      { value: 'Grind', label: 'Ground Venison' },
+      { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', price: 35 },
     ],
     defaultValue: 'Grind',
-  },
-  hindLegJerky2: {
-    section: 'Cutting Instructions',
-    label: 'Whole Muscle Jerky (leg 2)',
-    type: 'select',
-    options: [
-      { value: 'Mild', label: 'Mild' },
-      { value: 'Hot', label: 'Hot' },
-      { value: 'Teriyaki', label: 'Teriyaki' },
-    ],
   },
   hindLegJerky2Flavor: {
     section: 'Cutting Instructions',
@@ -225,8 +199,11 @@ export const productsConfig: ProductsConfig = {
   tenderizedCubedSteaks: {
     section: 'Cutting Instructions',
     label: 'Tenderized Cubed Steaks',
-    type: 'checkbox',
-    options: [{ value: 'Tenderized Cubed Steaks', label: 'Additional', price: 5 }],
+    type: 'select',
+    options: [
+      { value: 'false', label: 'No' },
+      { value: 'true', label: 'Yes', price: 5 },
+    ],
   },
   roast: {
     section: 'Cutting Instructions',

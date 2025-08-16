@@ -88,6 +88,10 @@ export function calculatePriceForItem(key: string, value: any): number {
   const config = productsConfig[key] as Product | undefined;
   if (!config) return 0;
 
+  if (key.includes('JerkyFlavor') || (key.includes('Jerky') && key.includes('Flavor'))) {
+    return 0;
+  }
+
   if (config.options) {
     let totalPrice = 0;
     if (Array.isArray(value)) {
