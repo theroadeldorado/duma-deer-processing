@@ -20,7 +20,7 @@ export default function CapeHideOptions(props: StepProps) {
   // Clear shoulder mount validation errors when not selected
   useEffect(() => {
     if (capeSelected !== 'Shoulder mount') {
-      const fields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition', 'shoulderMountMouthPosition', 'shoulderMountEyeExpression'];
+      const fields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition'];
       fields.forEach((field) => form.clearErrors(field as any));
     }
   }, [capeSelected, form]);
@@ -34,8 +34,6 @@ export default function CapeHideOptions(props: StepProps) {
     form.setValue('euroMount', 'false');
     form.setValue('shoulderMountHeadPosition', '');
     form.setValue('shoulderMountEarPosition', '');
-    form.setValue('shoulderMountMouthPosition', '');
-    form.setValue('shoulderMountEyeExpression', '');
     form.setValue('shoulderMountSpecialInstructions', '');
 
     // Navigate to next step
@@ -132,18 +130,19 @@ export default function CapeHideOptions(props: StepProps) {
 
             <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
               <div>
-                <label className='mb-1 block text-sm font-medium text-gray-700'>Head Position *</label>
+                <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall *</label>
                 <Select
                   className='w-full'
                   name='shoulderMountHeadPosition'
                   required
                   options={[
                     { value: '', label: 'Select Position' },
-                    { value: 'Straight', label: 'Straight Ahead' },
-                    { value: 'Left Turn', label: 'Looking Left' },
-                    { value: 'Right Turn', label: 'Looking Right' },
-                    { value: 'Upward', label: 'Looking Up' },
-                    { value: 'Downward', label: 'Looking Down' },
+                    { value: 'Upright Left', label: 'Upright Left' },
+                    { value: 'Upright Right', label: 'Upright Right' },
+                    { value: 'Semi Upright Left', label: 'Semi Upright Left' },
+                    { value: 'Semi Upright Right', label: 'Semi Upright Right' },
+                    { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
+                    { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
                   ]}
                 />
               </div>
@@ -159,36 +158,6 @@ export default function CapeHideOptions(props: StepProps) {
                     { value: 'Alert', label: 'Alert/Forward' },
                     { value: 'Relaxed', label: 'Relaxed/Natural' },
                     { value: 'Back', label: 'Laid Back' },
-                  ]}
-                />
-              </div>
-
-              <div>
-                <label className='mb-1 block text-sm font-medium text-gray-700'>Mouth Position *</label>
-                <Select
-                  className='w-full'
-                  name='shoulderMountMouthPosition'
-                  required
-                  options={[
-                    { value: '', label: 'Select Position' },
-                    { value: 'Closed', label: 'Mouth Closed' },
-                    { value: 'Slightly Open', label: 'Slightly Open' },
-                    { value: 'Open', label: 'Open' },
-                  ]}
-                />
-              </div>
-
-              <div>
-                <label className='mb-1 block text-sm font-medium text-gray-700'>Eye Expression *</label>
-                <Select
-                  className='w-full'
-                  name='shoulderMountEyeExpression'
-                  required
-                  options={[
-                    { value: '', label: 'Select Expression' },
-                    { value: 'Alert', label: 'Alert' },
-                    { value: 'Calm', label: 'Calm' },
-                    { value: 'Aggressive', label: 'Aggressive' },
                   ]}
                 />
               </div>

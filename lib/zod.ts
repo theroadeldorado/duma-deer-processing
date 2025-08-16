@@ -44,8 +44,6 @@ export const Deer = {
   euroMount: z.string().optional(),
   shoulderMountHeadPosition: z.string().optional(),
   shoulderMountEarPosition: z.string().optional(),
-  shoulderMountMouthPosition: z.string().optional(),
-  shoulderMountEyeExpression: z.string().optional(),
   shoulderMountSpecialInstructions: z.string().optional(),
   hasPrinted: z.string().optional(),
   capeHideNotes: z.string().optional(),

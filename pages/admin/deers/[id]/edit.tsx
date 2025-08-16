@@ -319,34 +319,6 @@ export default function EditDeer({ data, isNew }: Props) {
                           ]}
                         />
                       </div>
-
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Mouth Position</label>
-                        <Select
-                          className='w-full'
-                          name='shoulderMountMouthPosition'
-                          options={[
-                            { value: '', label: 'Select Position' },
-                            { value: 'Closed', label: 'Mouth Closed' },
-                            { value: 'Slightly Open', label: 'Slightly Open' },
-                            { value: 'Open', label: 'Open' },
-                          ]}
-                        />
-                      </div>
-
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Eye Expression</label>
-                        <Select
-                          className='w-full'
-                          name='shoulderMountEyeExpression'
-                          options={[
-                            { value: '', label: 'Select Expression' },
-                            { value: 'Alert', label: 'Alert' },
-                            { value: 'Calm', label: 'Calm' },
-                            { value: 'Aggressive', label: 'Aggressive' },
-                          ]}
-                        />
-                      </div>
                     </div>
 
                     <div>

@@ -9,9 +9,9 @@ export default function BackStraps(props: StepProps) {
 
   const backStrapOptions = [
     { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
-    { value: 'Cut in half', label: 'Cut in half', description: 'Cut into two pieces' },
-    { value: 'Sliced', label: 'Sliced', description: 'Cut into thin slices' },
-    { value: 'Butterfly', label: 'Butterfly', description: 'Butterflied for quick cooking' },
+    { value: 'Cut in half', label: 'Cut in half', description: 'Cut sideways into two pieces' },
+    { value: 'Sliced', label: 'Sliced', description: 'Cut into approximately 3/4 inch slices' },
+    { value: 'Butterfly', label: 'Butterfly', description: 'Picture two slices attached together' },
     { value: 'Whole', label: 'Whole', description: 'Keep as whole pieces' },
   ];
 

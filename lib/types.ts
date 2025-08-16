@@ -39,8 +39,6 @@ export type DeerT = {
   euroMount?: string;
   shoulderMountHeadPosition?: string;
   shoulderMountEarPosition?: string;
-  shoulderMountMouthPosition?: string;
-  shoulderMountEyeExpression?: string;
   shoulderMountSpecialInstructions?: string;
   capeHideNotes?: string;
   skinnedOrBoneless?: string;

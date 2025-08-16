@@ -41,7 +41,7 @@ export const stepConfigs: StepConfig[] = [
     customValidation: (form: any) => {
       const capeSelected = form.getValues('cape');
       if (capeSelected === 'Shoulder mount') {
-        const requiredFields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition', 'shoulderMountMouthPosition', 'shoulderMountEyeExpression'];
+        const requiredFields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition'];
 
         for (const field of requiredFields) {
           const value = form.getValues(field);

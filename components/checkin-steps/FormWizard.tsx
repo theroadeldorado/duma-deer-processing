@@ -211,12 +211,7 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
         // Trigger validation errors for the shoulder mount fields
         const capeSelected = form.getValues('cape');
         if (capeSelected === 'Shoulder mount') {
-          const requiredFields = [
-            'shoulderMountHeadPosition',
-            'shoulderMountEarPosition',
-            'shoulderMountMouthPosition',
-            'shoulderMountEyeExpression',
-          ];
+          const requiredFields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition'];
 
           requiredFields.forEach((field) => {
             const value = form.getValues(field as any);
