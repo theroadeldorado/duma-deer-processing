@@ -3,6 +3,7 @@ import { DeerT } from '@/lib/types';
 
 export interface StepProps {
   form: UseFormReturn<DeerT>;
+  onNext?: () => void;
 }
 
 export interface StepConfig {

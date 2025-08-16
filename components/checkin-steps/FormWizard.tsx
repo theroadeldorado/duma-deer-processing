@@ -322,7 +322,7 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
       </div>
 
       <Form onSubmit={handleSubmit} form={form} className='flex flex-col gap-6'>
-        <CurrentStepComponent form={form} />
+        <CurrentStepComponent form={form} onNext={handleNext} />
 
         {/* Bottom Navigation Buttons */}
         <div className='flex justify-between gap-4'>

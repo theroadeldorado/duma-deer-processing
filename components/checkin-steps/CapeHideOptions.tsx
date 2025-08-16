@@ -3,9 +3,10 @@ import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
 import Image from 'next/image';
 import { useEffect } from 'react';
+import Button from '../Button';
 
 export default function CapeHideOptions(props: StepProps) {
-  const { form } = props;
+  const { form, onNext } = props;
   const capeSelected = form.watch('cape');
   const hideSelected = form.watch('hide');
 
@@ -18,8 +19,20 @@ export default function CapeHideOptions(props: StepProps) {
 
   const isEuroMountDisabled = capeSelected === 'Shoulder mount';
 
+  const handleSkipStep = () => {
+    // Clear all cape, hide, and euroMount selections
+    form.setValue('cape', '');
+    form.setValue('hide', '');
+    form.setValue('euroMount', 'false');
+
+    // Navigate to next step
+    if (onNext) {
+      onNext();
+    }
+  };
+
   return (
-    <StepWrapper {...props} title='Cape & Hide Options'>
+    <StepWrapper {...props} title='Cape & Hide (Optional)'>
       <div className='space-y-6'>
         <div className='grid grid-cols-3 gap-6'>
           <div className='flex flex-col items-center justify-start gap-1'>
@@ -119,6 +132,12 @@ export default function CapeHideOptions(props: StepProps) {
             </div>
           </div>
         )}
+
+        <div className='flex flex-col items-center justify-center gap-6'>
+          <Button type='button' onClick={handleSkipStep}>
+            None of the above
+          </Button>
+        </div>
       </div>
     </StepWrapper>
   );
