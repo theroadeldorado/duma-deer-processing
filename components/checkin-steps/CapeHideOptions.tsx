@@ -147,7 +147,7 @@ export default function CapeHideOptions(props: StepProps) {
                 />
               </div>
 
-              <div>
+              <div className='hidden'>
                 <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
                 <Select
                   className='w-full'
