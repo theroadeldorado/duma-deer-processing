@@ -129,6 +129,10 @@ export default function SpecialtyMeats(props: StepProps) {
   // Watch specific fields instead of all form values
   const formValues = form.watch(fieldNames);
 
+  // Memoize formValues to prevent unnecessary re-renders
+  const formValuesKey = JSON.stringify(formValues);
+  const memoizedFormValues = useMemo(() => formValues, [formValues, formValuesKey]);
+
   // Lock/unlock body scroll when modal opens/closes
   useEffect(() => {
     if (isModalOpen) {
@@ -147,7 +151,7 @@ export default function SpecialtyMeats(props: StepProps) {
   useEffect(() => {
     const newSelections: Record<string, any> = {};
     fieldNames.forEach((fieldName, index) => {
-      const value = formValues[index];
+      const value = memoizedFormValues[index];
       // Only include if value exists and is not 'false', '0', empty string, null, or undefined
       if (value && value !== 'false' && value !== '0' && value !== '' && value !== null && value !== undefined) {
         // Find the meat and option that corresponds to this field
@@ -169,7 +173,7 @@ export default function SpecialtyMeats(props: StepProps) {
       }
     });
     setSelections(newSelections);
-  }, [formValues, fieldNames]);
+  }, [memoizedFormValues, fieldNames]);
 
   const openModal = (meat: SpecialtyMeatOption) => {
     setSelectedMeat(meat);
