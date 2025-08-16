@@ -5,7 +5,7 @@ import { randomId } from 'lib/helpers';
 
 type Options = Omit<UseMutationOptions, 'mutationFn'> & {
   url: string;
-  method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH';
+  method: 'POST' | 'GET' | 'PUT' | 'DELETE' | 'PATCH' | 'HEAD';
   showToast?: boolean;
   successMessage?: string;
 };
