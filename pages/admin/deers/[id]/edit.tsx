@@ -67,11 +67,14 @@ export default function EditDeer({ data, isNew }: Props) {
   });
 
   const del = useMutation({
-    url: `/api/deers/${data?._id}/delete`,
+    url: `/api/deers/${encodeURIComponent(data?._id || '')}/delete`,
     method: 'DELETE',
     successMessage: 'Deer deleted successfully',
     onSuccess: () => {
       router.push('/admin/deers');
+    },
+    onError: (error) => {
+      console.error('Delete error:', error);
     },
   });
 
@@ -81,7 +84,7 @@ export default function EditDeer({ data, isNew }: Props) {
       return;
     }
     if (!confirm('Are you sure you want to permanently delete this deer record?')) return;
-    del.mutate({});
+    del.mutate(null);
   };
 
   const handleSubmit = async (formData: DeerInputT) => {
@@ -89,9 +92,6 @@ export default function EditDeer({ data, isNew }: Props) {
       ...formData,
       totalPrice: calculatedPrice,
     };
-
-    // Debug: Check what the form actually contains
-    const allFormData = form.getValues();
 
     mutation.mutate(updatedData);
   };
@@ -297,7 +297,6 @@ export default function EditDeer({ data, isNew }: Props) {
                 <div
                   className={(() => {
                     const capeValue = form.watch('cape');
-                    console.log('Form cape value:', capeValue, 'Should show mount details:', capeValue === 'Shoulder mount');
                     return capeValue === 'Shoulder mount' ? 'border-green-200 bg-green-50 space-y-4 rounded-md border p-4' : 'hidden';
                   })()}
                 >

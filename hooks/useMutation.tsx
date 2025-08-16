@@ -14,17 +14,25 @@ export default function useMutation({ url, method, showToast = true, successMess
   const toastId = React.useMemo(() => randomId(6), []);
   return tanMutation({
     mutationFn: async (data?: any) => {
-      const res = await fetch(url, {
+      const fetchOptions: RequestInit = {
         method,
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data),
-      });
+      };
+
+      // Only add body for methods that support it
+      if (method !== 'GET' && method !== 'HEAD' && data !== null && data !== undefined) {
+        fetchOptions.body = JSON.stringify(data);
+      }
+
+      const res = await fetch(url, fetchOptions);
+
       let json: any = {};
       try {
         json = await res.json();
       } catch (error) {}
+
       if (!res.ok) {
         if (res.status === 404) throw new Error('Route not found');
         if (res.status === 405) throw new Error('Method not allowed');

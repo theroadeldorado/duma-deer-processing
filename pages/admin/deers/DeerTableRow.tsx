@@ -125,11 +125,37 @@ export default function DeerTableRow({ data }: Props) {
     },
   });
   const del = useMutation({
-    url: `/api/deers/${data?._id}/delete`,
+    url: `/api/deers/${encodeURIComponent(data?._id || '')}/delete`,
     method: 'DELETE',
     successMessage: 'Deer deleted successfully',
-    onSuccess: () => {
-      router.push('/admin/deers');
+    onMutate: async () => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries(['deers']);
+
+      // Snapshot the previous value
+      const previousDeers = queryClient.getQueryData(['deers']);
+
+      // Optimistically update to remove the deer
+      queryClient.setQueryData(['deers'], (old: any) => {
+        if (!old?.results) return old;
+        return {
+          ...old,
+          results: old.results.filter((deer: DeerT) => deer._id !== data?._id),
+        };
+      });
+
+      // Return a context object with the snapshotted value
+      return { previousDeers };
+    },
+    onError: (err, variables, context) => {
+      // If the mutation fails, use the context returned from onMutate to roll back
+      if (context?.previousDeers) {
+        queryClient.setQueryData(['deers'], context.previousDeers);
+      }
+    },
+    onSettled: () => {
+      // Always refetch after error or success to ensure we have correct data
+      queryClient.invalidateQueries(['deers']);
     },
   });
 
@@ -141,12 +167,9 @@ export default function DeerTableRow({ data }: Props) {
   const { _id, name, tagNumber, address, city, state, zip, phone, communication, createdAt, amountPaid, totalPrice } = data;
 
   const deleteDeer = async (id: string) => {
-    if (!data?._id) {
-      console.error('No deer ID available for deletion');
-      return;
-    }
+    if (!data?._id) return;
     if (!confirm('Are you sure you want to permanently delete entry?')) return;
-    del.mutate({});
+    del.mutate(null);
   };
 
   const handleViewDetails = () => {
