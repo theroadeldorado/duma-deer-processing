@@ -58,7 +58,12 @@ export default function EditDeer({ data, isNew }: Props) {
     url: isNew ? '/api/deers/add' : `/api/deers/${data?._id}/update`,
     method: isNew ? 'POST' : 'PUT',
     successMessage: isNew ? 'Deer added successfully' : 'Deer updated successfully',
-    onSuccess: () => router.push('/admin/deers'),
+    onSuccess: (response) => {
+      router.push('/admin/deers');
+    },
+    onError: (error) => {
+      console.error('Edit Form - Mutation error:', error);
+    },
   });
 
   const del = useMutation({
@@ -84,6 +89,10 @@ export default function EditDeer({ data, isNew }: Props) {
       ...formData,
       totalPrice: calculatedPrice,
     };
+
+    // Debug: Check what the form actually contains
+    const allFormData = form.getValues();
+
     mutation.mutate(updatedData);
   };
 
@@ -284,53 +293,54 @@ export default function EditDeer({ data, isNew }: Props) {
               <div className='flex flex-col gap-4'>
                 <Textarea rows={3} name={`capeHideNotes`} label='Special Instructions' />
 
-                {/* Shoulder Mount Pose Details - Only show if shoulder mount is selected */}
-                {form.watch('cape') === 'Shoulder mount' && (
-                  <div className='border-green-200 bg-green-50 space-y-4 rounded-md border p-4'>
-                    <h4 className='text-green-800 text-lg font-medium'>Shoulder Mount Pose Details</h4>
+                {/* Shoulder Mount Pose Details - Always present but hidden when not needed */}
+                <div
+                  className={(() => {
+                    const capeValue = form.watch('cape');
+                    console.log('Form cape value:', capeValue, 'Should show mount details:', capeValue === 'Shoulder mount');
+                    return capeValue === 'Shoulder mount' ? 'border-green-200 bg-green-50 space-y-4 rounded-md border p-4' : 'hidden';
+                  })()}
+                >
+                  <h4 className='text-green-800 text-lg font-medium'>Shoulder Mount Pose Details</h4>
 
-                    <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Head Position</label>
-                        <Select
-                          className='w-full'
-                          name='shoulderMountHeadPosition'
-                          options={[
-                            { value: '', label: 'Select Position' },
-                            { value: 'Straight', label: 'Straight Ahead' },
-                            { value: 'Left Turn', label: 'Looking Left' },
-                            { value: 'Right Turn', label: 'Looking Right' },
-                            { value: 'Upward', label: 'Looking Up' },
-                            { value: 'Downward', label: 'Looking Down' },
-                          ]}
-                        />
-                      </div>
-
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
-                        <Select
-                          className='w-full'
-                          name='shoulderMountEarPosition'
-                          options={[
-                            { value: '', label: 'Select Position' },
-                            { value: 'Alert', label: 'Alert/Forward' },
-                            { value: 'Relaxed', label: 'Relaxed/Natural' },
-                            { value: 'Back', label: 'Laid Back' },
-                          ]}
-                        />
-                      </div>
+                  <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall *</label>
+                      <Select
+                        className='w-full'
+                        name='shoulderMountHeadPosition'
+                        options={[
+                          { value: '', label: 'Select Position' },
+                          { value: 'Upright Left', label: 'Upright Left' },
+                          { value: 'Upright Right', label: 'Upright Right' },
+                          { value: 'Semi Upright Left', label: 'Semi Upright Left' },
+                          { value: 'Semi Upright Right', label: 'Semi Upright Right' },
+                          { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
+                          { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
+                        ]}
+                      />
                     </div>
 
                     <div>
-                      <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
-                      <Textarea
-                        name='shoulderMountSpecialInstructions'
-                        rows={3}
-                        placeholder='Any special requests or specific pose instructions...'
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
+                      <Select
+                        className='w-full'
+                        name='shoulderMountEarPosition'
+                        options={[
+                          { value: '', label: 'Select Position' },
+                          { value: 'Alert', label: 'Alert/Forward' },
+                          { value: 'Relaxed', label: 'Relaxed/Natural' },
+                          { value: 'Back', label: 'Laid Back' },
+                        ]}
                       />
                     </div>
                   </div>
-                )}
+
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
+                    <Textarea name='shoulderMountSpecialInstructions' rows={3} placeholder='Any special requests or specific pose instructions...' />
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -609,9 +619,14 @@ export default function EditDeer({ data, isNew }: Props) {
               Delete Entry
             </Button>
           )}
-          <Button type='submit' disabled={mutation.isLoading} className='ml-auto font-medium'>
-            {isNew ? 'Add Deer' : 'Save Entry'}
-          </Button>
+          <div className='ml-auto flex gap-3'>
+            <Button type='button' color='secondary' onClick={() => router.push('/admin/deers')} className='font-medium'>
+              Cancel
+            </Button>
+            <Button type='submit' disabled={mutation.isLoading} className='font-medium'>
+              {isNew ? 'Add Deer' : 'Save Entry'}
+            </Button>
+          </div>
         </div>
       </Form>
     </AdminPage>

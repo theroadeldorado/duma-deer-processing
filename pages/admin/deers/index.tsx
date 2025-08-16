@@ -26,6 +26,7 @@ const cols = [
   { id: 'tagNumber', label: 'Confirmation Number' },
   // { id: 'amountPaid', label: 'Amount Paid' },
   { id: 'totalAmount', label: 'Total' },
+  { id: 'mount', label: 'Shoulder Mount', sortable: false },
   { id: 'hasPrinted', label: 'Printed' },
   { id: 'actions', label: '', sortable: false },
 ];

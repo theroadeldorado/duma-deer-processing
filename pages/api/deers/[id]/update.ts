@@ -30,7 +30,10 @@ export default secureApi(async (req: NextApiRequest, res: NextApiResponse) => {
     // Add your update logic here.
     // For example, you might want to prevent certain fields from being updated or handle specific updates in a custom way.
 
-    await Deer.updateOne({ _id: id }, data);
+    const updateResult = await Deer.updateOne({ _id: id }, data);
+
+    // Debug: Verify the update worked
+    const updatedDeer = await Deer.findById(id);
 
     res.status(200).json({ success: true, message: 'Deer updated successfully' });
   } catch (error: any) {

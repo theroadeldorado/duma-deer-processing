@@ -58,10 +58,10 @@ const fields: DeerSchemaT = {
     required: true,
   },
   cape: {
-    type: String || Boolean,
+    type: String,
   },
   hide: {
-    type: String || Boolean,
+    type: String,
   },
   capeHideNotes: {
     type: String,
@@ -70,6 +70,15 @@ const fields: DeerSchemaT = {
     type: String,
   },
   euroMount: {
+    type: String,
+  },
+  shoulderMountHeadPosition: {
+    type: String,
+  },
+  shoulderMountEarPosition: {
+    type: String,
+  },
+  shoulderMountSpecialInstructions: {
     type: String,
   },
   skinnedBonelessNotes: {
