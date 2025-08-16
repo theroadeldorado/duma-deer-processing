@@ -30,7 +30,7 @@ export default function GroundVenison(props: StepProps) {
   ];
 
   const groundVenisonAmountOptions = [
-    { value: 'Remainder', label: 'Remainder of meat', description: 'Ground from remaining meat after cuts' },
+    { value: 'Remainder', label: 'Remainder of meat', description: 'Ground from remaining meat after cuts and specialty meat options' },
     { value: 'None - All specialty meat', label: 'None - All specialty meat', description: 'All meat becomes specialty products' },
   ];
 
@@ -61,39 +61,6 @@ export default function GroundVenison(props: StepProps) {
             />
           </div>
           <div className='flex flex-col gap-6'>
-            {/* Ground Venison Options */}
-            <div className='flex flex-col gap-3'>
-              <h4 className='text-lg font-semibold text-gray-800'>Ground Venison Options</h4>
-              <div className='grid grid-cols-2 gap-2'>
-                {groundVenisonOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type='button'
-                    onClick={() => handleGroundVenisonSelect(option.value)}
-                    className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-                      groundVenisonSelected === option.value
-                        ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
-                        : 'border-gray-300 bg-white hover:border-[#E28532]/50'
-                    }`}
-                  >
-                    <div className='flex items-center justify-between'>
-                      <div>
-                        <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                        <div className='text-xs text-gray-600'>{option.description}</div>
-                      </div>
-                      <div
-                        className={`h-4 w-4 rounded-full border-2 transition-all ${
-                          groundVenisonSelected === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
-                        }`}
-                      >
-                        {groundVenisonSelected === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* Ground Venison Amount */}
             <div className='flex flex-col gap-3'>
               <h4 className='text-lg font-semibold text-gray-800'>Ground Venison Amount</h4>
@@ -115,13 +82,45 @@ export default function GroundVenison(props: StepProps) {
                         <div className='text-xs text-gray-600'>{option.description}</div>
                       </div>
                       <div
-                        className={`h-4 w-4 rounded-full border-2 transition-all ${
+                        className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
                           groundVenisonAmountSelected === option.value
                             ? 'border-[#E28532] bg-[#E28532]'
                             : 'border-gray-300 group-hover:border-[#E28532]/50'
                         }`}
                       >
                         {groundVenisonAmountSelected === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+            {/* Ground Venison Options */}
+            <div className='flex flex-col gap-3'>
+              <h4 className='text-lg font-semibold text-gray-800'>Ground Venison Options</h4>
+              <div className='grid grid-cols-2 gap-2'>
+                {groundVenisonOptions.map((option) => (
+                  <button
+                    key={option.value}
+                    type='button'
+                    onClick={() => handleGroundVenisonSelect(option.value)}
+                    className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                      groundVenisonSelected === option.value
+                        ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                        : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    <div className='flex items-center justify-between'>
+                      <div>
+                        <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                        <div className='text-xs text-gray-600'>{option.description}</div>
+                      </div>
+                      <div
+                        className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                          groundVenisonSelected === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                        }`}
+                      >
+                        {groundVenisonSelected === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
                       </div>
                     </div>
                   </button>
