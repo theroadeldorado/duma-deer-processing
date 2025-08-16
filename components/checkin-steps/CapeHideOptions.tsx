@@ -55,13 +55,14 @@ export default function CapeHideOptions(props: StepProps) {
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
               <Image src='/hide.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='hide' />
             </div>
-            <p className='mb-1 w-full text-center font-bold'>Keep skinned hide</p>
+            <p className='mb-1 w-full text-center font-bold'>Hide Options</p>
             <Select
               className='w-full'
               name='hide'
               options={[
                 { value: '', label: 'Select Option' },
-                { value: 'Keep skinned hide', label: 'Additional $15' },
+                { value: 'Save Hide', label: 'Save Hide - Take Today' },
+                { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
               ]}
             />
           </div>
@@ -126,18 +127,20 @@ export default function CapeHideOptions(props: StepProps) {
               <div className='ml-3'>
                 <h3 className='text-sm font-medium text-blue-800'>Hide Information</h3>
                 <div className='mt-2 text-sm text-blue-700'>
-                  <p>Hide and saved for you, NOT TANNED.</p>
+                  <p>Hide saved for you, NOT TANNED and you must take it TODAY.</p>
                 </div>
               </div>
             </div>
           </div>
         )}
 
-        <div className='flex flex-col items-center justify-center gap-6'>
-          <Button type='button' onClick={handleSkipStep}>
-            None of the above
-          </Button>
-        </div>
+        {(!capeSelected || capeSelected === '') && (!hideSelected || hideSelected === '') && (
+          <div className='flex flex-col items-center justify-center gap-6'>
+            <Button type='button' onClick={handleSkipStep}>
+              None of the above
+            </Button>
+          </div>
+        )}
       </div>
     </StepWrapper>
   );

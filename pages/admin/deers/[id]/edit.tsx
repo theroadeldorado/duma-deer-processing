@@ -252,14 +252,15 @@ export default function EditDeer({ data, isNew }: Props) {
                   </label> */}
                 </div>
                 <div>
-                  <p className='mb-1 font-bold'>Keep skinned hide</p>
+                  <p className='mb-1 font-bold'>Hide Options</p>
                   <Select
                     className='w-full'
                     name='hide'
                     required
                     options={[
                       { value: '', label: 'Select Option' },
-                      { value: 'Keep skinned hide', label: 'Additional $15' },
+                      { value: 'Save Hide', label: 'Save Hide - Take Today' },
+                      { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
                     ]}
                   ></Select>
                   {/* <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Keep skinned hide - Additional $15' }]} /> */}

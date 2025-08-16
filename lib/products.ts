@@ -79,11 +79,12 @@ export const productsConfig: ProductsConfig = {
   },
   hide: {
     section: 'Cutting Instructions',
-    label: 'Keep skinned hide',
+    label: 'Hide Options',
     type: 'select',
     options: [
       { value: '', label: 'Select Option' },
-      { value: 'Keep skinned hide', label: 'Additional', price: 15 },
+      { value: 'Save Hide', label: 'Additional', price: 15 },
+      { value: 'Tanned Hair on', label: 'Additional', price: 200 },
     ],
   },
   euroMount: {
