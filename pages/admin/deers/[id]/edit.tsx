@@ -281,7 +281,85 @@ export default function EditDeer({ data, isNew }: Props) {
                   ]}
                 ></Select>
               </div>
-              <Textarea rows={3} name={`capeHideNotes`} label='Special Instructions' />
+              <div className='flex flex-col gap-4'>
+                <Textarea rows={3} name={`capeHideNotes`} label='Special Instructions' />
+
+                {/* Shoulder Mount Pose Details - Only show if shoulder mount is selected */}
+                {form.watch('cape') === 'Shoulder mount' && (
+                  <div className='border-green-200 bg-green-50 space-y-4 rounded-md border p-4'>
+                    <h4 className='text-green-800 text-lg font-medium'>Shoulder Mount Pose Details</h4>
+
+                    <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Head Position</label>
+                        <Select
+                          className='w-full'
+                          name='shoulderMountHeadPosition'
+                          options={[
+                            { value: '', label: 'Select Position' },
+                            { value: 'Straight', label: 'Straight Ahead' },
+                            { value: 'Left Turn', label: 'Looking Left' },
+                            { value: 'Right Turn', label: 'Looking Right' },
+                            { value: 'Upward', label: 'Looking Up' },
+                            { value: 'Downward', label: 'Looking Down' },
+                          ]}
+                        />
+                      </div>
+
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
+                        <Select
+                          className='w-full'
+                          name='shoulderMountEarPosition'
+                          options={[
+                            { value: '', label: 'Select Position' },
+                            { value: 'Alert', label: 'Alert/Forward' },
+                            { value: 'Relaxed', label: 'Relaxed/Natural' },
+                            { value: 'Back', label: 'Laid Back' },
+                          ]}
+                        />
+                      </div>
+
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Mouth Position</label>
+                        <Select
+                          className='w-full'
+                          name='shoulderMountMouthPosition'
+                          options={[
+                            { value: '', label: 'Select Position' },
+                            { value: 'Closed', label: 'Mouth Closed' },
+                            { value: 'Slightly Open', label: 'Slightly Open' },
+                            { value: 'Open', label: 'Open' },
+                          ]}
+                        />
+                      </div>
+
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Eye Expression</label>
+                        <Select
+                          className='w-full'
+                          name='shoulderMountEyeExpression'
+                          options={[
+                            { value: '', label: 'Select Expression' },
+                            { value: 'Alert', label: 'Alert' },
+                            { value: 'Calm', label: 'Calm' },
+                            { value: 'Aggressive', label: 'Aggressive' },
+                          ]}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
+                      <Textarea
+                        name='shoulderMountSpecialInstructions'
+                        rows={3}
+                        placeholder='Any special requests or specific pose instructions...'
+                      />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Back Straps */}

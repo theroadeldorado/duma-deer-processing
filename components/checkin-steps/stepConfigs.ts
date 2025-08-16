@@ -37,7 +37,21 @@ export const stepConfigs: StepConfig[] = [
     id: 4,
     title: 'Cape & Hide',
     component: CapeHideOptions,
-    validationFields: [], // Optional fields
+    validationFields: [], // Custom validation handled in component
+    customValidation: (form: any) => {
+      const capeSelected = form.getValues('cape');
+      if (capeSelected === 'Shoulder mount') {
+        const requiredFields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition', 'shoulderMountMouthPosition', 'shoulderMountEyeExpression'];
+
+        for (const field of requiredFields) {
+          const value = form.getValues(field);
+          if (!value || value === '') {
+            return false;
+          }
+        }
+      }
+      return true;
+    },
   },
   {
     id: 5,

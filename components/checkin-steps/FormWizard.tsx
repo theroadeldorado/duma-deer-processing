@@ -199,13 +199,37 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
 
   const handleNext = async () => {
     // Validate current step fields if validation is configured
-    if (currentStepConfig.validationFields) {
+    if (currentStepConfig.validationFields && currentStepConfig.validationFields.length > 0) {
       const isValid = await form.trigger(currentStepConfig.validationFields as string[]);
       if (!isValid) return;
-    } else {
-      // Validate all fields if no specific validation is set
-      const isValid = await form.trigger();
-      if (!isValid) return;
+    }
+
+    // Run custom validation if it exists
+    if (currentStepConfig.customValidation) {
+      const isCustomValid = currentStepConfig.customValidation(form);
+      if (!isCustomValid) {
+        // Trigger validation errors for the shoulder mount fields
+        const capeSelected = form.getValues('cape');
+        if (capeSelected === 'Shoulder mount') {
+          const requiredFields = [
+            'shoulderMountHeadPosition',
+            'shoulderMountEarPosition',
+            'shoulderMountMouthPosition',
+            'shoulderMountEyeExpression',
+          ];
+
+          requiredFields.forEach((field) => {
+            const value = form.getValues(field as any);
+            if (!value || value === '') {
+              form.setError(field as any, {
+                type: 'required',
+                message: 'This field is required for shoulder mount',
+              });
+            }
+          });
+        }
+        return;
+      }
     }
 
     const nextStep = getNextStep(currentStep);

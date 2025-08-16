@@ -11,6 +11,7 @@ export interface StepConfig {
   title: string;
   component: React.ComponentType<StepProps>;
   validationFields?: (keyof DeerT)[];
+  customValidation?: (form: UseFormReturn<DeerT>) => boolean;
 }
 
 export interface WizardProps {

@@ -17,13 +17,26 @@ export default function CapeHideOptions(props: StepProps) {
     }
   }, [capeSelected, form]);
 
+  // Clear shoulder mount validation errors when not selected
+  useEffect(() => {
+    if (capeSelected !== 'Shoulder mount') {
+      const fields = ['shoulderMountHeadPosition', 'shoulderMountEarPosition', 'shoulderMountMouthPosition', 'shoulderMountEyeExpression'];
+      fields.forEach((field) => form.clearErrors(field as any));
+    }
+  }, [capeSelected, form]);
+
   const isEuroMountDisabled = capeSelected === 'Shoulder mount';
 
   const handleSkipStep = () => {
-    // Clear all cape, hide, and euroMount selections
+    // Clear all cape, hide, euroMount, and shoulder mount selections
     form.setValue('cape', '');
     form.setValue('hide', '');
     form.setValue('euroMount', 'false');
+    form.setValue('shoulderMountHeadPosition', '');
+    form.setValue('shoulderMountEarPosition', '');
+    form.setValue('shoulderMountMouthPosition', '');
+    form.setValue('shoulderMountEyeExpression', '');
+    form.setValue('shoulderMountSpecialInstructions', '');
 
     // Navigate to next step
     if (onNext) {
@@ -107,6 +120,88 @@ export default function CapeHideOptions(props: StepProps) {
                   )}
                 </div>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* Shoulder Mount Pose Options */}
+        {capeSelected === 'Shoulder mount' && (
+          <div className='border-green-200 bg-green-50 space-y-4 rounded-md border p-4'>
+            <h3 className='text-green-800 text-lg font-medium'>Shoulder Mount Pose Details</h3>
+            <p className='text-green-700 text-sm'>Please provide details on how you&apos;d like your shoulder mount posed.</p>
+
+            <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+              <div>
+                <label className='mb-1 block text-sm font-medium text-gray-700'>Head Position *</label>
+                <Select
+                  className='w-full'
+                  name='shoulderMountHeadPosition'
+                  required
+                  options={[
+                    { value: '', label: 'Select Position' },
+                    { value: 'Straight', label: 'Straight Ahead' },
+                    { value: 'Left Turn', label: 'Looking Left' },
+                    { value: 'Right Turn', label: 'Looking Right' },
+                    { value: 'Upward', label: 'Looking Up' },
+                    { value: 'Downward', label: 'Looking Down' },
+                  ]}
+                />
+              </div>
+
+              <div>
+                <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
+                <Select
+                  className='w-full'
+                  name='shoulderMountEarPosition'
+                  required
+                  options={[
+                    { value: '', label: 'Select Position' },
+                    { value: 'Alert', label: 'Alert/Forward' },
+                    { value: 'Relaxed', label: 'Relaxed/Natural' },
+                    { value: 'Back', label: 'Laid Back' },
+                  ]}
+                />
+              </div>
+
+              <div>
+                <label className='mb-1 block text-sm font-medium text-gray-700'>Mouth Position *</label>
+                <Select
+                  className='w-full'
+                  name='shoulderMountMouthPosition'
+                  required
+                  options={[
+                    { value: '', label: 'Select Position' },
+                    { value: 'Closed', label: 'Mouth Closed' },
+                    { value: 'Slightly Open', label: 'Slightly Open' },
+                    { value: 'Open', label: 'Open' },
+                  ]}
+                />
+              </div>
+
+              <div>
+                <label className='mb-1 block text-sm font-medium text-gray-700'>Eye Expression *</label>
+                <Select
+                  className='w-full'
+                  name='shoulderMountEyeExpression'
+                  required
+                  options={[
+                    { value: '', label: 'Select Expression' },
+                    { value: 'Alert', label: 'Alert' },
+                    { value: 'Calm', label: 'Calm' },
+                    { value: 'Aggressive', label: 'Aggressive' },
+                  ]}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
+              <textarea
+                {...form.register('shoulderMountSpecialInstructions')}
+                className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                rows={3}
+                placeholder='Any special requests or specific pose instructions...'
+              />
             </div>
           </div>
         )}
