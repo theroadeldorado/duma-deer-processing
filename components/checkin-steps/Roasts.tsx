@@ -9,7 +9,8 @@ export default function Roasts(props: StepProps) {
 
   const roastOptions = [
     { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
-    { value: 'Roasts', label: 'Roasts', description: 'Keep as roasts' },
+    { value: '2 Roasts', label: '2 Roasts', description: '2 Roasts and grind the rest' },
+    { value: 'As many as possible', label: 'As many as possible', description: 'Cut into as many roasts as possible' },
   ];
 
   const handleOptionSelect = (value: string) => {
@@ -33,7 +34,7 @@ export default function Roasts(props: StepProps) {
 
         <div className='w-full'>
           <p className='mb-4 text-center text-lg font-bold'>Front Shoulders for Roasts</p>
-          <div className='grid grid-cols-2 gap-3'>
+          <div className='grid grid-cols-3 gap-3'>
             {roastOptions.map((option) => (
               <button
                 key={option.value}
@@ -49,7 +50,7 @@ export default function Roasts(props: StepProps) {
                     <div className='text-sm text-gray-600'>{option.description}</div>
                   </div>
                   <div
-                    className={`h-5 w-5 rounded-full border-2 transition-all ${
+                    className={`h-5 w-5 shrink-0 rounded-full border-2 transition-all ${
                       selectedValue === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
                     }`}
                   >
