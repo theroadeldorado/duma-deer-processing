@@ -259,7 +259,7 @@ export default function EditDeer({ data, isNew }: Props) {
                     required
                     options={[
                       { value: '', label: 'Select Option' },
-                      { value: 'Save Hide', label: 'Save Hide - Take Today' },
+                      { value: 'Save Hide', label: 'Save Hide - Take Today - $15' },
                       { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
                     ]}
                   ></Select>

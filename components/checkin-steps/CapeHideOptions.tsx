@@ -37,7 +37,7 @@ export default function CapeHideOptions(props: StepProps) {
         <div className='grid grid-cols-3 gap-6'>
           <div className='flex flex-col items-center justify-start gap-1'>
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
-              <Image src='/cape.png' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='cape' />
+              <Image src='/mount.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='mount' />
             </div>
             <p className='mb-1 w-full text-center font-bold'>Shoulder Mount Options</p>
             <Select
@@ -45,7 +45,7 @@ export default function CapeHideOptions(props: StepProps) {
               name='cape'
               options={[
                 { value: '', label: 'Select Option' },
-                { value: 'Cape for shoulder mount', label: 'Keep Cape - $50' },
+                { value: 'Cape for shoulder mount', label: 'Keep Cape - $50 (Take Today)' },
                 { value: 'Shoulder mount', label: 'Shoulder Mount - $111' },
               ]}
             />
@@ -61,7 +61,7 @@ export default function CapeHideOptions(props: StepProps) {
               name='hide'
               options={[
                 { value: '', label: 'Select Option' },
-                { value: 'Save Hide', label: 'Save Hide - Take Today' },
+                { value: 'Save Hide', label: 'Save Hide - $15 (Take Today)' },
                 { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
               ]}
             />
@@ -77,7 +77,7 @@ export default function CapeHideOptions(props: StepProps) {
               name='euroMount'
               options={[
                 { value: 'false', label: 'Select Option' },
-                { value: 'Keep head', label: 'Keep Head - Take Today' },
+                { value: 'Keep head', label: 'Keep Head (Take Today)' },
                 { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
                 { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
               ]}
