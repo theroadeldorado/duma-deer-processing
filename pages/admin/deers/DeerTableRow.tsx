@@ -149,8 +149,9 @@ export default function DeerTableRow({ data }: Props) {
     },
     onError: (err, variables, context) => {
       // If the mutation fails, use the context returned from onMutate to roll back
-      if (context?.previousDeers) {
-        queryClient.setQueryData(['deers'], context.previousDeers);
+      const typedContext = context as { previousDeers?: any } | undefined;
+      if (typedContext?.previousDeers) {
+        queryClient.setQueryData(['deers'], typedContext.previousDeers);
       }
     },
     onSettled: () => {
