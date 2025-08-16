@@ -25,7 +25,7 @@ export const stepConfigs: StepConfig[] = [
     id: 2,
     title: 'Deer Information',
     component: DeerInfo,
-    validationFields: ['tagNumber', 'stateHarvestedIn', 'buckOrDoe'],
+    validationFields: ['tagNumber', 'stateHarvestedIn', 'buckOrDoe', 'dateHarvested', 'dateFound'],
   },
   {
     id: 3,
@@ -35,7 +35,7 @@ export const stepConfigs: StepConfig[] = [
   },
   {
     id: 4,
-    title: 'Cape & Hide Options',
+    title: 'Cape & Hide',
     component: CapeHideOptions,
     validationFields: [], // Optional fields
   },
