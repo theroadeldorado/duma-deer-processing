@@ -25,11 +25,13 @@ const specialtyMeats: SpecialtyMeatOption[] = [
   },
   {
     name: 'Garlic Ring Bologna',
+    perLot: '4 rings per 5lb lot',
     image: '/garlic_ring.jpg',
     options: [{ name: 'garlicRingBologna', label: 'Garlic Ring Bologna', price: 20 }],
   },
   {
     name: 'Summer Sausage',
+    perLot: '3 logs per 5lb lot',
     image: '/summer.jpg',
     options: [
       { name: 'summerSausageMild', label: 'Mild Summer Sausage', price: 15 },
@@ -38,11 +40,13 @@ const specialtyMeats: SpecialtyMeatOption[] = [
   },
   {
     name: 'Smoked Kielbasa Sausage',
+    perLot: '3 packs of 5 links per 5lb lot',
     image: '/smoked_kielbasa_sausage.jpg',
     options: [{ name: 'smokedKielbasaSausage', label: 'Smoked Kielbasa Sausage', price: 17.5 }],
   },
   {
     name: 'Italian Sausage Links',
+    perLot: '3 packs of 5 links per 5lb lot',
     image: '/italian_sausage_links.jpg',
     options: [
       { name: 'italianSausageLinksMild', label: 'Mild Italian Sausage Links', price: 15 },
@@ -51,11 +55,13 @@ const specialtyMeats: SpecialtyMeatOption[] = [
   },
   {
     name: 'BULK Country Breakfast Sausage',
+    perLot: '5 one pound packs per 5lb lot',
     image: '/country_breakfast_sausage.jpg',
     options: [{ name: 'countryBreakfastSausage', label: 'Country Breakfast Sausage', price: 15 }],
   },
   {
     name: 'Breakfast Links',
+    perLot: '5 one pound packs per 5lb lot',
     image: '/baby_link.jpg',
     options: [
       { name: 'babyLinksCountry', label: 'Country Breakfast Links', price: 20 },
@@ -64,6 +70,7 @@ const specialtyMeats: SpecialtyMeatOption[] = [
   },
   {
     name: 'Snack Sticks',
+    perLot: '3 packs per 5lb lot (packs range from 12-15 sticks per pack)',
     image: '/snack_sticks.jpg',
     options: [
       { name: 'snackSticksRegular', label: 'Regular Snack Sticks', price: 25 },
@@ -75,6 +82,7 @@ const specialtyMeats: SpecialtyMeatOption[] = [
   },
   {
     name: 'Hot Dogs',
+    perLot: '4 packs of 5 links per 5lb lot',
     image: '/hot_dog.jpg',
     options: [
       { name: 'hotDogsRegular', label: 'Regular Hot Dogs', price: 17.5 },
@@ -84,6 +92,7 @@ const specialtyMeats: SpecialtyMeatOption[] = [
   },
   {
     name: 'Jerky Restructured',
+    perLot: 'one bag',
     image: '/jerky.jpg',
     options: [
       { name: 'jerkyRestructuredHot', label: 'Hot Jerky Restructured', price: 35 },
