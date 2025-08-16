@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Select from './Select';
 import { useFormContext } from 'react-hook-form';
 import clsx from 'clsx';
-import Textarea from './Textarea';
 
 type Props = {
   name: string;

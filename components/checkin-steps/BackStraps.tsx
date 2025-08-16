@@ -46,7 +46,7 @@ export default function BackStraps(props: StepProps) {
                     <div className='text-sm text-gray-600'>{option.description}</div>
                   </div>
                   <div
-                    className={`h-5 w-5 rounded-full border-2 transition-all ${
+                    className={`h-5 w-5 shrink-0 rounded-full border-2 transition-all ${
                       selectedValue === option.value ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
                     }`}
                   >
