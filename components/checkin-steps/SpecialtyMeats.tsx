@@ -97,6 +97,8 @@ const weightOptions = [
   { value: '10', label: '10 lbs' },
   { value: '15', label: '15 lbs' },
   { value: '20', label: '20 lbs' },
+  { value: '25', label: '25 lbs' },
+  { value: '30', label: '30 lbs' },
   { value: 'Evenly', label: 'Evenly Distribute', description: 'Split available meat evenly' },
 ];
 
