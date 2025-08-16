@@ -407,12 +407,11 @@ export default function DeerTableRow({ data }: Props) {
                     ]}
                   />
                 </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
+                <div className='hidden'>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
                   <Select
                     className='w-full'
                     name='shoulderMountEarPosition'
-                    required
                     options={[
                       { value: '', label: 'Select Position' },
                       { value: 'Alert', label: 'Alert/Forward' },
