@@ -630,7 +630,7 @@ export default function DeerTableRow({ data }: Props) {
 
                 <div className='grid grid-cols-4 gap-4'>
                   <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape/Hide Deposit</label>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Mount/Hide Deposit</label>
                     <Input
                       name='capeHideDeposit'
                       type='number'
