@@ -102,10 +102,9 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
       return true;
     }
 
-    // Skip all detail steps if "Donation" is selected
+    // Skip all detail steps except Cape & Hide if "Donation" is selected
     if (processingType === 'Donation') {
       if (
-        step.title === 'Cape & Hide Options' ||
         step.title === 'Quick Options' ||
         step.title === 'Back Straps' ||
         step.title === 'Hind Legs' ||
@@ -142,8 +141,8 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
   const getNextStep = (fromStep: number): number => {
     let nextStep = fromStep + 1;
 
-    // Special case: if we're on ProcessingType and "Donation" is selected, jump to Summary
-    if (steps[fromStep].title === 'Processing Type' && processingType === 'Donation') {
+    // Special case: if we're on Cape & Hide and "Donation" is selected, jump to Summary
+    if (steps[fromStep].title === 'Cape & Hide' && processingType === 'Donation') {
       return steps.findIndex((step) => step.title === 'Summary');
     }
 
@@ -168,9 +167,9 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
   const getPreviousStep = (fromStep: number): number => {
     let prevStep = fromStep - 1;
 
-    // Special case: if we're on Summary and came from ProcessingType with "Donation"
+    // Special case: if we're on Summary and came from Cape & Hide with "Donation"
     if (steps[fromStep].title === 'Summary' && processingType === 'Donation') {
-      return steps.findIndex((step) => step.title === 'Processing Type');
+      return steps.findIndex((step) => step.title === 'Cape & Hide');
     }
 
     // Special case: if we're on Summary and came from Quick Options with "Grind Everything"
