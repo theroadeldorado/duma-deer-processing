@@ -259,46 +259,46 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
     <div className='flex flex-col gap-6'>
       {/* Step Indicators */}
       <div className='flex flex-wrap items-center justify-center'>
-        {steps.map((step, index) => {
-          const status = getStepStatus(index);
-          if (status === 'skipped') return null;
+        {steps
+          .map((step, index) => ({ step, index, status: getStepStatus(index) }))
+          .filter(({ status }) => status !== 'skipped')
+          .map(({ step, index, status }, visibleIndex) => {
+            // Find the next visible step
+            const nextVisibleStepIndex = steps.findIndex((_, nextIndex) => nextIndex > index && getStepStatus(nextIndex) !== 'skipped');
+            const hasNextVisibleStep = nextVisibleStepIndex !== -1;
 
-          // Find the next visible step
-          const nextVisibleStepIndex = steps.findIndex((_, nextIndex) => nextIndex > index && getStepStatus(nextIndex) !== 'skipped');
-          const hasNextVisibleStep = nextVisibleStepIndex !== -1;
-
-          return (
-            <div key={step.id} className='flex items-start'>
-              <div className='flex flex-col items-center'>
-                <div
-                  className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
-                    status === 'completed'
-                      ? 'bg-primary-blue text-white'
-                      : status === 'current'
-                      ? 'bg-primary-blue text-white ring-2 ring-primary-blue ring-offset-2'
-                      : 'bg-tan-1 text-gray-600'
-                  }`}
-                >
-                  {status === 'completed' ? (
-                    <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
-                      <path
-                        fillRule='evenodd'
-                        d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
-                        clipRule='evenodd'
-                      />
-                    </svg>
-                  ) : (
-                    <span className='inline-block -translate-y-px'>{index + 1}</span>
-                  )}
+            return (
+              <div key={step.id} className='flex items-start'>
+                <div className='flex flex-col items-center'>
+                  <div
+                    className={`flex h-7 w-7 items-center justify-center rounded-full text-xs font-bold transition-all duration-300 ${
+                      status === 'completed'
+                        ? 'bg-primary-blue text-white'
+                        : status === 'current'
+                        ? 'bg-primary-blue text-white ring-2 ring-primary-blue ring-offset-2'
+                        : 'bg-tan-1 text-gray-600'
+                    }`}
+                  >
+                    {status === 'completed' ? (
+                      <svg className='h-4 w-4' fill='currentColor' viewBox='0 0 20 20'>
+                        <path
+                          fillRule='evenodd'
+                          d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z'
+                          clipRule='evenodd'
+                        />
+                      </svg>
+                    ) : (
+                      <span className='inline-block -translate-y-px'>{visibleIndex + 1}</span>
+                    )}
+                  </div>
+                  <span className={`mt-1 inline-block text-xs font-medium ${status === 'current' ? 'text-primary-blue' : 'text-gray-600'}`}>
+                    {getShortStepName(step.title)}
+                  </span>
                 </div>
-                <span className={`mt-1 inline-block text-xs font-medium ${status === 'current' ? 'text-primary-blue' : 'text-gray-600'}`}>
-                  {getShortStepName(step.title)}
-                </span>
+                {hasNextVisibleStep && <div className={`mx-1 mt-4 h-0.5 w-4 ${status === 'completed' ? 'bg-primary-blue' : 'bg-tan-1'}`} />}
               </div>
-              {hasNextVisibleStep && <div className={`mx-1 mt-4 h-0.5 w-4 ${status === 'completed' ? 'bg-primary-blue' : 'bg-tan-1'}`} />}
-            </div>
-          );
-        })}
+            );
+          })}
       </div>
 
       {/* Top Navigation Buttons */}

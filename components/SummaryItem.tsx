@@ -42,9 +42,9 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
           {pricePer5lb ? (
             <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
               {value === 'Evenly' ? (
-                <span className={`${print} ? 'text-[28px] leading-[1.2]' : 'text-[26px] leading-[1.2]'`}>Evenly</span>
+                <span className={print ? 'text-[28px] leading-[1.2]' : 'text-[26px] leading-[1.2]'}>Evenly</span>
               ) : (
-                <span className={`${print} ? 'text-[28px] leading-[1.2]' : 'text-[26px] leading-[1.2]'`}>{value}lbs</span>
+                <span className={print ? 'text-[28px] leading-[1.2]' : 'text-[26px] leading-[1.2]'}>{value}lbs</span>
               )}
 
               {price && <span className='text-sm'>(${calculatePricePerPound(price, value)}/lb)</span>}
@@ -56,7 +56,7 @@ const SummaryItem: React.FC<SummaryItemProps> = ({ label, value, price, pricePer
             </p>
           ) : (
             <p className='flex items-end justify-between gap-1 border-b border-dashed border-gray-900 py-1'>
-              <span className={`${print} ? 'text-[28px] leading-[1.2]' : 'text-[26px] leading-[1.2]'`}>{value}</span>
+              <span className={print ? 'text-[28px] leading-[1.2]' : 'text-[26px] leading-[1.2]'}>{value}</span>
               <span className='shrink-0 grow justify-items-end text-right'>${price ? price.toFixed(2) : (0).toFixed(2)}</span>
             </p>
           )}
