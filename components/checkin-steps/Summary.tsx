@@ -246,43 +246,37 @@ export default function Summary(props: StepProps) {
           </div>
         ))}
 
-        <div className='flex flex-col items-end text-right'>
-          <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Processing Total'}</h4>
+        <div className='flex justify-end pb-10'>
+          <div className='flex max-w-md flex-col gap-2'>
+            {hasCapeHideOptions && (
+              <div className='flex items-end justify-between gap-4 border-b border-gray-300 pb-1'>
+                <h4 className='text-lg font-bold'>Hide/Mount Total</h4>
+                <p className='text-lg font-bold'>${capeHideTotal.toFixed(2)}</p>
+              </div>
+            )}
 
-          {hasEvenly && (
-            <p className='max-w-[400px] text-sm italic'>
-              Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
-            </p>
-          )}
-          <p className='mb-6 mt-1 text-display-sm font-bold'>
-            <span className=''>$</span>
-            {processingTotal.toFixed(2)}
-          </p>
+            {hasEvenly && (
+              <div className='flex items-end justify-between gap-4 border-b border-gray-300 pb-1'>
+                <div>
+                  <h4 className='text-lg font-bold'>Specialty Meat Price</h4>
+                  <p className='max-w-[600px] text-sm italic'>
+                    Note: Selecting evenly distributed on a specialty meat could cause the price to increase by $300-$500
+                  </p>
+                </div>
+                <p className='text-lg font-bold'>TBD</p>
+              </div>
+            )}
 
-          {hasCapeHideOptions && (
-            <>
-              <h4 className='mt-4 text-lg font-bold'>Cape/Hide/Mount Total</h4>
-              <p className='mb-6 mt-1 text-display-sm font-bold'>
-                <span className=''>$</span>
-                {capeHideTotal.toFixed(2)}
-              </p>
-            </>
-          )}
+            <div className='flex items-end justify-between gap-4 border-b border-gray-300 pb-1'>
+              <h4 className='text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Processing Total'}</h4>
+              <p className='text-lg font-bold'>${processingTotal.toFixed(2)}</p>
+            </div>
 
-          <h4 className='mt-4 text-lg font-bold'>Grand Total</h4>
-          <p className='mb-6 mt-1 text-display-sm font-bold'>
-            <span className=''>$</span>
-            {(processingTotal + capeHideTotal).toFixed(2)}
-          </p>
-
-          {hasEvenly && (
-            <>
-              <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
-              <p className='mb-10 mt-1 text-display-sm font-bold'>
-                <span className=''> TBD</span>
-              </p>
-            </>
-          )}
+            <div className='mt-1 flex items-end justify-between gap-4'>
+              <h4 className='text-lg font-bold'>Grand Total</h4>
+              <p className='text-lg font-bold'>${(processingTotal + capeHideTotal).toFixed(2)}</p>
+            </div>
+          </div>
         </div>
       </div>
     </StepWrapper>
