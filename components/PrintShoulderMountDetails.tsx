@@ -10,8 +10,8 @@ interface PrintShoulderMountDetailsProps {
 const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ data }) => {
   // Determine which mount/hide options are selected
   const isShoulderMount = data.cape === 'Shoulder mount';
-  const isEuroMount = data.euroMount && data.euroMount !== 'false' && data.euroMount !== '';
-  const isHideTanned = data.hide === 'Tanned Hair on';
+  const isEuroMount = data.euroMount && data.euroMount !== 'false' && data.euroMount !== '' && data.euroMount !== 'Keep head';
+  const isHideTanned = data.hide === 'Tanned Hair on' && data.cape !== 'Take head';
   const showMountDetails = isShoulderMount || isEuroMount || isHideTanned;
   const renderContactInformation = () => {
     return (

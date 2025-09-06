@@ -479,6 +479,21 @@ export default function DeerTableRow({ data }: Props) {
               <h3 className='mb-4 text-xl font-bold'>Edit Mount/Hide Details</h3>
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
                 {/* Common fields for both Shoulder Mount and Tanned Hair on */}
+                {data.euroMount && (data.euroMount === 'Boiled finished mount' || data.euroMount === 'Beetles finished mount') && (
+                  <>
+                    <div className='grid grid-cols-4 gap-4'>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
+                        <Input
+                          name='rackId'
+                          type='text'
+                          placeholder='Rack ID'
+                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
                 {(data.cape === 'Shoulder mount' || data.hide === 'Tanned Hair on') && (
                   <>
                     <div className='grid grid-cols-4 gap-4'>
