@@ -40,6 +40,14 @@ export type DeerT = {
   shoulderMountHeadPosition?: string;
   shoulderMountEarPosition?: string;
   shoulderMountSpecialInstructions?: string;
+  hideCondition?: string;
+  facialFeatures?: string;
+  deposit?: number;
+  rackId?: string;
+  capeId?: string;
+  capeMorseCode?: string;
+  approxNeckMeasurement?: number;
+  formOrdered?: string;
   capeHideNotes?: string;
   skinnedOrBoneless?: string;
   skinnedBonelessNotes?: string;

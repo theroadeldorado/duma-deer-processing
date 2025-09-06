@@ -44,6 +44,14 @@ export default function DeerTableRow({ data }: Props) {
     shoulderMountHeadPosition: data?.shoulderMountHeadPosition,
     shoulderMountEarPosition: data?.shoulderMountEarPosition,
     shoulderMountSpecialInstructions: data?.shoulderMountSpecialInstructions,
+    hideCondition: data?.hideCondition,
+    facialFeatures: data?.facialFeatures,
+    deposit: data?.deposit,
+    rackId: data?.rackId,
+    capeId: data?.capeId,
+    capeMorseCode: data?.capeMorseCode,
+    approxNeckMeasurement: data?.approxNeckMeasurement,
+    formOrdered: data?.formOrdered,
   });
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -65,6 +73,14 @@ export default function DeerTableRow({ data }: Props) {
       shoulderMountHeadPosition: data?.shoulderMountHeadPosition || '',
       shoulderMountEarPosition: data?.shoulderMountEarPosition || '',
       shoulderMountSpecialInstructions: data?.shoulderMountSpecialInstructions || '',
+      hideCondition: data?.hideCondition || '',
+      facialFeatures: data?.facialFeatures || '',
+      deposit: data?.deposit || '',
+      rackId: data?.rackId || '',
+      capeId: data?.capeId || '',
+      capeMorseCode: data?.capeMorseCode || '',
+      approxNeckMeasurement: data?.approxNeckMeasurement || '',
+      formOrdered: data?.formOrdered || '',
     },
   });
 
@@ -98,6 +114,14 @@ export default function DeerTableRow({ data }: Props) {
               shoulderMountHeadPosition: result.data.shoulderMountHeadPosition,
               shoulderMountEarPosition: result.data.shoulderMountEarPosition,
               shoulderMountSpecialInstructions: result.data.shoulderMountSpecialInstructions,
+              hideCondition: result.data.hideCondition,
+              facialFeatures: result.data.facialFeatures,
+              deposit: result.data.deposit,
+              rackId: result.data.rackId,
+              capeId: result.data.capeId,
+              capeMorseCode: result.data.capeMorseCode,
+              approxNeckMeasurement: result.data.approxNeckMeasurement,
+              formOrdered: result.data.formOrdered,
             });
           }
 
@@ -192,6 +216,14 @@ export default function DeerTableRow({ data }: Props) {
       shoulderMountHeadPosition: data?.shoulderMountHeadPosition || '',
       shoulderMountEarPosition: data?.shoulderMountEarPosition || '',
       shoulderMountSpecialInstructions: data?.shoulderMountSpecialInstructions || '',
+      hideCondition: data?.hideCondition || '',
+      facialFeatures: data?.facialFeatures || '',
+      deposit: data?.deposit || '',
+      rackId: data?.rackId || '',
+      capeId: data?.capeId || '',
+      capeMorseCode: data?.capeMorseCode || '',
+      approxNeckMeasurement: data?.approxNeckMeasurement || '',
+      formOrdered: data?.formOrdered || '',
     });
   };
 
@@ -206,6 +238,14 @@ export default function DeerTableRow({ data }: Props) {
       shoulderMountHeadPosition: formData.shoulderMountHeadPosition,
       shoulderMountEarPosition: formData.shoulderMountEarPosition,
       shoulderMountSpecialInstructions: formData.shoulderMountSpecialInstructions,
+      hideCondition: formData.hideCondition,
+      facialFeatures: formData.facialFeatures,
+      deposit: formData.deposit,
+      rackId: formData.rackId,
+      capeId: formData.capeId,
+      capeMorseCode: formData.capeMorseCode,
+      approxNeckMeasurement: formData.approxNeckMeasurement,
+      formOrdered: formData.formOrdered,
     });
 
     mountMutation.mutate(updatedData);
@@ -222,6 +262,14 @@ export default function DeerTableRow({ data }: Props) {
       shoulderMountHeadPosition: formData.shoulderMountHeadPosition,
       shoulderMountEarPosition: formData.shoulderMountEarPosition,
       shoulderMountSpecialInstructions: formData.shoulderMountSpecialInstructions,
+      hideCondition: formData.hideCondition,
+      facialFeatures: formData.facialFeatures,
+      deposit: formData.deposit,
+      rackId: formData.rackId,
+      capeId: formData.capeId,
+      capeMorseCode: formData.capeMorseCode,
+      approxNeckMeasurement: formData.approxNeckMeasurement,
+      formOrdered: formData.formOrdered,
     });
 
     // Set flag to print after save
@@ -392,11 +440,10 @@ export default function DeerTableRow({ data }: Props) {
               <h3 className='mb-4 text-xl font-bold'>Edit Mount Details</h3>
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
                 <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall *</label>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
                   <Select
                     className='w-full'
                     name='shoulderMountHeadPosition'
-                    required
                     options={[
                       { value: '', label: 'Select Position' },
                       { value: 'Upright Left', label: 'Upright Left' },
@@ -409,12 +456,112 @@ export default function DeerTableRow({ data }: Props) {
                   />
                 </div>
                 <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
+                  <div className='flex gap-4'>
+                    <label className='flex items-center'>
+                      <input
+                        type='radio'
+                        name='shoulderMountEarPosition'
+                        value='Forward'
+                        className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                      />
+                      Forward
+                    </label>
+                    <label className='flex items-center'>
+                      <input
+                        type='radio'
+                        name='shoulderMountEarPosition'
+                        value='Back'
+                        className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                      />
+                      Back
+                    </label>
+                    <label className='flex items-center'>
+                      <input
+                        type='radio'
+                        name='shoulderMountEarPosition'
+                        value='Rotated'
+                        className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                      />
+                      Rotated
+                    </label>
+                  </div>
+                </div>
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
+                  <Textarea
+                    name='hideCondition'
+                    placeholder='Gray marks, tick marks, scars, cut, etc...'
+                    rows={2}
+                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                  />
+                </div>
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
+                  <Textarea
+                    name='facialFeatures'
+                    placeholder='Facial features, coloring, or notches...'
+                    rows={2}
+                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                  />
+                </div>
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Deposit Amount</label>
                   <Input
+                    name='deposit'
+                    type='number'
+                    step='0.01'
+                    placeholder='0.00'
+                    min={0}
+                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                  />
+                </div>
+                <div className='grid grid-cols-2 gap-4'>
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
+                    <Input
+                      name='rackId'
+                      type='text'
+                      placeholder='Rack ID'
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                    />
+                  </div>
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape ID</label>
+                    <Input
+                      name='capeId'
+                      type='text'
+                      placeholder='Cape ID'
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                    />
+                  </div>
+                </div>
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Cape Morse Code #</label>
+                  <Input
+                    name='capeMorseCode'
                     type='text'
-                    name='shoulderMountEarPosition'
-                    required
-                    placeholder='e.g., Alert/Forward, Relaxed/Natural, Laid Back'
+                    placeholder='Cape Morse Code #'
+                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                  />
+                </div>
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
+                  <Input
+                    name='approxNeckMeasurement'
+                    type='number'
+                    step='0.1'
+                    placeholder='0.0'
+                    min={0}
+                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                  />
+                </div>
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
+                  <Input
+                    name='formOrdered'
+                    type='text'
+                    placeholder='Form Ordered'
                     className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                   />
                 </div>
@@ -430,13 +577,10 @@ export default function DeerTableRow({ data }: Props) {
                 <div className='flex items-center justify-between pt-4'>
                   <Button
                     type='button'
-                    onClick={async () => {
-                      // Validate required fields before printing
-                      const isValid = await mountForm.trigger(['shoulderMountHeadPosition', 'shoulderMountEarPosition']);
-                      if (isValid) {
-                        const formData = mountForm.getValues();
-                        handleMountSaveAndPrint(formData);
-                      }
+                    onClick={() => {
+                      // Get form data and print without validation
+                      const formData = mountForm.getValues();
+                      handleMountSaveAndPrint(formData);
                     }}
                     className='bg-red-500 text-white hover:bg-red-600'
                   >

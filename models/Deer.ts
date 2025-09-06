@@ -81,6 +81,30 @@ const fields: DeerSchemaT = {
   shoulderMountSpecialInstructions: {
     type: String,
   },
+  hideCondition: {
+    type: String,
+  },
+  facialFeatures: {
+    type: String,
+  },
+  deposit: {
+    type: Number,
+  },
+  rackId: {
+    type: String,
+  },
+  capeId: {
+    type: String,
+  },
+  capeMorseCode: {
+    type: String,
+  },
+  approxNeckMeasurement: {
+    type: Number,
+  },
+  formOrdered: {
+    type: String,
+  },
   skinnedBonelessNotes: {
     type: String,
   },
