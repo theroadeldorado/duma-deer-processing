@@ -408,17 +408,14 @@ export default function DeerTableRow({ data }: Props) {
                     ]}
                   />
                 </div>
-                <div className='hidden'>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
-                  <Select
-                    className='w-full'
+                <div>
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
+                  <Input
+                    type='text'
                     name='shoulderMountEarPosition'
-                    options={[
-                      { value: '', label: 'Select Position' },
-                      { value: 'Alert', label: 'Alert/Forward' },
-                      { value: 'Relaxed', label: 'Relaxed/Natural' },
-                      { value: 'Back', label: 'Laid Back' },
-                    ]}
+                    required
+                    placeholder='e.g., Alert/Forward, Relaxed/Natural, Laid Back'
+                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                   />
                 </div>
                 <div>
@@ -433,9 +430,13 @@ export default function DeerTableRow({ data }: Props) {
                 <div className='flex items-center justify-between pt-4'>
                   <Button
                     type='button'
-                    onClick={() => {
-                      const formData = mountForm.getValues();
-                      handleMountSaveAndPrint(formData);
+                    onClick={async () => {
+                      // Validate required fields before printing
+                      const isValid = await mountForm.trigger(['shoulderMountHeadPosition', 'shoulderMountEarPosition']);
+                      if (isValid) {
+                        const formData = mountForm.getValues();
+                        handleMountSaveAndPrint(formData);
+                      }
                     }}
                     className='bg-red-500 text-white hover:bg-red-600'
                   >

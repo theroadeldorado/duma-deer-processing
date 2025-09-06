@@ -302,7 +302,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 >
                   <h4 className='text-green-800 text-lg font-medium'>Shoulder Mount Pose Details</h4>
 
-                  <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+                  <div className='grid grid-cols-1 gap-4'>
                     <div>
                       <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall *</label>
                       <Select
@@ -320,17 +320,14 @@ export default function EditDeer({ data, isNew }: Props) {
                       />
                     </div>
 
-                    <div className='hidden'>
+                    <div>
                       <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
-                      <Select
+                      <Input
+                        type='text'
                         className='w-full'
                         name='shoulderMountEarPosition'
-                        options={[
-                          { value: '', label: 'Select Position' },
-                          { value: 'Alert', label: 'Alert/Forward' },
-                          { value: 'Relaxed', label: 'Relaxed/Natural' },
-                          { value: 'Back', label: 'Laid Back' },
-                        ]}
+                        required
+                        placeholder='e.g., Alert/Forward, Relaxed/Natural, Laid Back'
                       />
                     </div>
                   </div>
