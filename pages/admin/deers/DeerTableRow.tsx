@@ -237,7 +237,7 @@ export default function DeerTableRow({ data }: Props) {
     const calculatedCapeHideTotal = calculateCapeHideTotal(data);
 
     // Parse capeHideDeposit as a number
-    const capeHideDepositValue = formData.capeHideDeposit ? Number(formData.capeHideDeposit) : undefined;
+    const capeHideDepositValue = formData.capeHideDeposit && formData.capeHideDeposit !== '' ? Number(formData.capeHideDeposit) : undefined;
 
     // Create an object with all the mount-related fields
     const mountData = {
@@ -252,7 +252,8 @@ export default function DeerTableRow({ data }: Props) {
       rackId: formData.rackId,
       capeId: formData.capeId,
       capeMorseCode: formData.capeMorseCode,
-      approxNeckMeasurement: formData.approxNeckMeasurement ? Number(formData.approxNeckMeasurement) : undefined,
+      approxNeckMeasurement:
+        formData.approxNeckMeasurement && formData.approxNeckMeasurement !== '' ? Number(formData.approxNeckMeasurement) : undefined,
       formOrdered: formData.formOrdered,
     };
 
@@ -276,7 +277,7 @@ export default function DeerTableRow({ data }: Props) {
     const calculatedCapeHideTotal = calculateCapeHideTotal(data);
 
     // Parse capeHideDeposit as a number
-    const capeHideDepositValue = formData.capeHideDeposit ? Number(formData.capeHideDeposit) : undefined;
+    const capeHideDepositValue = formData.capeHideDeposit && formData.capeHideDeposit !== '' ? Number(formData.capeHideDeposit) : undefined;
 
     // Create an object with all the mount-related fields
     const mountData = {
@@ -291,7 +292,8 @@ export default function DeerTableRow({ data }: Props) {
       rackId: formData.rackId,
       capeId: formData.capeId,
       capeMorseCode: formData.capeMorseCode,
-      approxNeckMeasurement: formData.approxNeckMeasurement ? Number(formData.approxNeckMeasurement) : undefined,
+      approxNeckMeasurement:
+        formData.approxNeckMeasurement && formData.approxNeckMeasurement !== '' ? Number(formData.approxNeckMeasurement) : undefined,
       formOrdered: formData.formOrdered,
     };
 
@@ -476,26 +478,6 @@ export default function DeerTableRow({ data }: Props) {
             <div className='p-6'>
               <h3 className='mb-4 text-xl font-bold'>Edit Mount/Hide Details</h3>
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
-                {/* Common fields for all mount/hide types */}
-                <div>
-                  <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape/Hide Deposit</label>
-                    <Input
-                      name='capeHideDeposit'
-                      type='number'
-                      step='0.01'
-                      placeholder='0.00'
-                      min={0}
-                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                      onChange={(e) => {
-                        // Ensure the value is registered as a number
-                        const numValue = e.target.value ? Number(e.target.value) : '';
-                        mountForm.setValue('capeHideDeposit', numValue);
-                      }}
-                    />
-                  </div>
-                </div>
-
                 {/* Shoulder Mount specific fields */}
                 {data.cape === 'Shoulder mount' && (
                   <>
@@ -536,6 +518,10 @@ export default function DeerTableRow({ data }: Props) {
                           placeholder='0.0'
                           min={0}
                           className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                          onChange={(e) => {
+                            const numValue = e.target.value ? Number(e.target.value) : '';
+                            mountForm.setValue('approxNeckMeasurement', numValue);
+                          }}
                         />
                       </div>
                       <div>
@@ -568,35 +554,16 @@ export default function DeerTableRow({ data }: Props) {
                       </div>
                       <div className='col-span-2'>
                         <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
-                        <div className='flex gap-4'>
-                          <label className='flex items-center'>
-                            <input
-                              type='radio'
-                              name='shoulderMountEarPosition'
-                              value='Forward'
-                              className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
-                            />
-                            Forward
-                          </label>
-                          <label className='flex items-center'>
-                            <input
-                              type='radio'
-                              name='shoulderMountEarPosition'
-                              value='Back'
-                              className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
-                            />
-                            Back
-                          </label>
-                          <label className='flex items-center'>
-                            <input
-                              type='radio'
-                              name='shoulderMountEarPosition'
-                              value='Rotated'
-                              className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
-                            />
-                            Rotated
-                          </label>
-                        </div>
+                        <Select
+                          className='w-full'
+                          name='shoulderMountEarPosition'
+                          options={[
+                            { value: '', label: 'Select Position' },
+                            { value: 'Forward', label: 'Forward' },
+                            { value: 'Back', label: 'Back' },
+                            { value: 'Rotated', label: 'Rotated' },
+                          ]}
+                        />
                       </div>
                     </div>
 
@@ -630,6 +597,25 @@ export default function DeerTableRow({ data }: Props) {
                     rows={3}
                     className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                   />
+                </div>
+
+                <div className='grid grid-cols-4 gap-4'>
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape/Hide Deposit</label>
+                    <Input
+                      name='capeHideDeposit'
+                      type='number'
+                      step='0.01'
+                      placeholder='0.00'
+                      min={0}
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                      onChange={(e) => {
+                        // Ensure the value is registered as a number
+                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        mountForm.setValue('capeHideDeposit', numValue);
+                      }}
+                    />
+                  </div>
                 </div>
                 {/* Summary section with totals and balance */}
                 <div className='mt-6 border-t border-dashed border-gray-300 pt-4'>

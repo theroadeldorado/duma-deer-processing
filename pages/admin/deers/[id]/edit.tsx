@@ -104,23 +104,45 @@ export default function EditDeer({ data, isNew }: Props) {
 
   const handleSubmit = async (formData: DeerInputT) => {
     // Parse numeric fields to ensure they're saved as numbers
-    const capeHideDepositValue = formData.capeHideDeposit ? Number(formData.capeHideDeposit) : undefined;
-    const depositValue = formData.deposit ? Number(formData.deposit) : undefined;
-    const amountPaidValue = formData.amountPaid ? Number(formData.amountPaid) : undefined;
+    const capeHideDepositValue = formData.capeHideDeposit && formData.capeHideDeposit !== '' ? Number(formData.capeHideDeposit) : undefined;
+    const depositValue = formData.deposit && formData.deposit !== '' ? Number(formData.deposit) : undefined;
+    const amountPaidValue = formData.amountPaid && formData.amountPaid !== '' ? Number(formData.amountPaid) : undefined;
     const capeHideTotalValue = calculateCapeHideTotal(formData);
-
-    // Make sure we're explicitly including capeHideDeposit and capeHideTotal as numbers
+    const approxNeckMeasurementValue =
+      formData.approxNeckMeasurement && formData.approxNeckMeasurement !== '' ? Number(formData.approxNeckMeasurement) : undefined;
+    ~``;
+    // Make sure we're explicitly including all cape/hide fields
     const updatedData = {
       ...formData,
       totalPrice: calculatedPrice,
+      // Numeric fields
       capeHideDeposit: capeHideDepositValue,
       capeHideTotal: capeHideTotalValue,
       deposit: depositValue,
       amountPaid: amountPaidValue,
-      approxNeckMeasurement: formData.approxNeckMeasurement ? Number(formData.approxNeckMeasurement) : undefined,
+      approxNeckMeasurement: approxNeckMeasurementValue,
+      // String fields - explicitly included to ensure they're saved
+      hideCondition: formData.hideCondition,
+      facialFeatures: formData.facialFeatures,
+      rackId: formData.rackId,
+      capeId: formData.capeId,
+      capeMorseCode: formData.capeMorseCode,
+      formOrdered: formData.formOrdered,
+      shoulderMountHeadPosition: formData.shoulderMountHeadPosition,
+      shoulderMountEarPosition: formData.shoulderMountEarPosition,
+      shoulderMountSpecialInstructions: formData.shoulderMountSpecialInstructions,
     };
 
-    console.log('Submitting data with capeHideDeposit:', capeHideDepositValue);
+    console.log('Submitting data with all cape/hide fields:', {
+      capeHideDeposit: capeHideDepositValue,
+      hideCondition: formData.hideCondition,
+      facialFeatures: formData.facialFeatures,
+      rackId: formData.rackId,
+      capeId: formData.capeId,
+      capeMorseCode: formData.capeMorseCode,
+      formOrdered: formData.formOrdered,
+      approxNeckMeasurement: approxNeckMeasurementValue,
+    });
     mutation.mutate(updatedData);
   };
 
@@ -379,7 +401,18 @@ export default function EditDeer({ data, isNew }: Props) {
 
                     <div>
                       <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
-                      <Input type='number' step='0.1' min='0' className='w-full' name='approxNeckMeasurement' placeholder='0.0' />
+                      <Input
+                        type='number'
+                        step='0.1'
+                        min='0'
+                        className='w-full'
+                        name='approxNeckMeasurement'
+                        placeholder='0.0'
+                        onChange={(e) => {
+                          const numValue = e.target.value && e.target.value !== '' ? Number(e.target.value) : undefined;
+                          form.setValue('approxNeckMeasurement', numValue);
+                        }}
+                      />
                     </div>
 
                     <div>
@@ -678,7 +711,7 @@ export default function EditDeer({ data, isNew }: Props) {
                       placeholder='0.00'
                       onChange={(e) => {
                         // Ensure the value is registered as a number
-                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        const numValue = e.target.value && e.target.value !== '' ? Number(e.target.value) : undefined;
                         form.setValue('deposit', numValue);
                       }}
                     />
@@ -694,7 +727,7 @@ export default function EditDeer({ data, isNew }: Props) {
                       placeholder='0.00'
                       onChange={(e) => {
                         // Ensure the value is registered as a number
-                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        const numValue = e.target.value && e.target.value !== '' ? Number(e.target.value) : undefined;
                         form.setValue('capeHideDeposit', numValue);
                       }}
                     />
@@ -710,7 +743,7 @@ export default function EditDeer({ data, isNew }: Props) {
                       placeholder='0.00'
                       onChange={(e) => {
                         // Ensure the value is registered as a number
-                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        const numValue = e.target.value && e.target.value !== '' ? Number(e.target.value) : undefined;
                         form.setValue('amountPaid', numValue);
                       }}
                     />

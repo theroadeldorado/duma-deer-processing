@@ -110,7 +110,7 @@ export const Deer = {
   jerkyRestructuredTeriyaki: z.string().optional(),
   jerkyRestructuredNotes: z.string().optional(),
   recapNotes: z.string().optional(),
-  amountPaid: z.any().optional(),
+  amountPaid: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
   totalPrice: z.any().optional(),
 };
 
