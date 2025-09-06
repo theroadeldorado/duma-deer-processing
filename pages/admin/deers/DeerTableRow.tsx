@@ -478,19 +478,11 @@ export default function DeerTableRow({ data }: Props) {
             <div className='p-6'>
               <h3 className='mb-4 text-xl font-bold'>Edit Mount/Hide Details</h3>
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
-                {/* Shoulder Mount specific fields */}
-                {data.cape === 'Shoulder mount' && (
+                {/* Common fields for both Shoulder Mount and Tanned Hair on */}
+                {(data.cape === 'Shoulder mount' || data.hide === 'Tanned Hair on') && (
                   <>
                     <div className='grid grid-cols-4 gap-4'>
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
-                        <Input
-                          name='rackId'
-                          type='text'
-                          placeholder='Rack ID'
-                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                        />
-                      </div>
+                      {/* Cape ID and Cape Morse Code for both Shoulder mount and Tanned Hair on */}
                       <div>
                         <label className='mb-1 block text-sm font-medium text-gray-700'>Cape ID</label>
                         <Input
@@ -509,78 +501,100 @@ export default function DeerTableRow({ data }: Props) {
                           className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                         />
                       </div>
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
-                        <Input
-                          name='approxNeckMeasurement'
-                          type='number'
-                          step='0.1'
-                          placeholder='0.0'
-                          min={0}
-                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                          onChange={(e) => {
-                            const numValue = e.target.value ? Number(e.target.value) : '';
-                            mountForm.setValue('approxNeckMeasurement', numValue);
-                          }}
-                        />
-                      </div>
-                      <div>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
-                        <Input
-                          name='formOrdered'
-                          type='text'
-                          placeholder='Form Ordered'
-                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                        />
-                      </div>
+
+                      {/* Fields only for Shoulder mount */}
+                      {data.cape === 'Shoulder mount' && (
+                        <>
+                          <div>
+                            <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
+                            <Input
+                              name='rackId'
+                              type='text'
+                              placeholder='Rack ID'
+                              className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                            />
+                          </div>
+                          <div>
+                            <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
+                            <Input
+                              name='approxNeckMeasurement'
+                              type='number'
+                              step='0.1'
+                              placeholder='0.0'
+                              min={0}
+                              className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                              onChange={(e) => {
+                                const numValue = e.target.value ? Number(e.target.value) : '';
+                                mountForm.setValue('approxNeckMeasurement', numValue);
+                              }}
+                            />
+                          </div>
+                          <div>
+                            <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
+                            <Input
+                              name='formOrdered'
+                              type='text'
+                              placeholder='Form Ordered'
+                              className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                            />
+                          </div>
+                        </>
+                      )}
                     </div>
 
-                    <div className='grid grid-cols-4 gap-4'>
-                      <div className='col-span-2'>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
-                        <Select
-                          className='w-full'
-                          name='shoulderMountHeadPosition'
-                          options={[
-                            { value: '', label: 'Select Position' },
-                            { value: 'Upright Left', label: 'Upright Left' },
-                            { value: 'Upright Right', label: 'Upright Right' },
-                            { value: 'Semi Upright Left', label: 'Semi Upright Left' },
-                            { value: 'Semi Upright Right', label: 'Semi Upright Right' },
-                            { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
-                            { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
-                          ]}
-                        />
-                      </div>
-                      <div className='col-span-2'>
-                        <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
-                        <Select
-                          className='w-full'
-                          name='shoulderMountEarPosition'
-                          options={[
-                            { value: '', label: 'Select Position' },
-                            { value: 'Forward', label: 'Forward' },
-                            { value: 'Back', label: 'Back' },
-                            { value: 'Rotated', label: 'Rotated' },
-                          ]}
-                        />
-                      </div>
-                    </div>
+                    {/* Shoulder Mount specific fields */}
+                    {data.cape === 'Shoulder mount' && (
+                      <>
+                        <div className='grid grid-cols-4 gap-4'>
+                          <div className='col-span-2'>
+                            <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
+                            <Select
+                              className='w-full'
+                              name='shoulderMountHeadPosition'
+                              options={[
+                                { value: '', label: 'Select Position' },
+                                { value: 'Upright Left', label: 'Upright Left' },
+                                { value: 'Upright Right', label: 'Upright Right' },
+                                { value: 'Semi Upright Left', label: 'Semi Upright Left' },
+                                { value: 'Semi Upright Right', label: 'Semi Upright Right' },
+                                { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
+                                { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
+                              ]}
+                            />
+                          </div>
+                          <div className='col-span-2'>
+                            <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
+                            <Select
+                              className='w-full'
+                              name='shoulderMountEarPosition'
+                              options={[
+                                { value: '', label: 'Select Position' },
+                                { value: 'Forward', label: 'Forward' },
+                                { value: 'Back', label: 'Back' },
+                                { value: 'Rotated', label: 'Rotated' },
+                              ]}
+                            />
+                          </div>
+                        </div>
 
+                        <div>
+                          <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
+                          <Textarea
+                            name='facialFeatures'
+                            placeholder='Facial features, coloring, or notches...'
+                            rows={2}
+                            className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                          />
+                        </div>
+                      </>
+                    )}
+
+                    {/* Hide condition field for both shoulder mount and tanned hide */}
                     <div>
                       <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
                       <Textarea
                         name='hideCondition'
                         placeholder='Gray marks, tick marks, scars, cut, etc...'
-                        rows={2}
-                        className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                      />
-                    </div>
-                    <div>
-                      <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
-                      <Textarea
-                        name='facialFeatures'
-                        placeholder='Facial features, coloring, or notches...'
                         rows={2}
                         className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                       />

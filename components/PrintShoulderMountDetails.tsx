@@ -22,11 +22,7 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
           <div className='text-lg leading-[1.2]'>Tag Number: {data.tagNumber}</div>
         </div>
         <div className='space-y-2'>
-          <div className='flex flex-col'>
-            <div className='flex gap-1 text-lg leading-[1.2]'>
-              <span className='shrink-0 font-bold'>Rack ID:</span> <span className='grow border-b border-gray-900'>{data.rackId || ''}</span>
-            </div>
-          </div>
+          {/* Common fields for both Shoulder Mount and Tanned Hair on */}
           <div className='flex flex-col'>
             <div className='flex gap-1 text-lg leading-[1.2]'>
               <span className='shrink-0 font-bold'>Cape ID:</span> <span className='grow border-b border-gray-900'>{data.capeId || ''}</span>
@@ -38,18 +34,29 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
               <span className='grow border-b border-gray-900'>{data.capeMorseCode || ''}</span>
             </div>
           </div>
-          <div className='flex flex-col'>
-            <div className='flex gap-1 text-lg leading-[1.2]'>
-              <span className='shrink-0 font-bold'>Approx Neck Measurement:</span>{' '}
-              <span className='grow border-b border-gray-900'>{data.approxNeckMeasurement || ''}</span>
-            </div>
-          </div>
-          <div className='flex flex-col'>
-            <div className='flex gap-1 text-lg leading-[1.2]'>
-              <span className='shrink-0 font-bold'>Form Ordered:</span>{' '}
-              <span className='grow border-b border-gray-900'>{data.formOrdered || ''}</span>
-            </div>
-          </div>
+
+          {/* Fields only for Shoulder mount */}
+          {isShoulderMount && (
+            <>
+              <div className='flex flex-col'>
+                <div className='flex gap-1 text-lg leading-[1.2]'>
+                  <span className='shrink-0 font-bold'>Rack ID:</span> <span className='grow border-b border-gray-900'>{data.rackId || ''}</span>
+                </div>
+              </div>
+              <div className='flex flex-col'>
+                <div className='flex gap-1 text-lg leading-[1.2]'>
+                  <span className='shrink-0 font-bold'>Approx Neck Measurement:</span>{' '}
+                  <span className='grow border-b border-gray-900'>{data.approxNeckMeasurement || ''}</span>
+                </div>
+              </div>
+              <div className='flex flex-col'>
+                <div className='flex gap-1 text-lg leading-[1.2]'>
+                  <span className='shrink-0 font-bold'>Form Ordered:</span>{' '}
+                  <span className='grow border-b border-gray-900'>{data.formOrdered || ''}</span>
+                </div>
+              </div>
+            </>
+          )}
         </div>
       </div>
     );
@@ -79,16 +86,20 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
           colspan: 1,
         },
         {
-          label: 'Hide Condition',
-          value: data.hideCondition || '',
-          writeLines: 2,
-        },
-        {
           label: 'Facial Features/Coloring/notches',
           value: data.facialFeatures || '',
           writeLines: 2,
         }
       );
+    }
+
+    // Add Hide Condition field for both shoulder mount and tanned hide
+    if (isShoulderMount || isHideTanned) {
+      mountDetails.push({
+        label: 'Hide Condition',
+        value: data.hideCondition || '',
+        writeLines: 2,
+      });
     }
 
     // Add fields for both shoulder mount and euro mount
