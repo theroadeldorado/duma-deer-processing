@@ -7,6 +7,7 @@ interface ProductOption {
   price?: number;
   name?: string;
   pricePer5lb?: boolean;
+  isTakeToday?: boolean;
 }
 
 interface Product {
