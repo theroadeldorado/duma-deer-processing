@@ -8,6 +8,10 @@ interface PrintShoulderMountDetailsProps {
 }
 
 const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ data }) => {
+  // Determine if this is a shoulder mount or euro mount
+  const isShoulderMount = data.cape === 'Shoulder mount';
+  const isEuroMount = data.euroMount && data.euroMount !== 'none' && data.euroMount !== '';
+  const showMountDetails = isShoulderMount || isEuroMount;
   const renderContactInformation = () => {
     return (
       <div className='grid grid-cols-2 gap-4'>
@@ -51,39 +55,47 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
   };
 
   const renderMountDetails = () => {
-    const mountDetails = [
-      {
-        label: 'Head Position',
-        value: data.shoulderMountHeadPosition || '',
-        colspan: 1,
-      },
-      {
-        label: 'Ear Position',
-        value: data.shoulderMountEarPosition || (
-          <span className='flex gap-8'>
-            <span>Forward</span>
-            <span>Back</span>
-            <span>Rotated</span>
-          </span>
-        ),
-        colspan: 1,
-      },
-      {
-        label: 'Hide Condition',
-        value: data.hideCondition || '',
-        writeLines: 2,
-      },
-      {
-        label: 'Facial Features/Coloring/notches',
-        value: data.facialFeatures || '',
-        writeLines: 2,
-      },
-      {
-        label: 'Special Instructions',
-        value: data.shoulderMountSpecialInstructions || '',
-        writeLines: 3,
-      },
-    ];
+    // Base details for all mount types
+    const mountDetails = [];
+
+    // Add fields specific to shoulder mounts
+    if (isShoulderMount) {
+      mountDetails.push(
+        {
+          label: 'Head Position',
+          value: data.shoulderMountHeadPosition || '',
+          colspan: 1,
+        },
+        {
+          label: 'Ear Position',
+          value: data.shoulderMountEarPosition || (
+            <span className='flex gap-8'>
+              <span>Forward</span>
+              <span>Back</span>
+              <span>Rotated</span>
+            </span>
+          ),
+          colspan: 1,
+        },
+        {
+          label: 'Hide Condition',
+          value: data.hideCondition || '',
+          writeLines: 2,
+        },
+        {
+          label: 'Facial Features/Coloring/notches',
+          value: data.facialFeatures || '',
+          writeLines: 2,
+        }
+      );
+    }
+
+    // Add fields for both shoulder mount and euro mount
+    mountDetails.push({
+      label: 'Special Instructions',
+      value: data.shoulderMountSpecialInstructions || '',
+      writeLines: 3,
+    });
 
     return mountDetails.map(({ label, value, colspan, writeLines }, index) => (
       <div key={index} className={clsx('flex w-full gap-1 text-lg leading-[1.2]', colspan === 1 ? 'col-span-1' : 'col-span-2')}>
@@ -108,20 +120,20 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
         <div className='flex flex-col'>
           <div className='flex gap-1 text-lg leading-[1.2]'>
             <span className='shrink-0 font-bold'>Deposit:</span>{' '}
-            <span className='grow border-b border-gray-900'>{data.deposit ? `$${Number(data.deposit).toFixed(2)}` : ''}</span>
+            <span className='grow border-b border-gray-900'>{data.capeHideDeposit ? `$${Number(data.capeHideDeposit).toFixed(2)}` : ''}</span>
           </div>
         </div>
         <div className='flex flex-col'>
           <div className='flex gap-1 text-lg leading-[1.2]'>
             <span className='shrink-0 font-bold'>Total:</span>{' '}
-            <span className='grow border-b border-gray-900'>{data.totalPrice ? `$${Number(data.totalPrice).toFixed(2)}` : ''}</span>
+            <span className='grow border-b border-gray-900'>{data.capeHideTotal ? `$${Number(data.capeHideTotal).toFixed(2)}` : ''}</span>
           </div>
         </div>
         <div className='flex flex-col'>
           <div className='flex gap-1 text-lg leading-[1.2]'>
             <span className='shrink-0 font-bold'>Balance:</span>{' '}
             <span className='grow border-b border-gray-900'>
-              {data.totalPrice && data.deposit ? `$${(Number(data.totalPrice) - Number(data.deposit)).toFixed(2)}` : ''}
+              {data.capeHideTotal && data.capeHideDeposit ? `$${(Number(data.capeHideTotal) - Number(data.capeHideDeposit)).toFixed(2)}` : ''}
             </span>
           </div>
         </div>
@@ -145,6 +157,9 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
             <h4 className='mb-2 font-bold'>{data.createdAt && dayjs(data.createdAt).format('M/D/YY  h:mm A')}</h4>
             <div className='mb-3 border-b border-dashed border-gray-900 pb-3'>{renderContactInformation()}</div>
             <div className='gap-3'>
+              <h4 className='my-4 text-xl font-bold'>
+                {isShoulderMount ? 'Shoulder Mount Details' : isEuroMount ? 'Euro Mount Details' : 'Mount Details'}
+              </h4>
               <div className='grid grid-cols-1 gap-x-8 gap-y-4'>
                 <div className='grid grid-cols-2 gap-x-5 gap-y-4'>{renderMountDetails()}</div>
               </div>

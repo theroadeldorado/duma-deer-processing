@@ -20,6 +20,7 @@ import Form from '@/components/Form';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
 import Select from '@/components/Select';
+import { calculateCapeHideTotal } from 'lib/priceCalculations';
 
 type Props = {
   data: DeerT | null;
@@ -47,6 +48,8 @@ export default function DeerTableRow({ data }: Props) {
     hideCondition: data?.hideCondition,
     facialFeatures: data?.facialFeatures,
     deposit: data?.deposit,
+    capeHideDeposit: data?.capeHideDeposit,
+    capeHideTotal: data?.capeHideTotal,
     rackId: data?.rackId,
     capeId: data?.capeId,
     capeMorseCode: data?.capeMorseCode,
@@ -75,7 +78,7 @@ export default function DeerTableRow({ data }: Props) {
       shoulderMountSpecialInstructions: data?.shoulderMountSpecialInstructions || '',
       hideCondition: data?.hideCondition || '',
       facialFeatures: data?.facialFeatures || '',
-      deposit: data?.deposit || '',
+      capeHideDeposit: data?.capeHideDeposit || '',
       rackId: data?.rackId || '',
       capeId: data?.capeId || '',
       capeMorseCode: data?.capeMorseCode || '',
@@ -117,6 +120,8 @@ export default function DeerTableRow({ data }: Props) {
               hideCondition: result.data.hideCondition,
               facialFeatures: result.data.facialFeatures,
               deposit: result.data.deposit,
+              capeHideDeposit: result.data.capeHideDeposit,
+              capeHideTotal: result.data.capeHideTotal,
               rackId: result.data.rackId,
               capeId: result.data.capeId,
               capeMorseCode: result.data.capeMorseCode,
@@ -218,7 +223,7 @@ export default function DeerTableRow({ data }: Props) {
       shoulderMountSpecialInstructions: data?.shoulderMountSpecialInstructions || '',
       hideCondition: data?.hideCondition || '',
       facialFeatures: data?.facialFeatures || '',
-      deposit: data?.deposit || '',
+      capeHideDeposit: data?.capeHideDeposit || '',
       rackId: data?.rackId || '',
       capeId: data?.capeId || '',
       capeMorseCode: data?.capeMorseCode || '',
@@ -228,54 +233,83 @@ export default function DeerTableRow({ data }: Props) {
   };
 
   const handleMountSave = (formData: any) => {
-    const updatedData = {
-      ...data,
-      ...formData,
-    };
+    // Calculate the cape/hide total
+    const calculatedCapeHideTotal = calculateCapeHideTotal(data);
 
-    // Store the updated mount data
-    setUpdatedMountData({
+    // Parse capeHideDeposit as a number
+    const capeHideDepositValue = formData.capeHideDeposit ? Number(formData.capeHideDeposit) : undefined;
+
+    // Create an object with all the mount-related fields
+    const mountData = {
       shoulderMountHeadPosition: formData.shoulderMountHeadPosition,
       shoulderMountEarPosition: formData.shoulderMountEarPosition,
       shoulderMountSpecialInstructions: formData.shoulderMountSpecialInstructions,
       hideCondition: formData.hideCondition,
       facialFeatures: formData.facialFeatures,
-      deposit: formData.deposit,
+      deposit: data?.deposit, // Include deposit to satisfy TypeScript
+      capeHideDeposit: capeHideDepositValue, // Explicitly convert to number
+      capeHideTotal: calculatedCapeHideTotal, // Use the calculated value
       rackId: formData.rackId,
       capeId: formData.capeId,
       capeMorseCode: formData.capeMorseCode,
-      approxNeckMeasurement: formData.approxNeckMeasurement,
+      approxNeckMeasurement: formData.approxNeckMeasurement ? Number(formData.approxNeckMeasurement) : undefined,
       formOrdered: formData.formOrdered,
-    });
+    };
 
+    const updatedData = {
+      ...data,
+      ...mountData,
+      deposit: data?.deposit, // Preserve the original deposit value
+    };
+
+    console.log('Saving mount data with capeHideDeposit:', capeHideDepositValue);
+
+    // Store the updated mount data
+    setUpdatedMountData(mountData);
+
+    // Send the complete updated data to the server
     mountMutation.mutate(updatedData);
   };
 
   const handleMountSaveAndPrint = (formData: any) => {
-    const updatedData = {
-      ...data,
-      ...formData,
-    };
+    // Calculate the cape/hide total
+    const calculatedCapeHideTotal = calculateCapeHideTotal(data);
 
-    // Store the updated mount data for printing
-    setUpdatedMountData({
+    // Parse capeHideDeposit as a number
+    const capeHideDepositValue = formData.capeHideDeposit ? Number(formData.capeHideDeposit) : undefined;
+
+    // Create an object with all the mount-related fields
+    const mountData = {
       shoulderMountHeadPosition: formData.shoulderMountHeadPosition,
       shoulderMountEarPosition: formData.shoulderMountEarPosition,
       shoulderMountSpecialInstructions: formData.shoulderMountSpecialInstructions,
       hideCondition: formData.hideCondition,
       facialFeatures: formData.facialFeatures,
-      deposit: formData.deposit,
+      deposit: data?.deposit, // Include deposit to satisfy TypeScript
+      capeHideDeposit: capeHideDepositValue, // Explicitly convert to number
+      capeHideTotal: calculatedCapeHideTotal, // Use the calculated value
       rackId: formData.rackId,
       capeId: formData.capeId,
       capeMorseCode: formData.capeMorseCode,
-      approxNeckMeasurement: formData.approxNeckMeasurement,
+      approxNeckMeasurement: formData.approxNeckMeasurement ? Number(formData.approxNeckMeasurement) : undefined,
       formOrdered: formData.formOrdered,
-    });
+    };
+
+    const updatedData = {
+      ...data,
+      ...mountData,
+      deposit: data?.deposit, // Preserve the original deposit value
+    };
+
+    console.log('Saving and printing mount data with capeHideDeposit:', capeHideDepositValue);
+
+    // Store the updated mount data for printing
+    setUpdatedMountData(mountData);
 
     // Set flag to print after save
     setShouldPrintAfterSave(true);
 
-    // Trigger the save
+    // Trigger the save with the complete updated data
     mountMutation.mutate(updatedData);
   };
 
@@ -338,7 +372,10 @@ export default function DeerTableRow({ data }: Props) {
         </Cell> */}
         <Cell className='font-bold'>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
         <Cell>
-          {data.cape === 'Shoulder mount' ? (
+          {/* Only show edit/print buttons for options that need separate printout (non-Take Today options) */}
+          {data.cape === 'Shoulder mount' ||
+          data.hide === 'Tanned Hair on' ||
+          (data.euroMount && (data.euroMount === 'Boiled finished mount' || data.euroMount === 'Beetles finished mount')) ? (
             <span className='flex items-center justify-center gap-2'>
               <Button onClick={handleMountModal} className='bg-red-500 text-white hover:bg-red-600'>
                 <span className='sr-only'>Edit Mount Details</span>
@@ -437,141 +474,154 @@ export default function DeerTableRow({ data }: Props) {
 
           <Modal isVisible={isMountModalVisible} onClose={handleCloseMountModal}>
             <div className='p-6'>
-              <h3 className='mb-4 text-xl font-bold'>Edit Mount Details</h3>
+              <h3 className='mb-4 text-xl font-bold'>Edit Mount/Hide Details</h3>
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
-                <div className='grid grid-cols-4 gap-4'>
+                {/* Common fields for all mount/hide types */}
+                <div>
                   <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape/Hide Deposit</label>
                     <Input
-                      name='rackId'
-                      type='text'
-                      placeholder='Rack ID'
-                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                    />
-                  </div>
-                  <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape ID</label>
-                    <Input
-                      name='capeId'
-                      type='text'
-                      placeholder='Cape ID'
-                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                    />
-                  </div>
-                  <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape Morse Code #</label>
-                    <Input
-                      name='capeMorseCode'
-                      type='text'
-                      placeholder='Cape Morse Code #'
-                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                    />
-                  </div>
-                  <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
-                    <Input
-                      name='approxNeckMeasurement'
-                      type='number'
-                      step='0.1'
-                      placeholder='0.0'
-                      min={0}
-                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                    />
-                  </div>
-                  <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
-                    <Input
-                      name='formOrdered'
-                      type='text'
-                      placeholder='Form Ordered'
-                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                    />
-                  </div>
-
-                  <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Deposit Amount</label>
-                    <Input
-                      name='deposit'
+                      name='capeHideDeposit'
                       type='number'
                       step='0.01'
                       placeholder='0.00'
                       min={0}
                       className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                      onChange={(e) => {
+                        // Ensure the value is registered as a number
+                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        mountForm.setValue('capeHideDeposit', numValue);
+                      }}
                     />
                   </div>
                 </div>
-                <div className='grid grid-cols-4 gap-4'>
-                  <div className='col-span-2'>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
-                    <Select
-                      className='w-full'
-                      name='shoulderMountHeadPosition'
-                      options={[
-                        { value: '', label: 'Select Position' },
-                        { value: 'Upright Left', label: 'Upright Left' },
-                        { value: 'Upright Right', label: 'Upright Right' },
-                        { value: 'Semi Upright Left', label: 'Semi Upright Left' },
-                        { value: 'Semi Upright Right', label: 'Semi Upright Right' },
-                        { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
-                        { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
-                      ]}
-                    />
-                  </div>
-                  <div className='col-span-2'>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
-                    <div className='flex gap-4'>
-                      <label className='flex items-center'>
-                        <input
-                          type='radio'
-                          name='shoulderMountEarPosition'
-                          value='Forward'
-                          className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+
+                {/* Shoulder Mount specific fields */}
+                {data.cape === 'Shoulder mount' && (
+                  <>
+                    <div className='grid grid-cols-4 gap-4'>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
+                        <Input
+                          name='rackId'
+                          type='text'
+                          placeholder='Rack ID'
+                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                         />
-                        Forward
-                      </label>
-                      <label className='flex items-center'>
-                        <input
-                          type='radio'
-                          name='shoulderMountEarPosition'
-                          value='Back'
-                          className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                      </div>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Cape ID</label>
+                        <Input
+                          name='capeId'
+                          type='text'
+                          placeholder='Cape ID'
+                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                         />
-                        Back
-                      </label>
-                      <label className='flex items-center'>
-                        <input
-                          type='radio'
-                          name='shoulderMountEarPosition'
-                          value='Rotated'
-                          className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                      </div>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Cape Morse Code #</label>
+                        <Input
+                          name='capeMorseCode'
+                          type='text'
+                          placeholder='Cape Morse Code #'
+                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                         />
-                        Rotated
-                      </label>
+                      </div>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
+                        <Input
+                          name='approxNeckMeasurement'
+                          type='number'
+                          step='0.1'
+                          placeholder='0.0'
+                          min={0}
+                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                        />
+                      </div>
+                      <div>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
+                        <Input
+                          name='formOrdered'
+                          type='text'
+                          placeholder='Form Ordered'
+                          className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                        />
+                      </div>
                     </div>
-                  </div>
-                </div>
 
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
-                  <Textarea
-                    name='hideCondition'
-                    placeholder='Gray marks, tick marks, scars, cut, etc...'
-                    rows={2}
-                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                  />
-                </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
-                  <Textarea
-                    name='facialFeatures'
-                    placeholder='Facial features, coloring, or notches...'
-                    rows={2}
-                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                  />
-                </div>
+                    <div className='grid grid-cols-4 gap-4'>
+                      <div className='col-span-2'>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
+                        <Select
+                          className='w-full'
+                          name='shoulderMountHeadPosition'
+                          options={[
+                            { value: '', label: 'Select Position' },
+                            { value: 'Upright Left', label: 'Upright Left' },
+                            { value: 'Upright Right', label: 'Upright Right' },
+                            { value: 'Semi Upright Left', label: 'Semi Upright Left' },
+                            { value: 'Semi Upright Right', label: 'Semi Upright Right' },
+                            { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
+                            { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
+                          ]}
+                        />
+                      </div>
+                      <div className='col-span-2'>
+                        <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
+                        <div className='flex gap-4'>
+                          <label className='flex items-center'>
+                            <input
+                              type='radio'
+                              name='shoulderMountEarPosition'
+                              value='Forward'
+                              className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                            />
+                            Forward
+                          </label>
+                          <label className='flex items-center'>
+                            <input
+                              type='radio'
+                              name='shoulderMountEarPosition'
+                              value='Back'
+                              className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                            />
+                            Back
+                          </label>
+                          <label className='flex items-center'>
+                            <input
+                              type='radio'
+                              name='shoulderMountEarPosition'
+                              value='Rotated'
+                              className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                            />
+                            Rotated
+                          </label>
+                        </div>
+                      </div>
+                    </div>
 
-                <div className='grid grid-cols-2 gap-4'></div>
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
+                      <Textarea
+                        name='hideCondition'
+                        placeholder='Gray marks, tick marks, scars, cut, etc...'
+                        rows={2}
+                        className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                      />
+                    </div>
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
+                      <Textarea
+                        name='facialFeatures'
+                        placeholder='Facial features, coloring, or notches...'
+                        rows={2}
+                        className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                      />
+                    </div>
+                  </>
+                )}
 
+                {/* Special Instructions for all types */}
                 <div>
                   <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
                   <Textarea
@@ -581,6 +631,20 @@ export default function DeerTableRow({ data }: Props) {
                     className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                   />
                 </div>
+                {/* Summary section with totals and balance */}
+                <div className='mt-6 border-t border-dashed border-gray-300 pt-4'>
+                  <div className='flex flex-col items-end justify-end gap-2 text-right'>
+                    <div>
+                      <p className='font-bold'>Cape/Hide Total: ${calculateCapeHideTotal(data).toFixed(2)}</p>
+                    </div>
+                    <div>
+                      <p className='font-bold text-blue-600'>
+                        Balance: ${(calculateCapeHideTotal(data) - Number(mountForm.watch('capeHideDeposit') || 0)).toFixed(2)}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
                 <div className='flex items-center justify-between pt-4'>
                   <Button
                     type='button'

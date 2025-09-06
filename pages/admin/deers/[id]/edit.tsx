@@ -14,7 +14,7 @@ import Select from '@/components/Select';
 import SpecialtyMeat from '@/components/SpecialtyMeat';
 
 import { DeerT, DeerInputT } from 'lib/types';
-import { calculateTotalPrice } from 'lib/priceCalculations';
+import { calculateTotalPrice, calculateCapeHideTotal } from 'lib/priceCalculations';
 import { DeerZ } from '@/lib/zod';
 import useMutation from 'hooks/useMutation';
 import getSecureServerSideProps from '@/lib/getSecureServerSideProps';
@@ -47,11 +47,26 @@ export default function EditDeer({ data, isNew }: Props) {
     resolver: zodResolver(DeerZ),
   });
 
+  // State for balance calculation
+  const [balance, setBalance] = useState<number>(0);
+
   // Update calculated price whenever form values change
   useEffect(() => {
     const formData = form.getValues();
-    const newPrice = calculateTotalPrice(formData).toFixed(2);
-    setCalculatedPrice(parseFloat(newPrice));
+    const processingPrice = calculateTotalPrice(formData);
+    const capeHidePrice = calculateCapeHideTotal(formData);
+    const totalPrice = processingPrice + capeHidePrice;
+    setCalculatedPrice(totalPrice);
+
+    // Calculate balance
+    const totalDeposits =
+      Number(form.getValues('deposit') || 0) + Number(form.getValues('capeHideDeposit') || 0) + Number(form.getValues('amountPaid') || 0);
+    setBalance(totalPrice - totalDeposits);
+
+    // Update capeHideTotal field if it's not set manually
+    if (!form.getValues('capeHideTotal') && capeHidePrice > 0) {
+      form.setValue('capeHideTotal', capeHidePrice);
+    }
   }, [form.watch()]);
 
   const mutation = useMutation({
@@ -88,11 +103,24 @@ export default function EditDeer({ data, isNew }: Props) {
   };
 
   const handleSubmit = async (formData: DeerInputT) => {
+    // Parse numeric fields to ensure they're saved as numbers
+    const capeHideDepositValue = formData.capeHideDeposit ? Number(formData.capeHideDeposit) : undefined;
+    const depositValue = formData.deposit ? Number(formData.deposit) : undefined;
+    const amountPaidValue = formData.amountPaid ? Number(formData.amountPaid) : undefined;
+    const capeHideTotalValue = calculateCapeHideTotal(formData);
+
+    // Make sure we're explicitly including capeHideDeposit and capeHideTotal as numbers
     const updatedData = {
       ...formData,
       totalPrice: calculatedPrice,
+      capeHideDeposit: capeHideDepositValue,
+      capeHideTotal: capeHideTotalValue,
+      deposit: depositValue,
+      amountPaid: amountPaidValue,
+      approxNeckMeasurement: formData.approxNeckMeasurement ? Number(formData.approxNeckMeasurement) : undefined,
     };
 
+    console.log('Submitting data with capeHideDeposit:', capeHideDepositValue);
     mutation.mutate(updatedData);
   };
 
@@ -368,11 +396,6 @@ export default function EditDeer({ data, isNew }: Props) {
                       <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/notches</label>
                       <Textarea name='facialFeatures' rows={2} placeholder='Facial features, coloring, or notches...' />
                     </div>
-
-                    <div className='col-span-2'>
-                      <label className='mb-1 block text-sm font-medium text-gray-700'>Deposit Amount</label>
-                      <Input type='number' step='0.01' min='0' className='w-full' name='deposit' placeholder='0.00' />
-                    </div>
                   </div>
 
                   <div className='col-span-2'>
@@ -640,13 +663,77 @@ export default function EditDeer({ data, isNew }: Props) {
               </div>
             </div>
 
-            <div className='grid grid-cols-2 gap-4'>
-              <div>
-                <Input label='Amount Paid' type='number' name='amountPaid' />
-              </div>
-              <div>
-                <p className='mb-1 text-right font-bold'>Estimated Price</p>
-                <p className='text-right text-xl'>${calculatedPrice.toFixed(2)}</p>
+            <div className='mt-6 border-t border-dashed border-gray-300 pt-6'>
+              <h3 className='mb-4 text-xl font-bold'>Payment Information</h3>
+              <div className='grid grid-cols-2 gap-4'>
+                <div className='space-y-4'>
+                  <div>
+                    <label className='mb-1 block font-medium text-gray-700'>Processing Deposit</label>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min='0'
+                      className='w-full'
+                      name='deposit'
+                      placeholder='0.00'
+                      onChange={(e) => {
+                        // Ensure the value is registered as a number
+                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        form.setValue('deposit', numValue);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium text-gray-700'>Cape/Hide Deposit</label>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min='0'
+                      className='w-full'
+                      name='capeHideDeposit'
+                      placeholder='0.00'
+                      onChange={(e) => {
+                        // Ensure the value is registered as a number
+                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        form.setValue('capeHideDeposit', numValue);
+                      }}
+                    />
+                  </div>
+                  <div>
+                    <label className='mb-1 block font-medium text-gray-700'>Amount Paid</label>
+                    <Input
+                      type='number'
+                      step='0.01'
+                      min='0'
+                      className='w-full'
+                      name='amountPaid'
+                      placeholder='0.00'
+                      onChange={(e) => {
+                        // Ensure the value is registered as a number
+                        const numValue = e.target.value ? Number(e.target.value) : '';
+                        form.setValue('amountPaid', numValue);
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className='space-y-2 text-right'>
+                  <div>
+                    <p className='mb-1 font-bold'>Processing Total</p>
+                    <p className='text-lg'>${calculateTotalPrice(form.getValues()).toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className='mb-1 font-bold'>Cape/Hide Total</p>
+                    <p className='text-lg'>${calculateCapeHideTotal(form.getValues()).toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className='mb-1 font-bold'>Grand Total</p>
+                    <p className='text-xl font-bold'>${calculatedPrice.toFixed(2)}</p>
+                  </div>
+                  <div>
+                    <p className='mb-1 font-bold text-blue-600'>Balance</p>
+                    <p className='text-lg text-blue-600'>${balance.toFixed(2)}</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

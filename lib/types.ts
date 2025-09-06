@@ -43,6 +43,8 @@ export type DeerT = {
   hideCondition?: string;
   facialFeatures?: string;
   deposit?: number;
+  capeHideDeposit?: number;
+  capeHideTotal?: number;
   rackId?: string;
   capeId?: string;
   capeMorseCode?: string;

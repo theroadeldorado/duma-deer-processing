@@ -90,6 +90,12 @@ const fields: DeerSchemaT = {
   deposit: {
     type: Number,
   },
+  capeHideDeposit: {
+    type: Number,
+  },
+  capeHideTotal: {
+    type: Number,
+  },
   rackId: {
     type: String,
   },

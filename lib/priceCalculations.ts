@@ -44,6 +44,39 @@ export function findSpecialtyMeatConfig(optionName: string): { section: string; 
   return undefined;
 }
 
+export function calculateCapeHideTotal(formValues: DeerInputT): number {
+  let total = 0;
+
+  // Check cape option
+  if (formValues.cape && formValues.cape !== '') {
+    const capeConfig = productsConfig.cape as Product;
+    const capeOption = capeConfig.options?.find((option) => option.value === formValues.cape) as ProductOption;
+    if (capeOption && !capeOption.isTakeToday) {
+      total += capeOption.price || 0;
+    }
+  }
+
+  // Check hide option
+  if (formValues.hide && formValues.hide !== '') {
+    const hideConfig = productsConfig.hide as Product;
+    const hideOption = hideConfig.options?.find((option) => option.value === formValues.hide) as ProductOption;
+    if (hideOption && !hideOption.isTakeToday) {
+      total += hideOption.price || 0;
+    }
+  }
+
+  // Check euroMount option
+  if (formValues.euroMount && formValues.euroMount !== '' && formValues.euroMount !== 'none') {
+    const euroConfig = productsConfig.euroMount as Product;
+    const euroOption = euroConfig.options?.find((option) => option.value === formValues.euroMount) as ProductOption;
+    if (euroOption && !euroOption.isTakeToday) {
+      total += euroOption.price || 0;
+    }
+  }
+
+  return total;
+}
+
 export function calculateTotalPrice(formValues: DeerInputT): number {
   // If this is a donation, return $0
   if (formValues.skinnedOrBoneless === 'Donation') {
@@ -56,8 +89,18 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
       const config = productsConfig[key as keyof ProductsConfig];
 
       if (config) {
+        // Skip cape/hide/euroMount options that are not "Take Today" as they'll be calculated separately
+        if ((key === 'cape' || key === 'hide' || key === 'euroMount') && formValues[key] !== '') {
+          const options = (config as Product).options;
+          const selectedOption = options?.find((option) => option.value === formValues[key]) as ProductOption;
+          if (selectedOption && selectedOption.isTakeToday) {
+            total += selectedOption.price || 0;
+          }
+          // Skip non-take-today options as they'll be in capeHideTotal
+          continue;
+        }
+
         const price = calculatePriceForItem(key, formValues[key]);
-        // console.log(total, price, key, formValues[key]);
         total += price;
       }
     } else {

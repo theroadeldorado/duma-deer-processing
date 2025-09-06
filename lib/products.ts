@@ -4,6 +4,7 @@ interface ProductOption {
   price?: number;
   name?: string;
   pricePer5lb?: boolean;
+  isTakeToday?: boolean;
 }
 
 interface Product {
@@ -73,8 +74,8 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     options: [
       { value: '', label: 'Select Option' },
-      { value: 'Cape for shoulder mount', label: 'Keep Cape', price: 50 },
-      { value: 'Shoulder mount', label: 'Shoulder Mount', price: 111 },
+      { value: 'Cape for shoulder mount', label: 'Keep Cape', price: 50, isTakeToday: true },
+      { value: 'Shoulder mount', label: 'Shoulder Mount', price: 111, isTakeToday: false },
     ],
   },
   hide: {
@@ -83,8 +84,8 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     options: [
       { value: '', label: 'Select Option' },
-      { value: 'Save Hide', label: 'Additional', price: 15 },
-      { value: 'Tanned Hair on', label: 'Additional', price: 200 },
+      { value: 'Save Hide', label: 'Save Hide - Take Today', price: 15, isTakeToday: true },
+      { value: 'Tanned Hair on', label: 'Tanned Hair on', price: 200, isTakeToday: false },
     ],
   },
   euroMount: {
@@ -93,9 +94,9 @@ export const productsConfig: ProductsConfig = {
     type: 'select',
     options: [
       { value: 'none', label: 'Select Option' },
-      { value: 'Keep head', label: 'Keep Head' },
-      { value: 'Boiled finished mount', label: 'Boiled Finished Mount', price: 145 },
-      { value: 'Beetles finished mount', label: 'Beetles Finished Mount', price: 175 },
+      { value: 'Keep head', label: 'Keep Head - Take Today', price: 0, isTakeToday: true },
+      { value: 'Boiled finished mount', label: 'Boiled Finished Mount', price: 145, isTakeToday: false },
+      { value: 'Beetles finished mount', label: 'Beetles Finished Mount', price: 175, isTakeToday: false },
     ],
   },
   capeHideNotes: {

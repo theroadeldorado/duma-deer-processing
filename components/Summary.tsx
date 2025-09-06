@@ -1,6 +1,12 @@
 import React from 'react';
 import { productsConfig } from 'lib/products';
-import { calculateTotalPrice, calculatePriceForItem, findSpecialtyMeatConfig, getSpecialtyMeatPrice } from 'lib/priceCalculations';
+import {
+  calculateTotalPrice,
+  calculatePriceForItem,
+  findSpecialtyMeatConfig,
+  getSpecialtyMeatPrice,
+  calculateCapeHideTotal,
+} from 'lib/priceCalculations';
 import SummaryItem from './SummaryItem';
 import SummaryItemsGeneral from './SummaryItemsGeneral';
 import { DeerT } from '@/lib/types';
@@ -80,6 +86,11 @@ interface SectionedValues {
 const Summary: React.FC<SummaryProps> = ({ formValues }) => {
   const { sectionedValues, hasEvenly } = groupFormValuesBySections(formValues);
 
+  // Calculate cape/hide total for non-Take Today options
+  const capeHideTotal = calculateCapeHideTotal(formValues);
+  const processingTotal = calculateTotalPrice(formValues);
+  const hasCapeHideOptions = capeHideTotal > 0;
+
   return (
     <div>
       <h3 className='mb-7 text-center text-display-sm font-bold'>Review Your Information</h3>
@@ -120,7 +131,7 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         </div>
       ))}
       <div className='flex flex-col items-end text-right'>
-        <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Total Price'}</h4>
+        <h4 className='mt-4 text-lg font-bold'>{hasEvenly ? 'Standard Processing Price' : 'Processing Total'}</h4>
 
         {hasEvenly && (
           <p className='max-w-[400px] text-sm italic'>
@@ -129,8 +140,25 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         )}
         <p className='mb-6 mt-1 text-display-sm font-bold'>
           <span className=''>$</span>
-          {calculateTotalPrice(formValues).toFixed(2)}
+          {processingTotal.toFixed(2)}
         </p>
+
+        {hasCapeHideOptions && (
+          <>
+            <h4 className='mt-4 text-lg font-bold'>Cape/Hide/Mount Total</h4>
+            <p className='mb-6 mt-1 text-display-sm font-bold'>
+              <span className=''>$</span>
+              {capeHideTotal.toFixed(2)}
+            </p>
+          </>
+        )}
+
+        <h4 className='mt-4 text-lg font-bold'>Grand Total</h4>
+        <p className='mb-6 mt-1 text-display-sm font-bold'>
+          <span className=''>$</span>
+          {(processingTotal + capeHideTotal).toFixed(2)}
+        </p>
+
         {hasEvenly && (
           <>
             <h4 className='text-lg font-bold '>Specialty Meat Price</h4>
