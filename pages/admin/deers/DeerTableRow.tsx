@@ -372,7 +372,7 @@ export default function DeerTableRow({ data }: Props) {
         >
           {amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}
         </Cell> */}
-        <Cell className='font-bold'>{totalPrice ? `$${totalPrice.toFixed(2)}` : 'NA'}</Cell>
+        <Cell className='font-bold'>{`$${(calculateCapeHideTotal(data) + (totalPrice || 0)).toFixed(2)}`}</Cell>
         <Cell>
           {/* Only show edit/print buttons for options that need separate printout (non-Take Today options) */}
           {data.cape === 'Shoulder mount' ||
