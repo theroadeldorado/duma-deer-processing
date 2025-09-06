@@ -53,7 +53,7 @@ export default function GroundVenison(props: StepProps) {
 
   const groundVenisonAmountOptions = [
     { value: 'Remainder', label: 'Remainder of meat', description: 'Ground from remaining meat after cuts and specialty meat options' },
-    { value: 'None - All specialty meat', label: 'None - All specialty meat', description: 'All meat becomes specialty products' },
+    { value: 'None - All specialty meat', label: 'No burger - All specialty meat', description: 'All ground will be used for specialty meats' },
   ];
 
   const handleGroundVenisonSelect = (value: string) => {

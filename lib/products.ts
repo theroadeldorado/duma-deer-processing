@@ -170,8 +170,8 @@ export const productsConfig: ProductsConfig = {
     label: 'Hind Leg 1 Jerky Flavor',
     type: 'select',
     options: [
-      { value: 'Mild', label: 'Mild' },
-      { value: 'Hot', label: 'Hot' },
+      { value: 'Appalachian Mild', label: 'Appalachian Mild' },
+      { value: 'Hillbilly Hot', label: 'Hillbilly Hot' },
       { value: 'Teriyaki', label: 'Teriyaki' },
     ],
   },
@@ -192,8 +192,8 @@ export const productsConfig: ProductsConfig = {
     label: 'Hind Leg 2 Jerky Flavor',
     type: 'select',
     options: [
-      { value: 'Mild', label: 'Mild' },
-      { value: 'Hot', label: 'Hot' },
+      { value: 'Appalachian Mild', label: 'Appalachian Mild' },
+      { value: 'Hillbilly Hot', label: 'Hillbilly Hot' },
       { value: 'Teriyaki', label: 'Teriyaki' },
     ],
   },
@@ -315,8 +315,8 @@ export const productsConfig: ProductsConfig = {
         name: 'Jerky Restructured',
         image: '/jerky.jpg',
         options: [
-          { name: 'jerkyRestructuredHot', label: 'Hot Jerky Restructured', price: 35, pricePer5lb: true },
-          { name: 'jerkyRestructuredMild', label: 'Mild Jerky Restructured', price: 35, pricePer5lb: true },
+          { name: 'jerkyRestructuredHot', label: 'Hillbilly Hot Jerky Restructured', price: 35, pricePer5lb: true },
+          { name: 'jerkyRestructuredMild', label: 'Appalachian Mild Jerky Restructured', price: 35, pricePer5lb: true },
           { name: 'jerkyRestructuredTeriyaki', label: 'Teriyaki Jerky Restructured', price: 35, pricePer5lb: true },
         ],
       },

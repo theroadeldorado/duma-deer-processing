@@ -8,14 +8,14 @@ export default function HindLegs(props: StepProps) {
   const form = useFormContext();
 
   const hindLegOptions = [
-    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
+    { value: 'Grind', label: 'Grind', description: 'Ground with your deer burger' },
     { value: 'Steaks', label: 'Steaks', description: 'approx. 4-6 steaks per leg' },
     { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky', description: 'Jerky - $35' },
   ];
 
   const jerkyFlavorOptions = [
-    { value: 'Mild', label: 'Mild', description: 'Classic mild flavor' },
-    { value: 'Hot', label: 'Hot', description: 'Spicy hot flavor' },
+    { value: 'Appalachian Mild', label: 'Appalachian Mild', description: 'Classic mild flavor' },
+    { value: 'Hillbilly Hot', label: 'Hillbilly Hot', description: 'Spicy hot flavor' },
     { value: 'Teriyaki', label: 'Teriyaki', description: 'Sweet teriyaki flavor' },
   ];
 

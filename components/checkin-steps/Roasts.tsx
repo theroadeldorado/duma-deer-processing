@@ -8,7 +8,7 @@ export default function Roasts(props: StepProps) {
   const form = useFormContext();
 
   const roastOptions = [
-    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
+    { value: 'Grind', label: 'Grind', description: 'Ground with your deer burger' },
     { value: '2 Roasts', label: '2 Roasts', description: '2 Roasts and grind the rest' },
     { value: 'As many as possible', label: 'As many as possible', description: 'Cut into as many roasts as possible' },
   ];

@@ -8,7 +8,7 @@ export default function BackStraps(props: StepProps) {
   const form = useFormContext();
 
   const backStrapOptions = [
-    { value: 'Grind', label: 'Grind', description: 'Ground with other meat' },
+    { value: 'Grind', label: 'Grind', description: 'Ground with your deer burger' },
     { value: 'Cut in half', label: 'Cut in half', description: 'Cut sideways into two pieces' },
     { value: 'Sliced', label: 'Sliced', description: 'Cut into approximately 3/4 inch slices' },
     { value: 'Butterfly', label: 'Butterfly', description: 'Picture two slices attached together' },
