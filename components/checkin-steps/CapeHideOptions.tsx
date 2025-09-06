@@ -189,10 +189,25 @@ export default function CapeHideOptions(props: StepProps) {
                 </svg>
               </div>
               <div className='ml-3'>
-                <h3 className='text-sm font-medium text-blue-800'>Hide Information</h3>
-                <div className='mt-2 text-sm text-blue-700'>
-                  <p>Hide saved for you, NOT TANNED and you must take it TODAY.</p>
-                </div>
+                {hideSelected === 'Save Hide' && (
+                  <>
+                    <h3 className='text-sm font-medium text-blue-800'>Hide Information</h3>
+                    <div className='mt-2 text-sm text-blue-700'>
+                      <p>Hide saved for you, NOT TANNED and you must take it TODAY.</p>
+                    </div>
+                  </>
+                )}
+                {hideSelected === 'Tanned Hair on' && (
+                  <>
+                    <h3 className='text-sm font-medium text-blue-800'>Expectations</h3>
+                    <div className='mt-2 text-sm text-blue-700'>
+                      <p>
+                        These are normally prepared outside of deer season. We always try to have them done sooner than later, but our plan is to have
+                        everything completed by September. Also, through the tanning process the hide could get holes that it did not previously have.
+                      </p>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
           </div>
