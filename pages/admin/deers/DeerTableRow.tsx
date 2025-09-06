@@ -439,84 +439,7 @@ export default function DeerTableRow({ data }: Props) {
             <div className='p-6'>
               <h3 className='mb-4 text-xl font-bold'>Edit Mount Details</h3>
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
-                  <Select
-                    className='w-full'
-                    name='shoulderMountHeadPosition'
-                    options={[
-                      { value: '', label: 'Select Position' },
-                      { value: 'Upright Left', label: 'Upright Left' },
-                      { value: 'Upright Right', label: 'Upright Right' },
-                      { value: 'Semi Upright Left', label: 'Semi Upright Left' },
-                      { value: 'Semi Upright Right', label: 'Semi Upright Right' },
-                      { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
-                      { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
-                    ]}
-                  />
-                </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
-                  <div className='flex gap-4'>
-                    <label className='flex items-center'>
-                      <input
-                        type='radio'
-                        name='shoulderMountEarPosition'
-                        value='Forward'
-                        className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
-                      />
-                      Forward
-                    </label>
-                    <label className='flex items-center'>
-                      <input
-                        type='radio'
-                        name='shoulderMountEarPosition'
-                        value='Back'
-                        className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
-                      />
-                      Back
-                    </label>
-                    <label className='flex items-center'>
-                      <input
-                        type='radio'
-                        name='shoulderMountEarPosition'
-                        value='Rotated'
-                        className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
-                      />
-                      Rotated
-                    </label>
-                  </div>
-                </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
-                  <Textarea
-                    name='hideCondition'
-                    placeholder='Gray marks, tick marks, scars, cut, etc...'
-                    rows={2}
-                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                  />
-                </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
-                  <Textarea
-                    name='facialFeatures'
-                    placeholder='Facial features, coloring, or notches...'
-                    rows={2}
-                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                  />
-                </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Deposit Amount</label>
-                  <Input
-                    name='deposit'
-                    type='number'
-                    step='0.01'
-                    placeholder='0.00'
-                    min={0}
-                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                  />
-                </div>
-                <div className='grid grid-cols-2 gap-4'>
+                <div className='grid grid-cols-4 gap-4'>
                   <div>
                     <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
                     <Input
@@ -535,36 +458,120 @@ export default function DeerTableRow({ data }: Props) {
                       className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                     />
                   </div>
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Cape Morse Code #</label>
+                    <Input
+                      name='capeMorseCode'
+                      type='text'
+                      placeholder='Cape Morse Code #'
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                    />
+                  </div>
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
+                    <Input
+                      name='approxNeckMeasurement'
+                      type='number'
+                      step='0.1'
+                      placeholder='0.0'
+                      min={0}
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                    />
+                  </div>
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
+                    <Input
+                      name='formOrdered'
+                      type='text'
+                      placeholder='Form Ordered'
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                    />
+                  </div>
+
+                  <div>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Deposit Amount</label>
+                    <Input
+                      name='deposit'
+                      type='number'
+                      step='0.01'
+                      placeholder='0.00'
+                      min={0}
+                      className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
+                    />
+                  </div>
                 </div>
+                <div className='grid grid-cols-4 gap-4'>
+                  <div className='col-span-2'>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
+                    <Select
+                      className='w-full'
+                      name='shoulderMountHeadPosition'
+                      options={[
+                        { value: '', label: 'Select Position' },
+                        { value: 'Upright Left', label: 'Upright Left' },
+                        { value: 'Upright Right', label: 'Upright Right' },
+                        { value: 'Semi Upright Left', label: 'Semi Upright Left' },
+                        { value: 'Semi Upright Right', label: 'Semi Upright Right' },
+                        { value: 'Semi Sneak Left', label: 'Semi Sneak Left' },
+                        { value: 'Semi Sneak Right', label: 'Semi Sneak Right' },
+                      ]}
+                    />
+                  </div>
+                  <div className='col-span-2'>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
+                    <div className='flex gap-4'>
+                      <label className='flex items-center'>
+                        <input
+                          type='radio'
+                          name='shoulderMountEarPosition'
+                          value='Forward'
+                          className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                        />
+                        Forward
+                      </label>
+                      <label className='flex items-center'>
+                        <input
+                          type='radio'
+                          name='shoulderMountEarPosition'
+                          value='Back'
+                          className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                        />
+                        Back
+                      </label>
+                      <label className='flex items-center'>
+                        <input
+                          type='radio'
+                          name='shoulderMountEarPosition'
+                          value='Rotated'
+                          className='mr-2 h-4 w-4 text-primary-blue focus:ring-primary-blue'
+                        />
+                        Rotated
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
                 <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Cape Morse Code #</label>
-                  <Input
-                    name='capeMorseCode'
-                    type='text'
-                    placeholder='Cape Morse Code #'
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
+                  <Textarea
+                    name='hideCondition'
+                    placeholder='Gray marks, tick marks, scars, cut, etc...'
+                    rows={2}
                     className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                   />
                 </div>
                 <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
-                  <Input
-                    name='approxNeckMeasurement'
-                    type='number'
-                    step='0.1'
-                    placeholder='0.0'
-                    min={0}
+                  <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/Notches</label>
+                  <Textarea
+                    name='facialFeatures'
+                    placeholder='Facial features, coloring, or notches...'
+                    rows={2}
                     className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
                   />
                 </div>
-                <div>
-                  <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
-                  <Input
-                    name='formOrdered'
-                    type='text'
-                    placeholder='Form Ordered'
-                    className='w-full rounded-md border-gray-300 shadow-sm focus:border-primary-blue focus:ring-primary-blue'
-                  />
-                </div>
+
+                <div className='grid grid-cols-2 gap-4'></div>
+
                 <div>
                   <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
                   <Textarea

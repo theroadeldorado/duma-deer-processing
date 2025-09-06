@@ -302,9 +302,9 @@ export default function EditDeer({ data, isNew }: Props) {
                 >
                   <h4 className='text-green-800 text-lg font-medium'>Shoulder Mount Pose Details</h4>
 
-                  <div className='grid grid-cols-1 gap-4'>
+                  <div className='grid grid-cols-2 gap-4'>
                     <div>
-                      <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall *</label>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Head position - deer faces from the wall</label>
                       <Select
                         className='w-full'
                         name='shoulderMountHeadPosition'
@@ -321,18 +321,61 @@ export default function EditDeer({ data, isNew }: Props) {
                     </div>
 
                     <div>
-                      <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position *</label>
-                      <Input
-                        type='text'
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Ear Position</label>
+                      <Select
                         className='w-full'
                         name='shoulderMountEarPosition'
-                        required
-                        placeholder='e.g., Alert/Forward, Relaxed/Natural, Laid Back'
+                        options={[
+                          { value: '', label: 'Select Position' },
+                          { value: 'Forward', label: 'Forward' },
+                          { value: 'Back', label: 'Back' },
+                          { value: 'Rotated', label: 'Rotated' },
+                        ]}
                       />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Rack ID</label>
+                      <Input type='text' className='w-full' name='rackId' placeholder='Rack ID' />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Cape ID</label>
+                      <Input type='text' className='w-full' name='capeId' placeholder='Cape ID' />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Cape Morse Code #</label>
+                      <Input type='text' className='w-full' name='capeMorseCode' placeholder='Cape Morse Code #' />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Approx Neck Measurement (inches)</label>
+                      <Input type='number' step='0.1' min='0' className='w-full' name='approxNeckMeasurement' placeholder='0.0' />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Form Ordered</label>
+                      <Input type='text' className='w-full' name='formOrdered' placeholder='Form Ordered' />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Hide Condition</label>
+                      <Textarea name='hideCondition' rows={2} placeholder='Gray marks, tick marks, scars, cut, etc...' />
+                    </div>
+
+                    <div>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Facial Features/Coloring/notches</label>
+                      <Textarea name='facialFeatures' rows={2} placeholder='Facial features, coloring, or notches...' />
+                    </div>
+
+                    <div className='col-span-2'>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Deposit Amount</label>
+                      <Input type='number' step='0.01' min='0' className='w-full' name='deposit' placeholder='0.00' />
                     </div>
                   </div>
 
-                  <div>
+                  <div className='col-span-2'>
                     <label className='mb-1 block text-sm font-medium text-gray-700'>Special Instructions</label>
                     <Textarea name='shoulderMountSpecialInstructions' rows={3} placeholder='Any special requests or specific pose instructions...' />
                   </div>

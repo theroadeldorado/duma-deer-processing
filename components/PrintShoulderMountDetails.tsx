@@ -108,20 +108,20 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
         <div className='flex flex-col'>
           <div className='flex gap-1 text-lg leading-[1.2]'>
             <span className='shrink-0 font-bold'>Deposit:</span>{' '}
-            <span className='grow border-b border-gray-900'>{data.deposit && `$${data.deposit.toFixed(2)}`}</span>
+            <span className='grow border-b border-gray-900'>{data.deposit ? `$${Number(data.deposit).toFixed(2)}` : ''}</span>
           </div>
         </div>
         <div className='flex flex-col'>
           <div className='flex gap-1 text-lg leading-[1.2]'>
             <span className='shrink-0 font-bold'>Total:</span>{' '}
-            <span className='grow border-b border-gray-900'>{data.total && `$${data.total.toFixed(2)}`}</span>
+            <span className='grow border-b border-gray-900'>{data.totalPrice ? `$${Number(data.totalPrice).toFixed(2)}` : ''}</span>
           </div>
         </div>
         <div className='flex flex-col'>
           <div className='flex gap-1 text-lg leading-[1.2]'>
             <span className='shrink-0 font-bold'>Balance:</span>{' '}
             <span className='grow border-b border-gray-900'>
-              {data.total - (data.deposit || 0) && `$${(data.total - (data.deposit || 0)).toFixed(2)}`}
+              {data.totalPrice && data.deposit ? `$${(Number(data.totalPrice) - Number(data.deposit)).toFixed(2)}` : ''}
             </span>
           </div>
         </div>

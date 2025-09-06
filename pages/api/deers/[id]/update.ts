@@ -13,8 +13,10 @@ export default secureApi(async (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id as string;
 
   try {
+    console.log('Received data:', JSON.stringify(req.body, null, 2));
     type DeerDataT = z.infer<typeof DeerZ>;
     const data = await safeData<DeerDataT>(DeerZ, req.body);
+    console.log('Validated data:', JSON.stringify(data, null, 2));
 
     await connect();
     const deer = await Deer.findById(id);
