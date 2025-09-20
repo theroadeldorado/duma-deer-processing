@@ -205,10 +205,10 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
     let price = 0;
 
     if (cape === 'Cape for shoulder mount') {
-      displayValue = 'Keep Cape - $50 (Take Today)';
+      displayValue = 'Keep Cape (Take Today)';
       price = 50;
     } else if (cape === 'Shoulder mount') {
-      displayValue = 'Shoulder Mount - $850';
+      displayValue = 'Shoulder Mount';
       price = 850;
     }
 
@@ -250,10 +250,10 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
     let price = 0;
 
     if (hide === 'Save Hide') {
-      displayValue = 'Save Hide - $15 (Take Today)';
+      displayValue = 'Save Hide (Take Today)';
       price = 15;
     } else if (hide === 'Tanned Hair on') {
-      displayValue = 'Tanned Hair on - $200';
+      displayValue = 'Tanned Hair on';
       price = 200;
     }
 
@@ -275,10 +275,10 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
       displayValue = 'Keep Head (Take Today)';
       price = 0;
     } else if (euroMount === 'Boiled finished mount') {
-      displayValue = 'Boiled Finished Mount - $145';
+      displayValue = 'Boiled Finished Mount';
       price = 145;
     } else if (euroMount === 'Beetles finished mount') {
-      displayValue = 'Beetles Finished Mount - $175';
+      displayValue = 'Beetles Finished Mount';
       price = 175;
     }
 
