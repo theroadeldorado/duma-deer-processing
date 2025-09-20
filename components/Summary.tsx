@@ -134,7 +134,7 @@ const Summary: React.FC<SummaryProps> = ({ formValues }) => {
         <div className='flex max-w-md flex-col gap-2'>
           {hasCapeHideOptions && (
             <div className='flex items-end justify-between gap-4 border-b border-gray-300 pb-1'>
-              <h4 className='text-lg font-bold'>Hide/Mount Total</h4>
+              <h4 className='text-lg font-bold'>Taxidermy Total</h4>
               <p className='text-lg font-bold'>${capeHideTotal.toFixed(2)}</p>
             </div>
           )}

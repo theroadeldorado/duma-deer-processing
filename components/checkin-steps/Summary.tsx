@@ -49,6 +49,7 @@ interface SectionedValues {
 function groupFormValuesBySections(formValues: Record<string, any>): { sectionedValues: SectionedValues; hasEvenly: boolean } {
   const sectionedValues: SectionedValues = {};
   let hasEvenly = false;
+  const capeHideEntries = processCapeHideOptions(formValues);
   const hindLegEntries = processHindLegs(formValues);
 
   Object.keys(formValues).forEach((key) => {
@@ -57,6 +58,17 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       return;
     }
     if (key.startsWith('hindLeg') || key === 'tenderizedCubedSteaks') {
+      return;
+    }
+    // Skip cape/hide/mount fields as they're handled separately
+    if (
+      key === 'cape' ||
+      key === 'hide' ||
+      key === 'euroMount' ||
+      key === 'shoulderMountHeadPosition' ||
+      key === 'shoulderMountEarPosition' ||
+      key === 'shoulderMountSpecialInstructions'
+    ) {
       return;
     }
 
@@ -112,14 +124,173 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
     }
   });
 
-  // Add processed hind leg entries
-  if (hindLegEntries.length > 0) {
-    const section = 'Cutting Instructions';
-    sectionedValues[section] = sectionedValues[section] || [];
-    sectionedValues[section].push(...hindLegEntries);
+  // Build Cutting Instructions in manual order
+  const cuttingInstructionsEntries = buildCuttingInstructionsInOrder(formValues, capeHideEntries, hindLegEntries, sectionedValues);
+  if (cuttingInstructionsEntries.length > 0) {
+    sectionedValues['Cutting Instructions'] = cuttingInstructionsEntries;
   }
 
   return { sectionedValues, hasEvenly };
+}
+
+function buildCuttingInstructionsInOrder(
+  formValues: Record<string, any>,
+  capeHideEntries: Array<{ key: string; label: string; value: string; price: number; pricePer5lb?: boolean; notes?: boolean }>,
+  hindLegEntries: Array<{ key: string; label: string; value: string; price: number; pricePer5lb?: boolean; notes?: boolean }>,
+  sectionedValues: SectionedValues
+): Array<{ key: string; label: string; value: string; price: number; pricePer5lb?: boolean; notes?: boolean }> {
+  const orderedEntries = [];
+
+  // 1. skinnedOrBoneless first
+  const existingCuttingInstructions = sectionedValues['Cutting Instructions'] || [];
+  const skinnedOrBonelessEntry = existingCuttingInstructions.find((entry) => entry.key === 'skinnedOrBoneless');
+  if (skinnedOrBonelessEntry) {
+    orderedEntries.push({
+      ...skinnedOrBonelessEntry,
+      value: String(skinnedOrBonelessEntry.value), // Ensure value is a string
+    });
+  }
+
+  // 2. cape second
+  const capeEntry = capeHideEntries.find((entry) => entry.key === 'cape');
+  if (capeEntry) {
+    orderedEntries.push(capeEntry);
+  }
+
+  // 3. euroMount third
+  const euroMountEntry = capeHideEntries.find((entry) => entry.key === 'euroMount');
+  if (euroMountEntry) {
+    orderedEntries.push(euroMountEntry);
+  }
+
+  // 4. hide fourth
+  const hideEntry = capeHideEntries.find((entry) => entry.key === 'hide');
+  if (hideEntry) {
+    orderedEntries.push(hideEntry);
+  }
+
+  // 5. Add remaining cape/hide entries (like shoulder mount details)
+  const remainingCapeHideEntries = capeHideEntries.filter((entry) => entry.key !== 'cape' && entry.key !== 'euroMount' && entry.key !== 'hide');
+  orderedEntries.push(...remainingCapeHideEntries);
+
+  // 6. Add hind leg entries
+  orderedEntries.push(...hindLegEntries);
+
+  // 7. Add any other existing cutting instructions entries (except skinnedOrBoneless which we already added)
+  const otherCuttingInstructionsEntries = existingCuttingInstructions
+    .filter((entry) => entry.key !== 'skinnedOrBoneless')
+    .map((entry) => ({
+      ...entry,
+      value: String(entry.value), // Ensure value is a string
+    }));
+  orderedEntries.push(...otherCuttingInstructionsEntries);
+
+  return orderedEntries;
+}
+
+function processCapeHideOptions(formValues: Record<string, any>): Array<{
+  key: string;
+  label: string;
+  value: string;
+  price: number;
+  pricePer5lb?: boolean;
+  notes?: boolean;
+}> {
+  const entries = [];
+
+  // Process Cape options
+  const cape = formValues.cape;
+  if (cape && cape !== '') {
+    let displayValue = cape;
+    let price = 0;
+
+    if (cape === 'Cape for shoulder mount') {
+      displayValue = 'Keep Cape - $50 (Take Today)';
+      price = 50;
+    } else if (cape === 'Shoulder mount') {
+      displayValue = 'Shoulder Mount - $111';
+      price = 111;
+    }
+
+    entries.push({
+      key: 'cape',
+      label: 'Cape Option',
+      value: displayValue,
+      price: price,
+    });
+
+    // Add shoulder mount details if applicable
+    if (cape === 'Shoulder mount') {
+      const headPosition = formValues.shoulderMountHeadPosition;
+      if (headPosition) {
+        entries.push({
+          key: 'shoulderMountHeadPosition',
+          label: 'Head Position',
+          value: headPosition,
+          price: 0,
+        });
+      }
+
+      const specialInstructions = formValues.shoulderMountSpecialInstructions;
+      if (specialInstructions && specialInstructions.trim() !== '') {
+        entries.push({
+          key: 'shoulderMountSpecialInstructions',
+          label: 'Special Instructions',
+          value: specialInstructions,
+          price: 0,
+        });
+      }
+    }
+  }
+
+  // Process Hide options
+  const hide = formValues.hide;
+  if (hide && hide !== '') {
+    let displayValue = hide;
+    let price = 0;
+
+    if (hide === 'Save Hide') {
+      displayValue = 'Save Hide - $15 (Take Today)';
+      price = 15;
+    } else if (hide === 'Tanned Hair on') {
+      displayValue = 'Tanned Hair on - $200';
+      price = 200;
+    }
+
+    entries.push({
+      key: 'hide',
+      label: 'Hide Option',
+      value: displayValue,
+      price: price,
+    });
+  }
+
+  // Process Euro Mount options
+  const euroMount = formValues.euroMount;
+  if (euroMount && euroMount !== 'false' && euroMount !== '') {
+    let displayValue = euroMount;
+    let price = 0;
+
+    if (euroMount === 'Keep head') {
+      displayValue = 'Keep Head (Take Today)';
+      price = 0;
+    } else if (euroMount === 'Boiled finished mount') {
+      displayValue = 'Boiled Finished Mount - $145';
+      price = 145;
+    } else if (euroMount === 'Beetles finished mount') {
+      displayValue = 'Beetles Finished Mount - $175';
+      price = 175;
+    }
+
+    entries.push({
+      key: 'euroMount',
+      label: 'Euro Mount',
+      value: displayValue,
+      price: price,
+    });
+  }
+
+  return entries;
 }
 
 function processHindLegs(formValues: Record<string, any>): Array<{
@@ -134,7 +305,7 @@ function processHindLegs(formValues: Record<string, any>): Array<{
 
   // Process Hind Leg 1
   const hindLeg1 = formValues.hindLegPreference1;
-  if (hindLeg1 && hindLeg1 !== 'Grind') {
+  if (hindLeg1) {
     let displayValue = hindLeg1;
     let price = 0;
 
@@ -162,7 +333,7 @@ function processHindLegs(formValues: Record<string, any>): Array<{
 
   // Process Hind Leg 2
   const hindLeg2 = formValues.hindLegPreference2;
-  if (hindLeg2 && hindLeg2 !== 'Grind') {
+  if (hindLeg2) {
     let displayValue = hindLeg2;
     let price = 0;
 
@@ -209,48 +380,80 @@ export default function Summary(props: StepProps) {
       <div className='space-y-6'>
         <h3 className='mb-7 text-center text-display-sm font-bold'>Review Your Information</h3>
 
-        {Object.entries(sectionedValues).map(([section, values]) => (
-          <div key={section}>
-            {section === 'Contact Information' ? (
-              <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6'>
-                <h4 className='my-4 text-xl font-bold'>Contact Information</h4>
-                <SummaryItemsGeneral values={values} section={section} />
-              </div>
-            ) : (
+        {/* Render Contact Information first */}
+        {sectionedValues['Contact Information'] && (
+          <div key='Contact Information'>
+            <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6'>
+              <h4 className='my-4 text-xl font-bold'>Contact Information</h4>
+              <SummaryItemsGeneral values={sectionedValues['Contact Information']} section='Contact Information' />
+            </div>
+          </div>
+        )}
+
+        {/* Render Cutting Instructions second */}
+        {sectionedValues['Cutting Instructions'] && (
+          <div key='Cutting Instructions'>
+            {sectionedValues['Cutting Instructions'].some((value) => value.value !== '') && (
               <>
-                {/* if section values have value !== '' */}
-                {values.some((value) => value.value !== '') && (
-                  <>
-                    {values.length > 0 && (
-                      <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
-                        <h4 className='my-4 text-xl font-bold'>{section}:</h4>
-                        <ul className='grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-2'>
-                          {values.map(({ key, label, value, price, pricePer5lb, notes }) => (
-                            <SummaryItem
-                              key={key}
-                              label={label}
-                              value={value}
-                              price={price}
-                              pricePer5lb={pricePer5lb}
-                              section={section}
-                              notes={notes}
-                            />
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-                  </>
+                {sectionedValues['Cutting Instructions'].length > 0 && (
+                  <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+                    <h4 className='my-4 text-xl font-bold'>Cutting Instructions:</h4>
+                    <ul className='grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-2'>
+                      {sectionedValues['Cutting Instructions'].map(({ key, label, value, price, pricePer5lb, notes }) => (
+                        <SummaryItem
+                          key={key}
+                          label={label}
+                          value={value}
+                          price={price}
+                          pricePer5lb={pricePer5lb}
+                          section='Cutting Instructions'
+                          notes={notes}
+                        />
+                      ))}
+                    </ul>
+                  </div>
                 )}
               </>
             )}
           </div>
-        ))}
+        )}
+
+        {/* Render all other sections */}
+        {Object.entries(sectionedValues)
+          .filter(([section]) => section !== 'Contact Information' && section !== 'Cutting Instructions')
+          .map(([section, values]) => (
+            <div key={section}>
+              {/* if section values have value !== '' */}
+              {values.some((value) => value.value !== '') && (
+                <>
+                  {values.length > 0 && (
+                    <div className='mb-6 gap-3 border-b border-dashed border-gray-900 pb-6 last:border-0'>
+                      <h4 className='my-4 text-xl font-bold'>{section}:</h4>
+                      <ul className='grid grid-cols-1 gap-x-10 gap-y-5 md:grid-cols-2'>
+                        {values.map(({ key, label, value, price, pricePer5lb, notes }) => (
+                          <SummaryItem
+                            key={key}
+                            label={label}
+                            value={value}
+                            price={price}
+                            pricePer5lb={pricePer5lb}
+                            section={section}
+                            notes={notes}
+                          />
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          ))}
 
         <div className='flex justify-end pb-10'>
           <div className='flex max-w-md flex-col gap-2'>
             {hasCapeHideOptions && (
               <div className='flex items-end justify-between gap-4 border-b border-gray-300 pb-1'>
-                <h4 className='text-lg font-bold'>Hide/Mount Total</h4>
+                <h4 className='text-lg font-bold'>Taxidermy Total</h4>
                 <p className='text-lg font-bold'>${capeHideTotal.toFixed(2)}</p>
               </div>
             )}
