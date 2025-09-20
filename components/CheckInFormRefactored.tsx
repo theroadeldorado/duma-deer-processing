@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import useMutation from '@/hooks/useMutation';
 import { DeerT } from '@/lib/types';
-import { calculateTotalPrice } from '@/lib/priceCalculations';
+import { calculateTotalPrice, calculateCapeHideTotal } from '@/lib/priceCalculations';
 import { FormWizard, stepConfigs } from './checkin-steps';
 
 interface CheckInFormRefactoredProps {
@@ -21,6 +21,7 @@ const CheckInFormRefactored = ({ onFormDataChange }: CheckInFormRefactoredProps)
 
   const handleSubmit = async (formData: DeerT) => {
     const totalPrice = calculateTotalPrice(formData);
+    const capeHideTotal = calculateCapeHideTotal(formData);
 
     const data = {
       ...formData,
@@ -28,6 +29,7 @@ const CheckInFormRefactored = ({ onFormDataChange }: CheckInFormRefactoredProps)
       hasPrinted: 'false',
       name: formData.firstName + ' ' + formData.lastName,
       totalPrice: totalPrice,
+      capeHideTotal: capeHideTotal,
     };
 
     mutation.mutate(data as any);

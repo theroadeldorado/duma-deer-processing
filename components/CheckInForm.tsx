@@ -13,7 +13,7 @@ import useMutation from 'hooks/useMutation';
 import { DeerT } from 'lib/types';
 import Select from './Select';
 import Summary from './Summary';
-import { calculateTotalPrice } from 'lib/priceCalculations';
+import { calculateTotalPrice, calculateCapeHideTotal } from 'lib/priceCalculations';
 import PhoneInput from './PhoneInput';
 
 const TOTAL_STEPS = 7;
@@ -52,6 +52,7 @@ const CheckInForm = () => {
 
   const handleSubmit: SubmitHandler<DeerT> = async (formData) => {
     const totalPrice = calculateTotalPrice(formData);
+    const capeHideTotal = calculateCapeHideTotal(formData);
 
     const data = {
       ...formData,
@@ -59,6 +60,7 @@ const CheckInForm = () => {
       hasPrinted: 'false',
       name: formData.firstName + ' ' + formData.lastName,
       totalPrice: totalPrice,
+      capeHideTotal: capeHideTotal,
     };
 
     mutation.mutate(data as any);
