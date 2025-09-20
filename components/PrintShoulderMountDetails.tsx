@@ -158,9 +158,10 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
         <div className='col-span-3 flex flex-col'>
           <div className='shrink-0 font-bold'>Terms:</div>
           <div className='text-xs'>
-            Ea labore irure sint qui Lorem incididunt mollit ut fugiat do elit officia. Magna cupidatat Lorem do ad nulla cillum quis enim labore sunt
-            mollit sunt ipsum eu aliqua. Enim adipisicing laborum exercitation eu ea dolor incididunt voluptate culpa non non quis. Cillum quis labore
-            sint in voluptate nostrud commodo nisi proident non.
+            A deposit is required at drop-off, with the balance due before pickup. Completion times can vary depending on workload and seasonal
+            demand, so no specific finish date is guaranteed. We are not responsible for hides, skulls, or antlers received in poor condition.
+            Finished work should be picked up within 30 days of notice, and all items are left at the customer’s own risk as we cannot be held liable
+            for loss or damage beyond our control.
           </div>
         </div>
       </div>
