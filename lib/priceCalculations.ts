@@ -78,6 +78,193 @@ export function calculateCapeHideTotal(formValues: DeerInputT): number {
   return total;
 }
 
+/**
+ * Gets the cape/hide total for display purposes, prioritizing stored historical value
+ * over calculated value to preserve pricing history.
+ */
+export function getCapeHideTotalForDisplay(formValues: DeerInputT | DeerT): number {
+  // If we have a stored capeHideTotal (historical pricing), use it
+  if (formValues.capeHideTotal !== undefined && formValues.capeHideTotal !== null) {
+    return formValues.capeHideTotal;
+  }
+
+  // For entries with no stored pricing, fall back to current pricing
+  // (This should only happen for very old entries that haven't been migrated)
+
+  // Otherwise, calculate using current pricing (for new entries or legacy data)
+  return calculateCapeHideTotal(formValues);
+}
+
+/**
+ * Gets the price for an individual item, prioritizing historical pricing over current config
+ */
+export function getItemPriceForDisplay(key: string, value: any, formValues: DeerInputT | DeerT): number {
+  // First priority: stored historical pricing for this specific item
+  if (formValues.historicalItemPrices && formValues.historicalItemPrices[key] !== undefined) {
+    return formValues.historicalItemPrices[key];
+  }
+
+  // Second priority: pricing snapshot lookup
+  if (formValues.pricingSnapshot) {
+    const snapshotPrice = getPriceFromSnapshot(key, value, formValues.pricingSnapshot);
+    if (snapshotPrice !== null) {
+      return snapshotPrice;
+    }
+  }
+
+  // Third priority: for legacy entries with cape/hide data but no historical item prices,
+  // try to derive individual prices from stored capeHideTotal
+  if (formValues.capeHideTotal !== undefined && formValues.capeHideTotal !== null) {
+    const legacyPrice = deriveLegacyItemPrice(key, value, formValues);
+    if (legacyPrice !== null) {
+      return legacyPrice;
+    }
+  }
+
+  // Last resort: calculate using current pricing (for new entries or legacy data)
+  return calculatePriceForItem(key, value);
+}
+
+/**
+ * Looks up price from the stored pricing snapshot
+ */
+function getPriceFromSnapshot(key: string, value: any, pricingSnapshot: Record<string, any>): number | null {
+  // Handle regular product items
+  if (pricingSnapshot[key] && typeof pricingSnapshot[key] === 'object') {
+    const itemPrices = pricingSnapshot[key];
+    if (itemPrices[value] !== undefined) {
+      return itemPrices[value];
+    }
+  }
+
+  // Handle specialty meats
+  if (pricingSnapshot.specialtyMeats) {
+    const specialtyMeats = pricingSnapshot.specialtyMeats;
+    for (const meatName of Object.keys(specialtyMeats)) {
+      const meatPrices = specialtyMeats[meatName];
+      if (meatPrices[key] !== undefined) {
+        return meatPrices[key];
+      }
+    }
+  }
+
+  return null;
+}
+
+/**
+ * Attempts to derive individual item prices from legacy capeHideTotal for backward compatibility
+ */
+function deriveLegacyItemPrice(key: string, value: any, formValues: DeerInputT | DeerT): number | null {
+  // Only handle cape and hide items for legacy compatibility
+  if (key === 'cape' && value === 'Shoulder mount' && formValues.capeHideTotal) {
+    // If there's also a hide, we need to estimate the cape portion
+    if (formValues.hide === 'Tanned Hair on') {
+      // Legacy total includes both cape and hide
+      // We know hide was always $200, so cape = total - $200
+      return Math.max(0, formValues.capeHideTotal - 200);
+    } else {
+      // Only cape, so full total is the cape price
+      return formValues.capeHideTotal;
+    }
+  }
+
+  if (key === 'hide' && value === 'Tanned Hair on') {
+    // Hide was consistently $200 in legacy data
+    return 200;
+  }
+
+  // For entries with NO pricing data at all, fall back to current pricing
+  // (This should only happen for very old entries that haven't been migrated)
+
+  // For other items or unsupported combinations, return null to fall back to current pricing
+  return null;
+}
+
+/**
+ * Builds comprehensive historical pricing snapshot for ALL items when creating deer entries
+ * This preserves ALL pricing at the time of entry, not just selected items
+ */
+export function buildHistoricalItemPrices(formValues: DeerInputT): Record<string, number> {
+  const historicalPrices: Record<string, number> = {};
+
+  // Process all regular product config items
+  for (const key in formValues) {
+    if (key in productsConfig) {
+      const config = productsConfig[key as keyof ProductsConfig];
+      if (config && 'options' in config) {
+        const value = formValues[key];
+        if (value && value !== '' && value !== 'false') {
+          const price = calculatePriceForItem(key, value);
+          if (price > 0) {
+            historicalPrices[key] = price;
+          }
+        }
+      }
+    } else {
+      // Handle specialty meats
+      const specialtyMeatConfig = findSpecialtyMeatConfig(key);
+      if (specialtyMeatConfig) {
+        const value = formValues[key];
+        if (value && value !== '' && value !== 'false') {
+          const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
+          if (price > 0) {
+            historicalPrices[key] = price;
+          }
+        }
+      }
+    }
+  }
+
+  return historicalPrices;
+}
+
+/**
+ * Builds a complete pricing configuration snapshot for historical reference
+ * This captures the ENTIRE pricing structure at the time of entry
+ */
+export function buildCompletePricingSnapshot(): Record<string, any> {
+  const pricingSnapshot: Record<string, any> = {};
+
+  // Capture all product configs with pricing
+  for (const [key, config] of Object.entries(productsConfig)) {
+    if (config && typeof config === 'object' && 'options' in config && config.options) {
+      const options = config.options as ProductOption[];
+      const optionPrices: Record<string, number> = {};
+
+      options.forEach((option) => {
+        if (typeof option === 'object' && option.price !== undefined) {
+          const value = option.value?.toString() || option.label;
+          optionPrices[value] = option.price;
+        }
+      });
+
+      if (Object.keys(optionPrices).length > 0) {
+        pricingSnapshot[key] = optionPrices;
+      }
+    } else if (config && typeof config === 'object' && 'meats' in config) {
+      // Handle specialty meats
+      const specialtyMeats: Record<string, Record<string, number>> = {};
+      config.meats.forEach((meat) => {
+        const meatPrices: Record<string, number> = {};
+        meat.options.forEach((option) => {
+          if (option.price !== undefined && option.name) {
+            meatPrices[option.name] = option.price;
+          }
+        });
+        if (Object.keys(meatPrices).length > 0) {
+          specialtyMeats[meat.name] = meatPrices;
+        }
+      });
+
+      if (Object.keys(specialtyMeats).length > 0) {
+        pricingSnapshot[key] = specialtyMeats;
+      }
+    }
+  }
+
+  return pricingSnapshot;
+}
+
 export function calculateTotalPrice(formValues: DeerInputT): number {
   // If this is a donation, return $0
   if (formValues.skinnedOrBoneless === 'Donation') {

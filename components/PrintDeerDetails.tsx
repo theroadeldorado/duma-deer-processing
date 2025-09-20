@@ -2,7 +2,13 @@ import React from 'react';
 import { DeerT } from 'lib/types';
 import Summary from './Summary';
 import { productsConfig } from 'lib/products';
-import { calculateTotalPrice, calculatePriceForItem, findSpecialtyMeatConfig, getSpecialtyMeatPrice } from 'lib/priceCalculations';
+import {
+  calculateTotalPrice,
+  calculatePriceForItem,
+  findSpecialtyMeatConfig,
+  getSpecialtyMeatPrice,
+  getItemPriceForDisplay,
+} from 'lib/priceCalculations';
 import SummaryItemsGeneral from './SummaryItemsGeneral';
 import SummaryItem from './SummaryItem';
 import Logo from './Logo';
@@ -247,7 +253,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
     if (config) {
       const section = config.section || 'Other';
       sectionedValues[section] = sectionedValues[section] || [];
-      const price = calculatePriceForItem(key, value);
+      const price = getItemPriceForDisplay(key, value, formValues);
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
 
       if (value === 'Evenly') {
@@ -279,7 +285,10 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       if (specialtyMeatConfig) {
         const section = specialtyMeatConfig.section;
         sectionedValues[section] = sectionedValues[section] || [];
-        const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
+        const price =
+          formValues.historicalItemPrices && formValues.historicalItemPrices[key] !== undefined
+            ? formValues.historicalItemPrices[key]
+            : getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
         if (value === 'Evenly') {
           hasEvenly = true;

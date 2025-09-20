@@ -11,6 +11,8 @@ import {
   findSpecialtyMeatConfig,
   getSpecialtyMeatPrice,
   calculateCapeHideTotal,
+  getCapeHideTotalForDisplay,
+  getItemPriceForDisplay,
 } from '@/lib/priceCalculations';
 
 interface ProductOption {
@@ -78,7 +80,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
     if (config) {
       const section = config.section || 'Other';
       sectionedValues[section] = sectionedValues[section] || [];
-      const price = calculatePriceForItem(key, value);
+      const price = getItemPriceForDisplay(key, value, formValues);
       const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
 
       if (value === 'Evenly') {
@@ -110,7 +112,10 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       if (specialtyMeatConfig) {
         const section = specialtyMeatConfig.section;
         sectionedValues[section] = sectionedValues[section] || [];
-        const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
+        const price =
+          formValues.historicalItemPrices && formValues.historicalItemPrices[key] !== undefined
+            ? formValues.historicalItemPrices[key]
+            : getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
         const pricePer5lb = true;
 
         if (value === 'Evenly') {
@@ -209,7 +214,8 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
       price = 50;
     } else if (cape === 'Shoulder mount') {
       displayValue = 'Shoulder Mount';
-      price = 850;
+      // Use historical pricing for display
+      price = getItemPriceForDisplay('cape', cape, formValues);
     }
 
     entries.push({
@@ -254,7 +260,8 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
       price = 15;
     } else if (hide === 'Tanned Hair on') {
       displayValue = 'Tanned Hair on';
-      price = 200;
+      // Use historical pricing for display
+      price = getItemPriceForDisplay('hide', hide, formValues);
     }
 
     entries.push({
@@ -276,10 +283,12 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
       price = 0;
     } else if (euroMount === 'Boiled finished mount') {
       displayValue = 'Boiled Finished Mount';
-      price = 145;
+      // Use historical pricing for display
+      price = getItemPriceForDisplay('euroMount', euroMount, formValues);
     } else if (euroMount === 'Beetles finished mount') {
       displayValue = 'Beetles Finished Mount';
-      price = 175;
+      // Use historical pricing for display
+      price = getItemPriceForDisplay('euroMount', euroMount, formValues);
     }
 
     entries.push({
@@ -371,7 +380,7 @@ export default function Summary(props: StepProps) {
   const { sectionedValues, hasEvenly } = groupFormValuesBySections(formValues);
 
   // Calculate cape/hide total for non-Take Today options
-  const capeHideTotal = calculateCapeHideTotal(formValues);
+  const capeHideTotal = getCapeHideTotalForDisplay(formValues);
   const processingTotal = calculateTotalPrice(formValues);
   const hasCapeHideOptions = capeHideTotal > 0;
 

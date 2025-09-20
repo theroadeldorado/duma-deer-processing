@@ -1,7 +1,7 @@
 import { useRouter } from 'next/router';
 import useMutation from '@/hooks/useMutation';
 import { DeerT } from '@/lib/types';
-import { calculateTotalPrice, calculateCapeHideTotal } from '@/lib/priceCalculations';
+import { calculateTotalPrice, calculateCapeHideTotal, buildHistoricalItemPrices, buildCompletePricingSnapshot } from '@/lib/priceCalculations';
 import { FormWizard, stepConfigs } from './checkin-steps';
 
 interface CheckInFormRefactoredProps {
@@ -30,6 +30,8 @@ const CheckInFormRefactored = ({ onFormDataChange }: CheckInFormRefactoredProps)
       name: formData.firstName + ' ' + formData.lastName,
       totalPrice: totalPrice,
       capeHideTotal: capeHideTotal,
+      historicalItemPrices: buildHistoricalItemPrices(formData),
+      pricingSnapshot: buildCompletePricingSnapshot(),
     };
 
     mutation.mutate(data as any);

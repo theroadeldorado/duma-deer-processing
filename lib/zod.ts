@@ -50,6 +50,8 @@ export const Deer = {
   deposit: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
   capeHideDeposit: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
   capeHideTotal: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
+  historicalItemPrices: z.record(z.string(), z.number()).optional(),
+  pricingSnapshot: z.record(z.string(), z.any()).optional(),
   rackId: z.string().optional(),
   capeId: z.string().optional(),
   capeMorseCode: z.string().optional(),

@@ -96,6 +96,14 @@ const fields: DeerSchemaT = {
   capeHideTotal: {
     type: Number,
   },
+  historicalItemPrices: {
+    type: Map,
+    of: Number,
+  },
+  pricingSnapshot: {
+    type: Map,
+    of: mongoose.Schema.Types.Mixed,
+  },
   rackId: {
     type: String,
   },

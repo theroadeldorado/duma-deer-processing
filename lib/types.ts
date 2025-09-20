@@ -45,6 +45,10 @@ export type DeerT = {
   deposit?: number;
   capeHideDeposit?: number;
   capeHideTotal?: number;
+  // Historical individual item prices (stored at entry time to preserve pricing)
+  historicalItemPrices?: Record<string, number>;
+  // Complete pricing configuration snapshot (entire pricing structure at entry time)
+  pricingSnapshot?: Record<string, any>;
   rackId?: string;
   capeId?: string;
   capeMorseCode?: string;

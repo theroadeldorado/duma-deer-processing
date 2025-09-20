@@ -14,7 +14,13 @@ import Select from '@/components/Select';
 import SpecialtyMeat from '@/components/SpecialtyMeat';
 
 import { DeerT, DeerInputT } from 'lib/types';
-import { calculateTotalPrice, calculateCapeHideTotal } from 'lib/priceCalculations';
+import {
+  calculateTotalPrice,
+  calculateCapeHideTotal,
+  getCapeHideTotalForDisplay,
+  buildHistoricalItemPrices,
+  buildCompletePricingSnapshot,
+} from 'lib/priceCalculations';
 import { DeerZ } from '@/lib/zod';
 import useMutation from 'hooks/useMutation';
 import getSecureServerSideProps from '@/lib/getSecureServerSideProps';
@@ -121,6 +127,10 @@ export default function EditDeer({ data, isNew }: Props) {
       deposit: depositValue,
       amountPaid: amountPaidValue,
       approxNeckMeasurement: approxNeckMeasurementValue,
+      // Historical pricing - preserve existing or build new for new entries
+      historicalItemPrices: isNew ? buildHistoricalItemPrices(formData) : data?.historicalItemPrices || buildHistoricalItemPrices(formData),
+      // Complete pricing snapshot - preserve existing or build new for new entries
+      pricingSnapshot: isNew ? buildCompletePricingSnapshot() : data?.pricingSnapshot || buildCompletePricingSnapshot(),
       // String fields - explicitly included to ensure they're saved
       hideCondition: formData.hideCondition,
       facialFeatures: formData.facialFeatures,
@@ -756,7 +766,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   </div>
                   <div>
                     <p className='mb-1 font-bold'>Cape/Hide Total</p>
-                    <p className='text-lg'>${calculateCapeHideTotal(form.getValues()).toFixed(2)}</p>
+                    <p className='text-lg'>${getCapeHideTotalForDisplay(form.getValues()).toFixed(2)}</p>
                   </div>
                   <div>
                     <p className='mb-1 font-bold'>Grand Total</p>

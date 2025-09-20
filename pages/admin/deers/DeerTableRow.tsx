@@ -20,7 +20,7 @@ import Form from '@/components/Form';
 import Input from '@/components/Input';
 import Textarea from '@/components/Textarea';
 import Select from '@/components/Select';
-import { calculateCapeHideTotal } from 'lib/priceCalculations';
+import { calculateCapeHideTotal, getCapeHideTotalForDisplay } from 'lib/priceCalculations';
 
 type Props = {
   data: DeerT | null;
@@ -233,9 +233,6 @@ export default function DeerTableRow({ data }: Props) {
   };
 
   const handleMountSave = (formData: any) => {
-    // Calculate the cape/hide total
-    const calculatedCapeHideTotal = calculateCapeHideTotal(data);
-
     // Parse capeHideDeposit as a number
     const capeHideDepositValue = formData.capeHideDeposit && formData.capeHideDeposit !== '' ? Number(formData.capeHideDeposit) : undefined;
 
@@ -248,7 +245,12 @@ export default function DeerTableRow({ data }: Props) {
       facialFeatures: formData.facialFeatures,
       deposit: data?.deposit, // Include deposit to satisfy TypeScript
       capeHideDeposit: capeHideDepositValue, // Explicitly convert to number
-      capeHideTotal: calculatedCapeHideTotal, // Use the calculated value
+      // PRESERVE historical pricing - only calculate if no stored value exists
+      capeHideTotal: data?.capeHideTotal !== undefined && data?.capeHideTotal !== null ? data.capeHideTotal : calculateCapeHideTotal(data),
+      // PRESERVE historical item prices
+      historicalItemPrices: data?.historicalItemPrices,
+      // PRESERVE complete pricing snapshot
+      pricingSnapshot: data?.pricingSnapshot,
       rackId: formData.rackId,
       capeId: formData.capeId,
       capeMorseCode: formData.capeMorseCode,
@@ -273,9 +275,6 @@ export default function DeerTableRow({ data }: Props) {
   };
 
   const handleMountSaveAndPrint = (formData: any) => {
-    // Calculate the cape/hide total
-    const calculatedCapeHideTotal = calculateCapeHideTotal(data);
-
     // Parse capeHideDeposit as a number
     const capeHideDepositValue = formData.capeHideDeposit && formData.capeHideDeposit !== '' ? Number(formData.capeHideDeposit) : undefined;
 
@@ -288,7 +287,12 @@ export default function DeerTableRow({ data }: Props) {
       facialFeatures: formData.facialFeatures,
       deposit: data?.deposit, // Include deposit to satisfy TypeScript
       capeHideDeposit: capeHideDepositValue, // Explicitly convert to number
-      capeHideTotal: calculatedCapeHideTotal, // Use the calculated value
+      // PRESERVE historical pricing - only calculate if no stored value exists
+      capeHideTotal: data?.capeHideTotal !== undefined && data?.capeHideTotal !== null ? data.capeHideTotal : calculateCapeHideTotal(data),
+      // PRESERVE historical item prices
+      historicalItemPrices: data?.historicalItemPrices,
+      // PRESERVE complete pricing snapshot
+      pricingSnapshot: data?.pricingSnapshot,
       rackId: formData.rackId,
       capeId: formData.capeId,
       capeMorseCode: formData.capeMorseCode,
@@ -372,7 +376,7 @@ export default function DeerTableRow({ data }: Props) {
         >
           {amountPaid ? `$${amountPaid.toFixed(2)}` : '$0.00'}
         </Cell> */}
-        <Cell className='font-bold'>{`$${(calculateCapeHideTotal(data) + (totalPrice || 0)).toFixed(2)}`}</Cell>
+        <Cell className='font-bold'>{`$${(getCapeHideTotalForDisplay(data) + (totalPrice || 0)).toFixed(2)}`}</Cell>
         <Cell>
           {/* Only show edit/print buttons for options that need separate printout (non-Take Today options) */}
           {data.cape === 'Shoulder mount' ||
@@ -682,11 +686,11 @@ export default function DeerTableRow({ data }: Props) {
                 <div className='mt-6 border-t border-dashed border-gray-300 pt-4'>
                   <div className='flex flex-col items-end justify-end gap-2 text-right'>
                     <div>
-                      <p className='font-bold'>Taxidermy Total: ${calculateCapeHideTotal(data).toFixed(2)}</p>
+                      <p className='font-bold'>Taxidermy Total: ${getCapeHideTotalForDisplay(data).toFixed(2)}</p>
                     </div>
                     <div>
                       <p className='font-bold text-blue-600'>
-                        Balance: ${(calculateCapeHideTotal(data) - Number(mountForm.watch('capeHideDeposit') || 0)).toFixed(2)}
+                        Balance: ${(getCapeHideTotalForDisplay(data) - Number(mountForm.watch('capeHideDeposit') || 0)).toFixed(2)}
                       </p>
                     </div>
                   </div>
