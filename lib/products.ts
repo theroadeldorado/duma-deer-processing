@@ -75,7 +75,7 @@ export const productsConfig: ProductsConfig = {
     options: [
       { value: '', label: 'Select Option' },
       { value: 'Cape for shoulder mount', label: 'Keep Cape', price: 50, isTakeToday: true },
-      { value: 'Shoulder mount', label: 'Shoulder Mount', price: 111, isTakeToday: false },
+      { value: 'Shoulder mount', label: 'Shoulder Mount', price: 850, isTakeToday: false },
     ],
   },
   hide: {

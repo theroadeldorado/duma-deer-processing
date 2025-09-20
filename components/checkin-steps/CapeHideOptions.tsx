@@ -57,7 +57,7 @@ export default function CapeHideOptions(props: StepProps) {
               options={[
                 { value: '', label: 'Select Option' },
                 { value: 'Cape for shoulder mount', label: 'Keep Cape - $50 (Take Today)' },
-                { value: 'Shoulder mount', label: 'Shoulder Mount - $111' },
+                { value: 'Shoulder mount', label: 'Shoulder Mount - $850' },
               ]}
             />
           </div>

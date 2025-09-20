@@ -208,8 +208,8 @@ function processCapeHideOptions(formValues: Record<string, any>): Array<{
       displayValue = 'Keep Cape - $50 (Take Today)';
       price = 50;
     } else if (cape === 'Shoulder mount') {
-      displayValue = 'Shoulder Mount - $111';
-      price = 111;
+      displayValue = 'Shoulder Mount - $850';
+      price = 850;
     }
 
     entries.push({
