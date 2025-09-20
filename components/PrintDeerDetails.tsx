@@ -254,8 +254,25 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
         hasEvenly = true;
       }
 
-      if (value) {
-        sectionedValues[section].push({ key, label: config.label, value, price, pricePer5lb, notes: config.notes });
+      // Handle boolean values and special cases
+      let displayValue = value;
+      let actualPrice = price;
+
+      if (value === 'true') {
+        displayValue = 'Yes';
+      } else if (value === 'false') {
+        return; // Skip false values
+      }
+
+      if (value && value !== 'false' && value !== '') {
+        sectionedValues[section].push({
+          key,
+          label: config.label,
+          value: displayValue,
+          price: actualPrice,
+          pricePer5lb,
+          notes: config.notes,
+        });
       }
     } else {
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
@@ -268,7 +285,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
           hasEvenly = true;
         }
 
-        if (value) {
+        if (value && value !== 'false' && value !== '') {
           sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
         }
       }
@@ -312,7 +329,7 @@ function processHindLegs(formValues: Record<string, any>): Array<{
 
   // Process Hind Leg 1
   const hindLeg1 = formValues.hindLegPreference1;
-  if (hindLeg1 && hindLeg1 !== 'Grind') {
+  if (hindLeg1) {
     let displayValue = hindLeg1;
     let price = 0;
 
@@ -340,7 +357,7 @@ function processHindLegs(formValues: Record<string, any>): Array<{
 
   // Process Hind Leg 2
   const hindLeg2 = formValues.hindLegPreference2;
-  if (hindLeg2 && hindLeg2 !== 'Grind') {
+  if (hindLeg2) {
     let displayValue = hindLeg2;
     let price = 0;
 

@@ -37,7 +37,7 @@ export default function QuickOptions(props: StepProps) {
       form.setValue('tenderizedCubedSteaks', 'false');
       form.setValue('hindLegJerky1Flavor', '');
       form.setValue('hindLegJerky2Flavor', '');
-      form.setValue('roastsPreference', 'Grind');
+      form.setValue('roast', 'Grind');
       form.setValue('groundVenison', 'Plain'); // Set default ground venison option
       form.setValue('groundVenisonAmount', 'Remainder');
 

@@ -7,6 +7,16 @@ import { useFormContext } from 'react-hook-form';
 export default function HindLegs(props: StepProps) {
   const form = useFormContext();
 
+  // Ensure default values are set
+  const hindLeg1Current = form.watch('hindLegPreference1');
+  const hindLeg2Current = form.watch('hindLegPreference2');
+  if (!hindLeg1Current) {
+    form.setValue('hindLegPreference1', 'Grind');
+  }
+  if (!hindLeg2Current) {
+    form.setValue('hindLegPreference2', 'Grind');
+  }
+
   const hindLegOptions = [
     { value: 'Grind', label: 'Grind', description: 'Ground with your deer burger' },
     { value: 'Steaks', label: 'Steaks', description: 'approx. 4-6 steaks per leg' },

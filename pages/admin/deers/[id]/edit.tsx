@@ -717,7 +717,7 @@ export default function EditDeer({ data, isNew }: Props) {
                     />
                   </div>
                   <div>
-                    <label className='mb-1 block font-medium text-gray-700'>Mount/Hide Deposit</label>
+                    <label className='mb-1 block font-medium text-gray-700'>Taxidermy Deposit</label>
                     <Input
                       type='number'
                       step='0.01'

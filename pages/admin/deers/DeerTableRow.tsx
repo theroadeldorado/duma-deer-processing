@@ -476,7 +476,39 @@ export default function DeerTableRow({ data }: Props) {
 
           <Modal isVisible={isMountModalVisible} onClose={handleCloseMountModal}>
             <div className='p-6'>
-              <h3 className='mb-4 text-xl font-bold'>Edit Mount/Hide Details</h3>
+              <h3 className='mb-4 text-xl font-bold'>Edit Taxidermy Details</h3>
+
+              {/* Service Types Summary */}
+              <div className='mb-6'>
+                <h4 className='font-bold'>Services Selected</h4>
+                <div>
+                  {(() => {
+                    const services = [];
+                    const isShoulderMount = data.cape === 'Shoulder mount';
+                    const isEuroMount = data.euroMount && data.euroMount !== 'false' && data.euroMount !== '' && data.euroMount !== 'Keep head';
+                    const isHideTanned = data.hide === 'Tanned Hair on';
+
+                    if (isShoulderMount) services.push('Shoulder Mount');
+                    if (isEuroMount) {
+                      let euroMountType = 'Euro Mount';
+                      if (data.euroMount === 'Beetles finished mount') {
+                        euroMountType = 'Euro Mount - Beetle Finished';
+                      } else if (data.euroMount === 'Boiled finished mount') {
+                        euroMountType = 'Euro Mount - Boiled Finished';
+                      }
+                      services.push(euroMountType);
+                    }
+                    if (isHideTanned) services.push('Hide - Tanned Hair On');
+
+                    if (services.length === 0) {
+                      return <span className='italic text-gray-500'>No taxidermy services selected</span>;
+                    }
+
+                    return services.join(' • ');
+                  })()}
+                </div>
+              </div>
+
               <Form form={mountForm} onSubmit={handleMountSave} className='space-y-4'>
                 {/* Common fields for both Shoulder Mount and Tanned Hair on */}
                 {data.euroMount && (data.euroMount === 'Boiled finished mount' || data.euroMount === 'Beetles finished mount') && (
@@ -630,7 +662,7 @@ export default function DeerTableRow({ data }: Props) {
 
                 <div className='grid grid-cols-4 gap-4'>
                   <div>
-                    <label className='mb-1 block text-sm font-medium text-gray-700'>Mount/Hide Deposit</label>
+                    <label className='mb-1 block text-sm font-medium text-gray-700'>Taxidermy Deposit</label>
                     <Input
                       name='capeHideDeposit'
                       type='number'
@@ -650,7 +682,7 @@ export default function DeerTableRow({ data }: Props) {
                 <div className='mt-6 border-t border-dashed border-gray-300 pt-4'>
                   <div className='flex flex-col items-end justify-end gap-2 text-right'>
                     <div>
-                      <p className='font-bold'>Cape/Hide Total: ${calculateCapeHideTotal(data).toFixed(2)}</p>
+                      <p className='font-bold'>Taxidermy Total: ${calculateCapeHideTotal(data).toFixed(2)}</p>
                     </div>
                     <div>
                       <p className='font-bold text-blue-600'>

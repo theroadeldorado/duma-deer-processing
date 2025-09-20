@@ -182,7 +182,15 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
             {(() => {
               const services = [];
               if (isShoulderMount) services.push('Shoulder Mount');
-              if (isEuroMount) services.push('Euro Mount');
+              if (isEuroMount) {
+                let euroMountType = 'Euro Mount';
+                if (data.euroMount === 'Beetles finished mount') {
+                  euroMountType = 'Euro Mount - Beetle Finished';
+                } else if (data.euroMount === 'Boiled finished mount') {
+                  euroMountType = 'Euro Mount - Boiled Finished';
+                }
+                services.push(euroMountType);
+              }
               if (isHideTanned) services.push('Hide');
               return services.join(' & ');
             })()}
@@ -224,7 +232,15 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
                 {(() => {
                   const services = [];
                   if (isShoulderMount) services.push('Shoulder Mount');
-                  if (isEuroMount) services.push('Euro Mount');
+                  if (isEuroMount) {
+                    let euroMountType = 'Euro Mount';
+                    if (data.euroMount === 'Beetles finished mount') {
+                      euroMountType = 'Euro Mount (Beetle Finished)';
+                    } else if (data.euroMount === 'Boiled finished mount') {
+                      euroMountType = 'Euro Mount (Boiled Finished)';
+                    }
+                    services.push(euroMountType);
+                  }
                   if (isHideTanned) services.push('Hide');
                   return services.join(' & ') + ' Details';
                 })()}

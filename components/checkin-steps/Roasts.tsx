@@ -7,6 +7,12 @@ import { useFormContext } from 'react-hook-form';
 export default function Roasts(props: StepProps) {
   const form = useFormContext();
 
+  // Ensure default value is set
+  const currentValue = form.watch('roast');
+  if (!currentValue) {
+    form.setValue('roast', 'Grind');
+  }
+
   const roastOptions = [
     { value: 'Grind', label: 'Grind', description: 'Ground with your deer burger' },
     { value: '2 Roasts', label: '2 Roasts', description: '2 Roasts and grind the rest' },

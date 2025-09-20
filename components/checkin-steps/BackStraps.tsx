@@ -7,6 +7,12 @@ import { useFormContext } from 'react-hook-form';
 export default function BackStraps(props: StepProps) {
   const form = useFormContext();
 
+  // Ensure default value is set
+  const currentValue = form.watch('backStrapsPreference');
+  if (!currentValue) {
+    form.setValue('backStrapsPreference', 'Grind');
+  }
+
   const backStrapOptions = [
     { value: 'Grind', label: 'Grind', description: 'Ground with your deer burger' },
     { value: 'Cut in half', label: 'Cut in half', description: 'Cut sideways into two pieces' },
