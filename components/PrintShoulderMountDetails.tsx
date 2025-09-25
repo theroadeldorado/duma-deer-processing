@@ -160,8 +160,8 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
           <div className='text-xs'>
             A deposit is required at drop-off, with the balance due before pickup. Completion times can vary depending on workload and seasonal
             demand, so no specific finish date is guaranteed. We are not responsible for hides, skulls, or antlers received in poor condition.
-            Finished work should be picked up within 30 days of notice, and all items are left at the customer’s own risk as we cannot be held liable
-            for loss or damage beyond our control.
+            Slippage may occur during tanning process. Finished work should be picked up within 30 days of notice, and all items are left at the
+            customer’s own risk as we cannot be held liable for loss or damage beyond our control.
           </div>
         </div>
       </div>
