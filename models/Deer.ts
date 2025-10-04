@@ -300,4 +300,5 @@ if (models.Deer) {
 
 const Deer = model('Deer', DeerSchema);
 
-export default Deer as mongoose.Model<DeerT>;
+// Use a more generic type assertion for compatibility
+export default Deer as any;
