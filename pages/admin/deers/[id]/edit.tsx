@@ -233,8 +233,7 @@ export default function EditDeer({ data, isNew }: Props) {
               type='date'
               name='dateFound'
               placeholder='Select date deer was found'
-              min={form.watch('dateHarvested') || undefined} // Can't be before harvest date
-              max={new Date().toISOString().split('T')[0]} // Can't be in the future
+              min={form.watch('dateHarvested') || undefined}
               required
             />
 
