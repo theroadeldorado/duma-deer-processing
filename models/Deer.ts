@@ -30,6 +30,12 @@ const fields: DeerSchemaT = {
   buckOrDoe: {
     type: String,
   },
+  dateHarvested: {
+    type: String,
+  },
+  dateFound: {
+    type: String,
+  },
   fullAddress: {
     type: String,
   },
@@ -287,6 +293,11 @@ const DeerSchema = new Schema(fields, {
   timestamps: true,
 });
 
-const Deer = models?.Deer || model('Deer', DeerSchema);
+// Delete the model from mongoose.models if it exists to prevent the cached version from being used
+if (models.Deer) {
+  delete mongoose.models.Deer;
+}
+
+const Deer = model('Deer', DeerSchema);
 
 export default Deer as mongoose.Model<DeerT>;

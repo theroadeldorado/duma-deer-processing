@@ -98,7 +98,6 @@ export default function DeerInfo(props: StepProps) {
             name='dateFound'
             placeholder='Select date deer was found'
             min={dateHarvested || undefined} // Can't be before harvest date
-            max={new Date().toISOString().split('T')[0]} // Can't be in the future
             required
           />
         </div>

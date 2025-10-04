@@ -194,7 +194,7 @@ export default function DeerTableRow({ data }: Props) {
     return null;
   }
 
-  const { _id, name, tagNumber, address, city, state, zip, phone, communication, createdAt, amountPaid, totalPrice } = data;
+  const { _id, name, tagNumber, address, city, state, zip, phone, communication, createdAt, amountPaid, totalPrice, dateHarvested, dateFound } = data;
 
   const deleteDeer = async (id: string) => {
     if (!data?._id) return;
@@ -361,6 +361,8 @@ export default function DeerTableRow({ data }: Props) {
       <tr key={_id} className='transition-colors duration-200 ease-in-out hover:bg-slate-100'>
         <Cell suppressHydrationWarning>{createdAt && dayjs(createdAt).format('M/D/YY  h:mm A')}</Cell>
         <Cell>{name}</Cell>
+        <Cell>{dateHarvested ? (dayjs(dateHarvested).isValid() ? dayjs(dateHarvested).format('M/D/YY') : dateHarvested) : '—'}</Cell>
+        <Cell>{dateFound ? (dayjs(dateFound).isValid() ? dayjs(dateFound).format('M/D/YY') : dateFound) : '—'}</Cell>
         <Cell>{phone}</Cell>
         <Cell>{communication}</Cell>
         <Cell>{address}</Cell>

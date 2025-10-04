@@ -138,7 +138,16 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
               'border-[6px] p-2'
             )}
           >
-            <h4 className='mb-2 font-bold'>{data.createdAt && dayjs(data.createdAt).format('M/D/YY  h:mm A')}</h4>
+            <div className='grid grid-cols-3 gap-8'>
+              <h4 className='mb-2 font-bold'>{data.createdAt && dayjs(data.createdAt).format('M/D/YY  h:mm A')}</h4>
+              <h4 className='mb-2'>
+                Shot:{' '}
+                {data.dateHarvested ? (dayjs(data.dateHarvested).isValid() ? dayjs(data.dateHarvested).format('M/D/YY') : data.dateHarvested) : '—'}
+              </h4>
+              <h4 className='mb-2'>
+                Found: {data.dateFound ? (dayjs(data.dateFound).isValid() ? dayjs(data.dateFound).format('M/D/YY') : data.dateFound) : '—'}
+              </h4>
+            </div>
             <div className='border-b border-dashed border-gray-900 pb-3'>{renderContactInformation()}</div>
             <div className='gap-3 '>
               <h4 className='my-4 text-xl font-bold'>Cutting Instructions</h4>

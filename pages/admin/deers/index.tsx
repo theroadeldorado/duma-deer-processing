@@ -17,6 +17,8 @@ import clsx from 'clsx';
 const cols = [
   { id: 'createdAt', label: 'Submitted' },
   { id: 'name', label: 'Name' },
+  { id: 'dateHarvested', label: 'Date Shot' },
+  { id: 'dateFound', label: 'Date Found' },
   { id: 'phone', label: 'Phone' },
   { id: 'communication', label: 'Com Pref' },
   { id: 'address', label: 'Address' },

@@ -220,6 +220,25 @@ export default function EditDeer({ data, isNew }: Props) {
             ></Select>
 
             <Input
+              label='Date Harvested (Shot)'
+              type='date'
+              name='dateHarvested'
+              placeholder='Select date deer was harvested'
+              max={new Date().toISOString().split('T')[0]} // Can't be in the future
+              required
+            />
+
+            <Input
+              label='Date Found'
+              type='date'
+              name='dateFound'
+              placeholder='Select date deer was found'
+              min={form.watch('dateHarvested') || undefined} // Can't be before harvest date
+              max={new Date().toISOString().split('T')[0]} // Can't be in the future
+              required
+            />
+
+            <Input
               label='Address'
               type='text'
               name='address'
