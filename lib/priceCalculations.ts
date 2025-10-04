@@ -266,10 +266,8 @@ export function buildCompletePricingSnapshot(): Record<string, any> {
 }
 
 export function calculateTotalPrice(formValues: DeerInputT): number {
-  // If this is a donation, return $0
-  if (formValues.skinnedOrBoneless === 'Donation') {
-    return 0;
-  }
+  // For donations, we still charge for cape/hide options but not processing
+  let isDonation = formValues.skinnedOrBoneless === 'Donation';
 
   let total = 0;
   for (const key in formValues) {
@@ -288,12 +286,17 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
           continue;
         }
 
+        // For donations, we only charge for cape/hide options, not processing
+        if (isDonation && key === 'skinnedOrBoneless') {
+          continue; // Skip the processing fee for donations
+        }
+
         const price = calculatePriceForItem(key, formValues[key]);
         total += price;
       }
     } else {
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
-      if (specialtyMeatConfig) {
+      if (specialtyMeatConfig && !isDonation) { // Skip specialty meats for donations
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, formValues[key]);
         if (formValues[key] !== 'Evenly') {
           total += price;
