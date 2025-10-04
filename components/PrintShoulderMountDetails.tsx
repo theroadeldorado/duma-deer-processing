@@ -22,27 +22,33 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
           <div className='text-lg leading-[1.2]'>Tag Number: {data.tagNumber}</div>
         </div>
         <div className='space-y-2'>
-          {/* Common fields for both Shoulder Mount and Tanned Hair on */}
+          {/* Cape ID and Cape Morse Code only for Shoulder Mount and Tanned Hair on */}
+          {(isShoulderMount || isHideTanned) && (
+            <>
+              <div className='flex flex-col'>
+                <div className='flex gap-1 text-lg leading-[1.2]'>
+                  <span className='shrink-0 font-bold'>Cape ID:</span> <span className='grow border-b border-gray-900'>{data.capeId || ''}</span>
+                </div>
+              </div>
+              <div className='flex flex-col'>
+                <div className='flex gap-1 text-lg leading-[1.2]'>
+                  <span className='shrink-0 font-bold'>Cape Morse Code #:</span>{' '}
+                  <span className='grow border-b border-gray-900'>{data.capeMorseCode || ''}</span>
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* Rack ID for all mount types */}
           <div className='flex flex-col'>
             <div className='flex gap-1 text-lg leading-[1.2]'>
-              <span className='shrink-0 font-bold'>Cape ID:</span> <span className='grow border-b border-gray-900'>{data.capeId || ''}</span>
-            </div>
-          </div>
-          <div className='flex flex-col'>
-            <div className='flex gap-1 text-lg leading-[1.2]'>
-              <span className='shrink-0 font-bold'>Cape Morse Code #:</span>{' '}
-              <span className='grow border-b border-gray-900'>{data.capeMorseCode || ''}</span>
+              <span className='shrink-0 font-bold'>Rack ID:</span> <span className='grow border-b border-gray-900'>{data.rackId || ''}</span>
             </div>
           </div>
 
           {/* Fields only for Shoulder mount */}
           {isShoulderMount && (
             <>
-              <div className='flex flex-col'>
-                <div className='flex gap-1 text-lg leading-[1.2]'>
-                  <span className='shrink-0 font-bold'>Rack ID:</span> <span className='grow border-b border-gray-900'>{data.rackId || ''}</span>
-                </div>
-              </div>
               <div className='flex flex-col'>
                 <div className='flex gap-1 text-lg leading-[1.2]'>
                   <span className='shrink-0 font-bold'>Approx Neck Measurement:</span>{' '}
@@ -57,6 +63,20 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
               </div>
             </>
           )}
+        </div>
+      </div>
+    );
+  };
+
+  const termsRender = () => {
+    return (
+      <div className='col-span-3 flex flex-col'>
+        <div className='shrink-0 font-bold'>Terms:</div>
+        <div className='text-xs'>
+          A deposit is required at drop-off, with the balance due before pickup. Completion times can vary depending on workload and seasonal demand,
+          so no specific finish date is guaranteed. We are not responsible for hides, skulls, or antlers received in poor condition. Slippage may
+          occur during tanning process. Finished work should be picked up within 30 days of notice, and all items are left at the customer’s own risk
+          as we cannot be held liable for loss or damage beyond our control.
         </div>
       </div>
     );
@@ -106,7 +126,7 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
     mountDetails.push({
       label: 'Special Instructions',
       value: data.shoulderMountSpecialInstructions || '',
-      writeLines: 3,
+      writeLines: 2,
     });
 
     return mountDetails.map(({ label, value, colspan, writeLines }, index) => (
@@ -155,15 +175,7 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
             <span className='shrink-0 font-bold'>Signature:</span> <span className='grow border-b border-gray-900'></span>
           </div>
         </div>
-        <div className='col-span-3 flex flex-col'>
-          <div className='shrink-0 font-bold'>Terms:</div>
-          <div className='text-xs'>
-            A deposit is required at drop-off, with the balance due before pickup. Completion times can vary depending on workload and seasonal
-            demand, so no specific finish date is guaranteed. We are not responsible for hides, skulls, or antlers received in poor condition.
-            Slippage may occur during tanning process. Finished work should be picked up within 30 days of notice, and all items are left at the
-            customer’s own risk as we cannot be held liable for loss or damage beyond our control.
-          </div>
-        </div>
+        {termsRender()}
       </div>
     );
   };
@@ -171,30 +183,31 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
   const renderReceipt = () => {
     return (
       <div className='mt-8 grid grid-cols-3 gap-6 border-t border-dashed border-gray-900 pt-8'>
-        <div className='col-span-1 flex flex-col gap-2'>
-          <div className='text-xl leading-[1.2]'>
-            {data.name} - {data.phone}
+        <div className='col-span-3 grid grid-cols-2 gap-2'>
+          <div className='flex flex-col gap-2'>
+            <div className='text-lg leading-[1.2]'>
+              {data.name} - {data.phone}
+            </div>
+            <div className='text-lg leading-[1.2]'>Tag Number: {data.tagNumber}</div>
           </div>
-          <div className='text-lg leading-[1.2]'>Tag Number: {data.tagNumber}</div>
-        </div>
-        <div className='col-span-2 flex flex-col gap-2'>
-          <div className='text-lg font-bold leading-[1.2]'>TYPE OF SERVICE</div>
-          <div className='text-lg leading-[1.2]'>
-            {(() => {
-              const services = [];
-              if (isShoulderMount) services.push('Shoulder Mount');
-              if (isEuroMount) {
-                let euroMountType = 'Euro Mount';
-                if (data.euroMount === 'Beetles finished mount') {
-                  euroMountType = 'Euro Mount - Beetle Finished';
-                } else if (data.euroMount === 'Boiled finished mount') {
-                  euroMountType = 'Euro Mount - Boiled Finished';
+          <div className='flex flex-col gap-2'>
+            <div className='text-lg font-bold leading-[1.2]'>
+              {(() => {
+                const services = [];
+                if (isShoulderMount) services.push('Shoulder Mount');
+                if (isEuroMount) {
+                  let euroMountType = 'Euro Mount';
+                  if (data.euroMount === 'Beetles finished mount') {
+                    euroMountType = 'Euro Mount - Beetle Finished';
+                  } else if (data.euroMount === 'Boiled finished mount') {
+                    euroMountType = 'Euro Mount - Boiled Finished';
+                  }
+                  services.push(euroMountType);
                 }
-                services.push(euroMountType);
-              }
-              if (isHideTanned) services.push('Hide');
-              return services.join(' & ');
-            })()}
+                if (isHideTanned) services.push('Hide');
+                return services.join(' & ');
+              })()}
+            </div>
           </div>
         </div>
         <div className='flex flex-col'>
@@ -217,6 +230,7 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
             </span>
           </div>
         </div>
+        {termsRender()}
       </div>
     );
   };
@@ -225,7 +239,14 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
     <div className='print-container flex flex-col'>
       <div className='break-after-page bg-white'>
         <div className='aspect-[5/8] w-[720px] break-inside-avoid-page bg-white'>
-          <div className='border-[6px] border-blue-500 p-2'>
+          <div
+            className={clsx(
+              'border-[6px] p-2',
+              isEuroMount && data.euroMount === 'Boiled finished mount' && 'border-red-500',
+              isEuroMount && data.euroMount !== 'Boiled finished mount' && 'border-black',
+              !isEuroMount && 'border-blue-500'
+            )}
+          >
             <h4 className='mb-2 font-bold'>{data.createdAt && dayjs(data.createdAt).format('M/D/YY  h:mm A')}</h4>
             <div className='mb-3 border-b border-dashed border-gray-900 pb-3'>{renderContactInformation()}</div>
             <div className='gap-3'>
