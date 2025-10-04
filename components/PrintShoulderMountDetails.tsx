@@ -182,7 +182,7 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
 
   const renderReceipt = () => {
     return (
-      <div className='mt-8 grid grid-cols-3 gap-6 border-t border-dashed border-gray-900 pt-8'>
+      <div className={clsx(isEuroMount ? 'mt-56' : 'mt-8', 'grid grid-cols-3 gap-6 border-t border-dashed border-gray-900 pt-8')}>
         <div className='col-span-3 grid grid-cols-2 gap-2'>
           <div className='flex flex-col gap-2'>
             <div className='text-lg leading-[1.2]'>
@@ -230,6 +230,12 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
             </span>
           </div>
         </div>
+        {isEuroMount && data.euroMount === 'Boiled finished mount' && (
+          <p className='col-span-3 text-xs'>Estimated pick up time: Boiled Heads pick up in March</p>
+        )}
+        {isEuroMount && data.euroMount === 'Beetles finished mount' && (
+          <p className='col-span-3 text-xs'>Estimated pick up time: Beetled heads pick up in July</p>
+        )}
         {termsRender()}
       </div>
     );
