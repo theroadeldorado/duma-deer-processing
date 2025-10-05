@@ -127,8 +127,7 @@ export default function EditDeer({ data, isNew }: Props) {
       deposit: depositValue,
       amountPaid: amountPaidValue,
       approxNeckMeasurement: approxNeckMeasurementValue,
-      // Historical pricing - preserve existing or build new for new entries
-      historicalItemPrices: isNew ? buildHistoricalItemPrices(formData) : data?.historicalItemPrices || buildHistoricalItemPrices(formData),
+      historicalItemPrices: buildHistoricalItemPrices(formData),
       // Complete pricing snapshot - preserve existing or build new for new entries
       pricingSnapshot: isNew ? buildCompletePricingSnapshot() : data?.pricingSnapshot || buildCompletePricingSnapshot(),
       // String fields - explicitly included to ensure they're saved

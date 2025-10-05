@@ -41,6 +41,7 @@ export default function DeerTableRow({ data }: Props) {
   const [printId, setPrintId] = useState<string | null>(null);
   const [mountPrintId, setMountPrintId] = useState<string | null>(null);
   const [shouldPrintAfterSave, setShouldPrintAfterSave] = useState(false);
+  const [freshDeerData, setFreshDeerData] = useState<DeerT | null>(null);
   const [updatedMountData, setUpdatedMountData] = useState({
     shoulderMountHeadPosition: data?.shoulderMountHeadPosition,
     shoulderMountEarPosition: data?.shoulderMountEarPosition,
@@ -319,11 +320,36 @@ export default function DeerTableRow({ data }: Props) {
     mountMutation.mutate(updatedData);
   };
 
-  const handlePrintDetails = (id: any) => {
-    setPrintId(id);
-    setTimeout(() => {
-      window.print();
-    }, 100);
+  const handlePrintDetails = async (id: any) => {
+    try {
+      const response = await fetch(`/api/deers/${id}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch deer data');
+      }
+      const result = await response.json();
+      const freshData = result.data;
+
+      if (freshData) {
+        setFreshDeerData(freshData);
+        setPrintId(id);
+        queryClient.invalidateQueries(['/api/deers']);
+        await new Promise((resolve) => setTimeout(resolve, 500));
+        window.print();
+      } else {
+        setFreshDeerData(null);
+        setPrintId(id);
+        setTimeout(() => {
+          window.print();
+        }, 300);
+      }
+    } catch (error) {
+      console.error('Error fetching fresh deer data:', error);
+      setFreshDeerData(null);
+      setPrintId(id);
+      setTimeout(() => {
+        window.print();
+      }, 100);
+    }
   };
 
   const handlePrintMountDetails = (id: any) => {
@@ -336,6 +362,7 @@ export default function DeerTableRow({ data }: Props) {
   window.onafterprint = () => {
     setPrintId(null);
     setMountPrintId(null);
+    setFreshDeerData(null);
   };
 
   const handleHasPrintedChange = async (isChecked: boolean) => {
@@ -474,7 +501,7 @@ export default function DeerTableRow({ data }: Props) {
           <span
             className={clsx(printId === data?._id ? 'pointer-events-none fixed left-0 top-0 block bg-white opacity-0 print:opacity-100' : 'hidden')}
           >
-            <PrintDeerDetails data={data} />
+            <PrintDeerDetails data={freshDeerData || data} />
           </span>
           <Modal isVisible={isModalVisible} onClose={handleCloseModal}>
             <Summary formValues={data} />

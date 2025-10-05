@@ -92,6 +92,8 @@ interface SectionedValues {
 }
 
 const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
+  const { sectionedValues, hasEvenly } = groupFormValuesBySections(data);
+
   const renderWithLineBreaks = (text: string) => {
     return text.split('\n').map((line, index) => (
       <span key={index}>
@@ -123,8 +125,6 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
   const checkForPrice = (price: any) => {
     return price ? price : 0;
   };
-
-  const { sectionedValues, hasEvenly } = groupFormValuesBySections(data);
 
   return (
     <div className='print-container flex flex-col'>
@@ -279,6 +279,14 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
         return; // Skip false values
       }
 
+      if (key === 'groundVenison' && formValues.skinnedOrBoneless === 'Boneless') {
+        if (value === 'Add Pork Trim' || value === 'Add Beef Trim') {
+          actualPrice = 5;
+        } else if (value === 'Add Beef & Pork Trim') {
+          actualPrice = 10;
+        }
+      }
+
       if (value && value !== 'false' && value !== '') {
         sectionedValues[section].push({
           key,
@@ -386,12 +394,11 @@ function processHindLegs(formValues: Record<string, any>): Array<{
       }
       price = 35;
     } else if (hindLeg2 === 'Steaks') {
-      // Only show tenderized price if leg 1 is not steaks (to avoid double charging)
       const tenderized = formValues.tenderizedCubedSteaks;
       const leg1IsAlsoSteaks = formValues.hindLegPreference1 === 'Steaks';
       if (tenderized === 'true') {
         displayValue = 'Steaks - Tenderized Cubed';
-        price = leg1IsAlsoSteaks ? 0 : 5; // Only charge once for tenderized
+        price = leg1IsAlsoSteaks ? 0 : 5;
       }
     }
 
