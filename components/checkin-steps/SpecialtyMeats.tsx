@@ -298,6 +298,20 @@ export default function SpecialtyMeats(props: StepProps) {
               </button>
             </div>
             <div className='max-h-[calc(90vh-80px)] overflow-y-auto p-6 pb-0'>
+              {/* Meat Image */}
+              <div className='mb-6 overflow-hidden rounded-lg'>
+                <Image
+                  src={selectedMeat.image}
+                  alt={selectedMeat.name}
+                  width={800}
+                  height={600}
+                  className='h-72  w-full object-cover'
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+
               {/* Informational Notes */}
               {selectedMeat.name === 'Snack Sticks' && (
                 <div className='mb-6 rounded-md border border-blue-200 bg-blue-50 p-4'>
