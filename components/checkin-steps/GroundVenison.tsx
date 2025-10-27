@@ -8,65 +8,68 @@ export default function GroundVenison(props: StepProps) {
   const groundVenisonAmountSelected = form.watch('groundVenisonAmount');
   const groundVenisonSelected = form.watch('groundVenison');
 
-  // Initialize default values and handle ground venison logic
+  // Initialize default values
   useEffect(() => {
     const currentGroundVenison = form.getValues('groundVenison');
     const currentGroundVenisonAmount = form.getValues('groundVenisonAmount');
 
-    // Set default for groundVenisonAmount if fields are undefined or null
+    // Set defaults if fields are undefined or null
     if (currentGroundVenisonAmount === undefined || currentGroundVenisonAmount === null) {
       form.setValue('groundVenisonAmount', 'Remainder');
     }
 
-    // Handle groundVenison value based on groundVenisonAmount
-    if (currentGroundVenisonAmount === 'None - All specialty meat') {
-      // Clear groundVenison value when "None - All specialty meat" is selected
-      form.setValue('groundVenison', '');
-    } else {
-      // Set groundVenison to 'Plain' if no value exists and not "None - All specialty meat"
-      if (currentGroundVenison === undefined || currentGroundVenison === null || currentGroundVenison === '') {
-        form.setValue('groundVenison', 'Plain');
-      }
+    if (currentGroundVenison === undefined || currentGroundVenison === null || currentGroundVenison === '') {
+      form.setValue('groundVenison', 'Add Beef Trim');
     }
   }, [form]);
 
-  // Handle changes to groundVenisonAmount
-  useEffect(() => {
-    if (groundVenisonAmountSelected === 'None - All specialty meat') {
-      // Clear groundVenison value when "None - All specialty meat" is selected
-      form.setValue('groundVenison', '');
-    } else {
-      // Set groundVenison to 'Plain' if no value exists and not "None - All specialty meat"
-      const currentGroundVenison = form.getValues('groundVenison');
-      if (currentGroundVenison === undefined || currentGroundVenison === null || currentGroundVenison === '') {
-        form.setValue('groundVenison', 'Plain');
-      }
-    }
-  }, [groundVenisonAmountSelected, form]);
-
-  const groundVenisonOptions = [
-    { value: 'Plain', label: 'Plain', description: 'Pure ground venison' },
-    { value: 'Add Beef Trim', label: 'Add Beef Trim', description: '$5 - Mixed with beef' },
-    { value: 'Add Pork Trim', label: 'Add Pork Trim', description: '$5 - Mixed with pork' },
-    { value: 'Add Beef & Pork Trim', label: 'Add Beef & Pork Trim', description: '$10 - Mixed with both' },
-  ];
-
-  const groundVenisonAmountOptions = [
-    { value: 'Remainder', label: 'Remainder of meat', description: 'Ground from remaining meat after cuts and specialty meat options' },
+  const burgerOptions = [
     {
-      value: 'None - All specialty meat',
+      groundVenison: 'Add Beef Trim',
+      groundVenisonAmount: 'Remainder',
+      label: 'Add Beef Trim',
+      description: '$5 - Mixed with beef - Remainder of meat',
+    },
+    {
+      groundVenison: 'Add Pork Trim',
+      groundVenisonAmount: 'Remainder',
+      label: 'Add Pork Trim',
+      description: '$5 - Mixed with pork - Remainder of meat',
+    },
+    {
+      groundVenison: 'Add Beef & Pork Trim',
+      groundVenisonAmount: 'Remainder',
+      label: 'Add Beef & Pork Trim',
+      description: '$10 - Mixed with both - Remainder of meat',
+    },
+    {
+      groundVenison: 'Plain',
+      groundVenisonAmount: 'Remainder',
+      label: 'Plain',
+      description: 'Pure ground venison - Remainder of meat',
+    },
+    {
+      groundVenison: '',
+      groundVenisonAmount: 'None - All specialty meat',
       label: 'No burger - All specialty meat',
       description: 'All ground burger will be used for specialty meats',
     },
   ];
 
-  const handleGroundVenisonSelect = (value: string) => {
-    form.setValue('groundVenison', value);
+  const handleBurgerOptionSelect = (option: (typeof burgerOptions)[0]) => {
+    form.setValue('groundVenison', option.groundVenison);
+    form.setValue('groundVenisonAmount', option.groundVenisonAmount);
   };
 
-  const handleGroundVenisonAmountSelect = (value: string) => {
-    form.setValue('groundVenisonAmount', value);
+  // Determine which option is currently selected
+  const getSelectedOption = () => {
+    if (groundVenisonAmountSelected === 'None - All specialty meat') {
+      return burgerOptions[4];
+    }
+    return burgerOptions.find((opt) => opt.groundVenison === groundVenisonSelected) || burgerOptions[0];
   };
+
+  const selectedOption = getSelectedOption();
 
   return (
     <StepWrapper {...props} title='Burger Options'>
@@ -86,77 +89,36 @@ export default function GroundVenison(props: StepProps) {
               }}
             />
           </div>
-          <div className='flex flex-col gap-6'>
-            {/* Ground Venison Amount */}
-            <div className='flex flex-col gap-3'>
-              <h4 className='text-lg font-semibold text-gray-800'>Ground Venison Amount</h4>
-              <div className='grid grid-cols-1 gap-2'>
-                {groundVenisonAmountOptions.map((option) => (
-                  <button
-                    key={option.value}
-                    type='button'
-                    onClick={() => handleGroundVenisonAmountSelect(option.value)}
-                    className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-                      groundVenisonAmountSelected === option.value
-                        ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
-                        : 'border-gray-300 bg-white hover:border-[#E28532]/50'
-                    }`}
-                  >
-                    <div className='flex items-center justify-between'>
-                      <div>
-                        <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                        <div className='text-xs text-gray-600'>{option.description}</div>
-                      </div>
-                      <div
-                        className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
-                          groundVenisonAmountSelected === option.value
-                            ? 'border-[#E28532] bg-[#E28532]'
-                            : 'border-gray-300 group-hover:border-[#E28532]/50'
-                        }`}
-                      >
-                        {groundVenisonAmountSelected === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-                      </div>
+          <div className='flex flex-col gap-3'>
+            <h4 className='text-lg font-semibold text-gray-800'>Ground Venison Options</h4>
+            <div className='grid grid-cols-1 gap-2'>
+              {burgerOptions.map((option) => (
+                <button
+                  key={option.label}
+                  type='button'
+                  onClick={() => handleBurgerOptionSelect(option)}
+                  className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                    selectedOption.label === option.label
+                      ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                      : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div>
+                      <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
+                      <div className='text-xs text-gray-600'>{option.description}</div>
                     </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-            {/* Ground Venison Options */}
-            {groundVenisonAmountSelected === 'Remainder' && (
-              <div className='flex flex-col gap-3'>
-                <h4 className='text-lg font-semibold text-gray-800'>Ground Venison Options</h4>
-                <div className='grid grid-cols-2 gap-2'>
-                  {groundVenisonOptions.map((option) => (
-                    <button
-                      key={option.value}
-                      type='button'
-                      onClick={() => handleGroundVenisonSelect(option.value)}
-                      className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
-                        groundVenisonSelected === option.value
-                          ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
-                          : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                    <div
+                      className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                        selectedOption.label === option.label ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
                       }`}
                     >
-                      <div className='flex items-center justify-between'>
-                        <div>
-                          <div className='text-sm font-semibold text-gray-900'>{option.label}</div>
-                          <div className='text-xs text-gray-600'>{option.description}</div>
-                        </div>
-                        <div
-                          className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
-                            groundVenisonSelected === option.value
-                              ? 'border-[#E28532] bg-[#E28532]'
-                              : 'border-gray-300 group-hover:border-[#E28532]/50'
-                          }`}
-                        >
-                          {groundVenisonSelected === option.value && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
-                        </div>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
+                      {selectedOption.label === option.label && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
