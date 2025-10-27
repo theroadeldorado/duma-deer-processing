@@ -3,12 +3,12 @@ import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
 import Image from 'next/image';
 import { useEffect } from 'react';
-import Button from '../Button';
 
 export default function CapeHideOptions(props: StepProps) {
   const { form, onNext } = props;
-  const capeSelected = form.watch('cape');
-  const hideSelected = form.watch('hide');
+  const capeSelected = form.watch('cape') || '';
+  const hideSelected = form.watch('hide') || '';
+  const euroMountSelected = form.watch('euroMount') || 'false';
 
   // Disable euroMount when shoulder mount is selected
   useEffect(() => {
@@ -26,6 +26,20 @@ export default function CapeHideOptions(props: StepProps) {
   }, [capeSelected, form]);
 
   const isEuroMountDisabled = capeSelected === 'Shoulder mount';
+
+  const handleCapeSelect = (value: string) => {
+    form.setValue('cape', value);
+  };
+
+  const handleHideSelect = (value: string) => {
+    form.setValue('hide', value);
+  };
+
+  const handleEuroMountSelect = (value: string) => {
+    if (!isEuroMountDisabled) {
+      form.setValue('euroMount', value);
+    }
+  };
 
   const handleSkipStep = () => {
     // Clear all cape, hide, euroMount, and shoulder mount selections
@@ -45,54 +59,256 @@ export default function CapeHideOptions(props: StepProps) {
   return (
     <StepWrapper {...props} title='Cape & Hide (Optional)'>
       <div className='space-y-6'>
-        <div className='grid grid-cols-3 gap-6'>
-          <div className='flex flex-col items-center justify-start gap-1'>
+        <div className='grid grid-cols-1 gap-8 md:grid-cols-3'>
+          {/* Shoulder Mount Options */}
+          <div className='flex flex-col items-center gap-3'>
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
               <Image src='/mount.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='mount' />
             </div>
-            <p className='mb-1 w-full text-center font-bold'>Shoulder Mount Options</p>
-            <Select
-              className='w-full'
-              name='cape'
-              options={[
-                { value: '', label: 'Select Option' },
-                { value: 'Cape for shoulder mount', label: 'Keep Cape - $50 (Take Today)' },
-                { value: 'Shoulder mount', label: 'Shoulder Mount - $850' },
-              ]}
-            />
+            <p className='w-full text-center text-lg font-bold'>Shoulder Mount Options</p>
+            <div className='w-full space-y-2'>
+              <button
+                type='button'
+                onClick={() => handleCapeSelect('')}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  capeSelected === '' ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='text-sm font-medium text-gray-900'>None</div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      capeSelected === '' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {capeSelected === '' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleCapeSelect('Cape for shoulder mount')}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  capeSelected === 'Cape for shoulder mount'
+                    ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                    : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>Keep Cape</div>
+                    <div className='text-xs text-gray-600'>$50 (Take Today)</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      capeSelected === 'Cape for shoulder mount' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {capeSelected === 'Cape for shoulder mount' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleCapeSelect('Shoulder mount')}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  capeSelected === 'Shoulder mount'
+                    ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                    : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>DDP Shoulder Mount</div>
+                    <div className='text-xs text-gray-600'>$850 (Leave Here)</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      capeSelected === 'Shoulder mount' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {capeSelected === 'Shoulder mount' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
 
-          <div className='flex flex-col items-center justify-start gap-1'>
+          {/* Hide Options */}
+          <div className='flex flex-col items-center gap-3'>
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
               <Image src='/hide.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='hide' />
             </div>
-            <p className='mb-1 w-full text-center font-bold'>Hide Options</p>
-            <Select
-              className='w-full'
-              name='hide'
-              options={[
-                { value: '', label: 'Select Option' },
-                { value: 'Save Hide', label: 'Save Hide - $15 (Take Today)' },
-                { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
-              ]}
-            />
+            <p className='w-full text-center text-lg font-bold'>Hide Options</p>
+            <div className='w-full space-y-2'>
+              <button
+                type='button'
+                onClick={() => handleHideSelect('')}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  hideSelected === '' ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='text-sm font-medium text-gray-900'>None</div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      hideSelected === '' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {hideSelected === '' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleHideSelect('Save Hide')}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  hideSelected === 'Save Hide' ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>Save Hide</div>
+                    <div className='text-xs text-gray-600'>$15 (Take Today)</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      hideSelected === 'Save Hide' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {hideSelected === 'Save Hide' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleHideSelect('Tanned Hair on')}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  hideSelected === 'Tanned Hair on'
+                    ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                    : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>Tanned Hair on</div>
+                    <div className='text-xs text-gray-600'>$200</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      hideSelected === 'Tanned Hair on' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {hideSelected === 'Tanned Hair on' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
 
-          <div className={`flex flex-col items-center justify-start gap-1 ${isEuroMountDisabled ? 'pointer-events-none opacity-50' : ''}`}>
+          {/* Euro Mount Options */}
+          <div className={`flex flex-col items-center gap-3 ${isEuroMountDisabled ? 'pointer-events-none opacity-50' : ''}`}>
             <div className='relative aspect-square w-full overflow-hidden rounded-md'>
               <Image src='/euro-mount.jpg' className='absolute inset-0 h-full w-full object-cover' width={500} height={300} alt='euro-mount' />
             </div>
-            <p className='w-full text-center font-bold'>Euro Mount</p>
-            <Select
-              className='w-full'
-              name='euroMount'
-              options={[
-                { value: 'false', label: 'Select Option' },
-                { value: 'Keep head', label: 'Keep Head (Take Today)' },
-                { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
-                { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
-              ]}
-            />
+            <p className='w-full text-center text-lg font-bold'>Euro Mount</p>
+            <div className='w-full space-y-2'>
+              <button
+                type='button'
+                onClick={() => handleEuroMountSelect('false')}
+                disabled={isEuroMountDisabled}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  euroMountSelected === 'false' ? 'border-[#E28532] bg-[#E28532]/10 shadow-md' : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div className='text-sm font-medium text-gray-900'>None</div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      euroMountSelected === 'false' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {euroMountSelected === 'false' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleEuroMountSelect('Keep head')}
+                disabled={isEuroMountDisabled}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  euroMountSelected === 'Keep head'
+                    ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                    : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>Keep Head</div>
+                    <div className='text-xs text-gray-600'>(Take Today)</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      euroMountSelected === 'Keep head' ? 'border-[#E28532] bg-[#E28532]' : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {euroMountSelected === 'Keep head' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleEuroMountSelect('Boiled finished mount')}
+                disabled={isEuroMountDisabled}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  euroMountSelected === 'Boiled finished mount'
+                    ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                    : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>Boiled Finished Mount</div>
+                    <div className='text-xs text-gray-600'>$145 (Leave Here)</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      euroMountSelected === 'Boiled finished mount'
+                        ? 'border-[#E28532] bg-[#E28532]'
+                        : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {euroMountSelected === 'Boiled finished mount' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+              <button
+                type='button'
+                onClick={() => handleEuroMountSelect('Beetles finished mount')}
+                disabled={isEuroMountDisabled}
+                className={`group relative w-full rounded-lg border-2 p-3 text-left transition-all duration-200 hover:shadow-md ${
+                  euroMountSelected === 'Beetles finished mount'
+                    ? 'border-[#E28532] bg-[#E28532]/10 shadow-md'
+                    : 'border-gray-300 bg-white hover:border-[#E28532]/50'
+                }`}
+              >
+                <div className='flex items-center justify-between'>
+                  <div>
+                    <div className='text-sm font-semibold text-gray-900'>Beetles Finished Mount</div>
+                    <div className='text-xs text-gray-600'>$175 (Leave Here)</div>
+                  </div>
+                  <div
+                    className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
+                      euroMountSelected === 'Beetles finished mount'
+                        ? 'border-[#E28532] bg-[#E28532]'
+                        : 'border-gray-300 group-hover:border-[#E28532]/50'
+                    }`}
+                  >
+                    {euroMountSelected === 'Beetles finished mount' && <div className='h-full w-full scale-50 rounded-full bg-white'></div>}
+                  </div>
+                </div>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -210,14 +426,6 @@ export default function CapeHideOptions(props: StepProps) {
                 )}
               </div>
             </div>
-          </div>
-        )}
-
-        {(!capeSelected || capeSelected === '') && (!hideSelected || hideSelected === '') && (
-          <div className='flex flex-col items-center justify-center gap-6'>
-            <Button type='button' onClick={handleSkipStep}>
-              None of the above
-            </Button>
           </div>
         )}
       </div>
