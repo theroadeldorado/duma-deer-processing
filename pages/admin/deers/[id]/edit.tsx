@@ -37,43 +37,85 @@ export default function EditDeer({ data, isNew }: Props) {
   const router = useRouter();
   const [calculatedPrice, setCalculatedPrice] = useState<number>(Number(data?.totalPrice) || 0);
 
-  const [isHindLegPreference1, setIsHindLegPreference1] = useState('Grind');
-  const [isHindLegPreference2, setIsHindLegPreference2] = useState('Grind');
-
-  const handleHindLegPreference1 = (event: any) => {
-    setIsHindLegPreference1(event);
-  };
-
-  const handleHindLegPreference2 = (event: any) => {
-    setIsHindLegPreference2(event);
-  };
-
   const form = useForm<DeerInputT>({
     defaultValues: data,
     resolver: zodResolver(DeerZ),
   });
+
+  // Parse existing data to handle backward compatibility with combined values
+  // e.g., "Whole Muscle Jerky - Hot" -> hindLegPreference1: "Whole Muscle Jerky", hindLegJerky1Flavor: "Hillbilly Hot"
+  useEffect(() => {
+    if (!data) return;
+
+    // Helper function to parse combined jerky values
+    const parseJerkyValue = (value: string | undefined): { preference: string; flavor: string } => {
+      if (!value) return { preference: 'Grind', flavor: '' };
+
+      // Check if it's a combined value like "Whole Muscle Jerky - Hot" or "Whole Muscle Jerk - Hot"
+      if (value.includes('Whole Muscle Jerk')) {
+        const parts = value.split(' - ');
+        if (parts.length === 2) {
+          const flavorPart = parts[1].trim();
+          // Map flavor names to match products config
+          let flavor = '';
+          if (flavorPart === 'Mild' || flavorPart === 'Appalachian Mild') {
+            flavor = 'Appalachian Mild';
+          } else if (flavorPart === 'Hot' || flavorPart === 'Hillbilly Hot') {
+            flavor = 'Hillbilly Hot';
+          } else if (flavorPart === 'Teriyaki') {
+            flavor = 'Teriyaki';
+          }
+          return { preference: 'Whole Muscle Jerky', flavor };
+        }
+      }
+
+      // If it's already the correct format, return as-is
+      return { preference: value, flavor: '' };
+    };
+
+    // Parse hind leg 1
+    const leg1Parsed = parseJerkyValue(data.hindLegPreference1);
+    if (leg1Parsed.preference !== data.hindLegPreference1 || leg1Parsed.flavor) {
+      form.setValue('hindLegPreference1', leg1Parsed.preference);
+      if (leg1Parsed.flavor) {
+        form.setValue('hindLegJerky1Flavor', leg1Parsed.flavor);
+      }
+    }
+
+    // Parse hind leg 2
+    const leg2Parsed = parseJerkyValue(data.hindLegPreference2);
+    if (leg2Parsed.preference !== data.hindLegPreference2 || leg2Parsed.flavor) {
+      form.setValue('hindLegPreference2', leg2Parsed.preference);
+      if (leg2Parsed.flavor) {
+        form.setValue('hindLegJerky2Flavor', leg2Parsed.flavor);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
   // State for balance calculation
   const [balance, setBalance] = useState<number>(0);
 
   // Update calculated price whenever form values change
   useEffect(() => {
-    const formData = form.getValues();
-    const processingPrice = calculateTotalPrice(formData);
-    const capeHidePrice = calculateCapeHideTotal(formData);
-    const totalPrice = processingPrice + capeHidePrice;
-    setCalculatedPrice(totalPrice);
+    const subscription = form.watch((formData) => {
+      const processingPrice = calculateTotalPrice(formData as DeerInputT);
+      const capeHidePrice = calculateCapeHideTotal(formData as DeerInputT);
+      const totalPrice = processingPrice + capeHidePrice;
+      setCalculatedPrice(totalPrice);
 
-    // Calculate balance
-    const totalDeposits =
-      Number(form.getValues('deposit') || 0) + Number(form.getValues('capeHideDeposit') || 0) + Number(form.getValues('amountPaid') || 0);
-    setBalance(totalPrice - totalDeposits);
+      // Calculate balance
+      const totalDeposits = Number(formData.deposit || 0) + Number(formData.capeHideDeposit || 0) + Number(formData.amountPaid || 0);
+      setBalance(totalPrice - totalDeposits);
 
-    // Update capeHideTotal field if it's not set manually
-    if (!form.getValues('capeHideTotal') && capeHidePrice > 0) {
-      form.setValue('capeHideTotal', capeHidePrice);
-    }
-  }, [form.watch()]);
+      // Update capeHideTotal field if it's not set manually
+      if (!formData.capeHideTotal && capeHidePrice > 0) {
+        form.setValue('capeHideTotal', capeHidePrice);
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const mutation = useMutation({
     url: isNew ? '/api/deers/add' : `/api/deers/${data?._id}/update`,
@@ -493,39 +535,93 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Select
                   className='w-full'
                   name='hindLegPreference1'
-                  onChange={handleHindLegPreference1}
                   required
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                    { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
-                    { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
-                    { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
+                    { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
                     { value: 'Grind', label: 'Ground Venison' },
                   ]}
                   defaultValue='Grind'
+                  onChange={(value: string) => {
+                    form.setValue('hindLegPreference1', value);
+                    if (value === 'Whole Muscle Jerky') {
+                      // Default to Mild when jerky is selected
+                      if (!form.getValues('hindLegJerky1Flavor')) {
+                        form.setValue('hindLegJerky1Flavor', 'Appalachian Mild');
+                      }
+                    } else {
+                      // Clear jerky flavor when jerky is not selected
+                      form.setValue('hindLegJerky1Flavor', '');
+                    }
+                    // Reset tenderized option if no steaks selected
+                    if (value !== 'Steaks' && form.getValues('hindLegPreference2') !== 'Steaks') {
+                      form.setValue('tenderizedCubedSteaks', 'false');
+                    }
+                  }}
                 ></Select>
+                {form.watch('hindLegPreference1') === 'Whole Muscle Jerky' && (
+                  <div className='mt-2'>
+                    <p className='mb-1 text-sm font-medium'>Jerky Flavor</p>
+                    <Select
+                      className='w-full'
+                      name='hindLegJerky1Flavor'
+                      options={[
+                        { value: 'Appalachian Mild', label: 'Appalachian Mild' },
+                        { value: 'Hillbilly Hot', label: 'Hillbilly Hot' },
+                        { value: 'Teriyaki', label: 'Teriyaki' },
+                      ]}
+                    ></Select>
+                  </div>
+                )}
               </div>
               <div>
                 <p className='mb-1 font-bold'>Hind Leg 2 Preference</p>
                 <Select
                   className='w-full'
                   name='hindLegPreference2'
-                  onChange={handleHindLegPreference2}
                   options={[
                     { value: 'Steaks', label: 'Steaks' },
                     { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                    { value: 'Whole Muscle Jerky - Mild', label: 'Whole Muscle Jerky - $35 - Mild' },
-                    { value: 'Whole Muscle Jerk - Hot', label: 'Whole Muscle Jerky - $35 - Hot' },
-                    { value: 'Whole Muscle Jerky - Teriyaki', label: 'Whole Muscle Jerky - $35 - Teriyaki' },
+                    { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
                     { value: 'Grind', label: 'Ground Venison' },
                   ]}
                   defaultValue='Grind'
+                  onChange={(value: string) => {
+                    form.setValue('hindLegPreference2', value);
+                    if (value === 'Whole Muscle Jerky') {
+                      // Default to Mild when jerky is selected
+                      if (!form.getValues('hindLegJerky2Flavor')) {
+                        form.setValue('hindLegJerky2Flavor', 'Appalachian Mild');
+                      }
+                    } else {
+                      // Clear jerky flavor when jerky is not selected
+                      form.setValue('hindLegJerky2Flavor', '');
+                    }
+                    // Reset tenderized option if no steaks selected
+                    if (value !== 'Steaks' && form.getValues('hindLegPreference1') !== 'Steaks') {
+                      form.setValue('tenderizedCubedSteaks', 'false');
+                    }
+                  }}
                 ></Select>
+                {form.watch('hindLegPreference2') === 'Whole Muscle Jerky' && (
+                  <div className='mt-2'>
+                    <p className='mb-1 text-sm font-medium'>Jerky Flavor</p>
+                    <Select
+                      className='w-full'
+                      name='hindLegJerky2Flavor'
+                      options={[
+                        { value: 'Appalachian Mild', label: 'Appalachian Mild' },
+                        { value: 'Hillbilly Hot', label: 'Hillbilly Hot' },
+                        { value: 'Teriyaki', label: 'Teriyaki' },
+                      ]}
+                    ></Select>
+                  </div>
+                )}
               </div>
 
               <div className='col-span-2'>
-                {(isHindLegPreference1 === 'Steaks' || isHindLegPreference2 === 'Steaks') && (
+                {(form.watch('hindLegPreference1') === 'Steaks' || form.watch('hindLegPreference2') === 'Steaks') && (
                   <div className='mb-3'>
                     <div className='flex flex-wrap items-center justify-start gap-2 font-normal'>
                       <input name='tenderizedCubedSteaks' type='checkbox' className='checkbox' />

@@ -296,7 +296,8 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
       }
     } else {
       const specialtyMeatConfig = findSpecialtyMeatConfig(key);
-      if (specialtyMeatConfig && !isDonation) { // Skip specialty meats for donations
+      if (specialtyMeatConfig && !isDonation) {
+        // Skip specialty meats for donations
         const price = getSpecialtyMeatPrice(specialtyMeatConfig.name, key, formValues[key]);
         if (formValues[key] !== 'Evenly') {
           total += price;
@@ -326,19 +327,29 @@ export function calculatePriceForItem(key: string, value: any): number {
     return 0;
   }
 
+  // Handle backward compatibility: parse combined values like "Whole Muscle Jerky - Hot"
+  // For hind leg preferences, extract just the preference part
+  let normalizedValue = value;
+  if ((key === 'hindLegPreference1' || key === 'hindLegPreference2') && typeof value === 'string') {
+    if (value.includes('Whole Muscle Jerk')) {
+      // Extract "Whole Muscle Jerky" from combined values like "Whole Muscle Jerky - Hot"
+      normalizedValue = 'Whole Muscle Jerky';
+    }
+  }
+
   if (config.options) {
     let totalPrice = 0;
-    if (Array.isArray(value)) {
-      value.forEach((val) => {
+    if (Array.isArray(normalizedValue)) {
+      normalizedValue.forEach((val) => {
         const option = findOptionInConfig(config, val);
         if (option) {
           totalPrice += calculateOptionPrice(option, val);
         }
       });
     } else {
-      const option = findOptionInConfig(config, value);
+      const option = findOptionInConfig(config, normalizedValue);
       if (option) {
-        totalPrice = calculateOptionPrice(option, value);
+        totalPrice = calculateOptionPrice(option, normalizedValue);
       }
     }
 

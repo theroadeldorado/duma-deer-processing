@@ -252,7 +252,8 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
   const hindLegEntries = processHindLegs(formValues);
 
   Object.keys(formValues).forEach((key) => {
-    if (key.startsWith('hindLeg') || key === 'tenderizedCubedSteaks') {
+    // Skip all hind leg related fields - they're handled by processHindLegs()
+    if (key.startsWith('hindLeg') || key === 'tenderizedCubedSteaks' || key === 'hindLegJerky1Flavor' || key === 'hindLegJerky2Flavor') {
       return;
     }
 
@@ -364,7 +365,8 @@ function processHindLegs(formValues: Record<string, any>): Array<{
       if (flavor) {
         displayValue = `Whole Muscle Jerky - ${flavor}`;
       }
-      price = 35;
+      // Use historical pricing if available, otherwise default to 35
+      price = getItemPriceForDisplay('hindLegPreference1', hindLeg1, formValues) || 35;
     } else if (hindLeg1 === 'Steaks') {
       const tenderized = formValues.tenderizedCubedSteaks;
       if (tenderized === 'true') {
@@ -392,7 +394,8 @@ function processHindLegs(formValues: Record<string, any>): Array<{
       if (flavor) {
         displayValue = `Whole Muscle Jerky - ${flavor}`;
       }
-      price = 35;
+      // Use historical pricing if available, otherwise default to 35
+      price = getItemPriceForDisplay('hindLegPreference2', hindLeg2, formValues) || 35;
     } else if (hindLeg2 === 'Steaks') {
       const tenderized = formValues.tenderizedCubedSteaks;
       const leg1IsAlsoSteaks = formValues.hindLegPreference1 === 'Steaks';
