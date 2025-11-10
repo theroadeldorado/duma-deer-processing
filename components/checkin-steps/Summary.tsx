@@ -60,12 +60,7 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       return;
     }
     // Skip all hind leg related fields - they're handled by processHindLegs()
-    if (
-      key.startsWith('hindLeg') ||
-      key === 'tenderizedCubedSteaks' ||
-      key === 'hindLegJerky1Flavor' ||
-      key === 'hindLegJerky2Flavor'
-    ) {
+    if (key.startsWith('hindLeg') || key === 'tenderizedCubedSteaks' || key === 'hindLegJerky1Flavor' || key === 'hindLegJerky2Flavor') {
       return;
     }
     // Skip cape/hide/mount fields as they're handled separately
