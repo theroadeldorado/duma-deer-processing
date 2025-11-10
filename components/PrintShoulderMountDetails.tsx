@@ -22,6 +22,13 @@ const PrintShoulderMountDetails: React.FC<PrintShoulderMountDetailsProps> = ({ d
           <div className='text-lg leading-[1.2]'>Tag Number: {data.tagNumber}</div>
         </div>
         <div className='space-y-2'>
+          {/* Date Harvested (Shot) */}
+          <div className='flex flex-col'>
+            <div className='flex gap-1 text-lg leading-[1.2]'>
+              <span className='shrink-0 font-bold'>Date Harvested (Shot):</span>{' '}
+              <span className='grow border-b border-gray-900'>{data.dateHarvested || ''}</span>
+            </div>
+          </div>
           {/* Cape ID and Cape Morse Code only for Shoulder Mount and Tanned Hair on */}
           {(isShoulderMount || isHideTanned) && (
             <>
