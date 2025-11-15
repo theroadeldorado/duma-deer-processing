@@ -694,7 +694,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 admin
                 name='Smoked Jalapeño Cheddar Brats'
                 image='/smoked-jalapeno-cheddar-brats.jpg'
-                options={[{ name: 'smokedJalapenoCheddarBrats', label: '', price: 18.5 }]}
+                options={[{ name: 'smokedJalapenoCheddarBrats', label: '', price: 22.5 }]}
               />
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>

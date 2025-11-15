@@ -57,7 +57,7 @@ const COMPLETE_HISTORICAL_PRICING = {
   // Specialty meats (all prices per 5lb)
   specialtyMeats: {
     'Smoked Jalapeño Cheddar Brats': {
-      smokedJalapenoCheddarBrats: 18.5,
+      smokedJalapenoCheddarBrats: 22.5,
     },
     'Trail Bologna': {
       trailBolognaRegular: 15,

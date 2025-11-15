@@ -19,7 +19,7 @@ const specialtyMeats: SpecialtyMeatOption[] = [
     name: 'Smoked Jalapeño Cheddar Brats',
     perLot: '3 packs of 5 links per 5lb lot',
     image: '/smoked-jalapeno-cheddar-brats.jpg',
-    options: [{ name: 'smokedJalapenoCheddarBrats', label: 'Smoked Jalapeño Cheddar Brats', price: 18.5 }],
+    options: [{ name: 'smokedJalapenoCheddarBrats', label: 'Smoked Jalapeño Cheddar Brats', price: 22.5 }],
   },
   {
     name: 'Trail Bologna',
