@@ -188,6 +188,9 @@ const fields: DeerSchemaT = {
   trailBolognaHotPepperJackCheese: {
     type: String,
   },
+  smokedJalapenoCheddarBrats: {
+    type: String,
+  },
   trailBolognaNotes: {
     type: String,
   },

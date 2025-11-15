@@ -77,6 +77,7 @@ export type DeerT = {
   trailBolognaRegular?: number | string;
   trailBolognaCheddarCheese?: number | string;
   trailBolognaHotPepperJackCheese?: number | string;
+  smokedJalapenoCheddarBrats?: number | string;
   trailBolognaNotes?: string;
   garlicRingBologna?: number | string;
   garlicRingBolognaNotes?: string;

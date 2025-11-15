@@ -4,6 +4,7 @@ import Image from 'next/image';
 interface Slide {
   image: string;
   text: string;
+  tag?: string;
 }
 
 interface SlideshowProps {
@@ -57,8 +58,11 @@ export default function Slideshow({ slides, onBegin }: SlideshowProps) {
       </div>
 
       {/* Product Text - Top Right */}
-      <div className='absolute right-8 top-8 text-right'>
-        <h1 className='text-display-lg font-bold text-white drop-shadow-2xl'>{slides[currentIndex]?.text}</h1>
+      <div className='absolute right-8 top-8 flex flex-col items-end gap-3 text-right'>
+        <h1 className='flex items-center gap-2 text-display-lg font-bold text-white drop-shadow-2xl'>{slides[currentIndex]?.text}</h1>
+        {slides[currentIndex]?.tag && (
+          <span className='rounded-full bg-red-500 px-3 py-1 text-sm font-semibold uppercase text-white'>{slides[currentIndex]?.tag}</span>
+        )}
       </div>
 
       {/* Tap to Begin Text - Bottom Center */}

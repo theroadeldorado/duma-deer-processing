@@ -30,6 +30,7 @@ export default function FormWizard({ steps, onSubmit, initialData, onFormDataCha
       'trailBolognaRegular',
       'trailBolognaCheddarCheese',
       'trailBolognaHotPepperJackCheese',
+      'smokedJalapenoCheddarBrats',
       'garlicRingBologna',
       'summerSausageMild',
       'summerSausageHot',

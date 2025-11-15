@@ -45,6 +45,7 @@ export default function QuickOptions(props: StepProps) {
       form.setValue('trailBolognaRegular', 'false');
       form.setValue('trailBolognaCheddarCheese', 'false');
       form.setValue('trailBolognaHotPepperJackCheese', 'false');
+      form.setValue('smokedJalapenoCheddarBrats', 'false');
       form.setValue('garlicRingBologna', 'false');
       form.setValue('summerSausageMild', 'false');
       form.setValue('summerSausageHot', 'false');

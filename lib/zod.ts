@@ -81,6 +81,7 @@ export const Deer = {
   trailBolognaRegular: z.any().optional(),
   trailBolognaCheddarCheese: z.any().optional(),
   trailBolognaHotPepperJackCheese: z.any().optional(),
+  smokedJalapenoCheddarBrats: z.any().optional(),
   trailBolognaNotes: z.string().optional(),
   garlicRingBologna: z.string().optional(),
   garlicRingBolognaNotes: z.string().optional(),

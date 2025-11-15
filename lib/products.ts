@@ -244,6 +244,11 @@ export const productsConfig: ProductsConfig = {
     section: 'Specialty Meats',
     meats: [
       {
+        name: 'Smoked Jalapeño Cheddar Brats',
+        image: '/smoked-jalapeno-cheddar-brats.jpg',
+        options: [{ name: 'smokedJalapenoCheddarBrats', label: 'Smoked Jalapeño Cheddar Brats', price: 18.5, pricePer5lb: true }],
+      },
+      {
         name: 'Trail Bologna',
         image: '/trail_bologna.jpg',
         options: [

@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import SpecialtyMeat from '@/components/SpecialtyMeat';
 import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
@@ -7,12 +7,20 @@ import { useFormContext } from 'react-hook-form';
 
 type SpecialtyMeatOption = {
   name: string;
+  limitedTimeOnly?: boolean;
   perLot?: string;
   image: string;
   options: { name: string; label: string; price: number }[];
 };
 
 const specialtyMeats: SpecialtyMeatOption[] = [
+  {
+    limitedTimeOnly: true,
+    name: 'Smoked Jalapeño Cheddar Brats',
+    perLot: '3 packs of 5 links per 5lb lot',
+    image: '/smoked-jalapeno-cheddar-brats.jpg',
+    options: [{ name: 'smokedJalapenoCheddarBrats', label: 'Smoked Jalapeño Cheddar Brats', price: 18.5 }],
+  },
   {
     name: 'Trail Bologna',
     perLot: '3 logs per 5lb lot',
@@ -119,6 +127,15 @@ export default function SpecialtyMeats(props: StepProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selections, setSelections] = useState<Record<string, any>>({});
 
+  // Separate limited time only items from regular specialty meats
+  const limitedTimeOnlyMeats = useMemo(() => {
+    return specialtyMeats.filter((meat) => meat.limitedTimeOnly);
+  }, []);
+
+  const regularMeats = useMemo(() => {
+    return specialtyMeats.filter((meat) => !meat.limitedTimeOnly);
+  }, []);
+
   // Create a stable list of all field names to watch
   const fieldNames = useMemo(() => {
     return specialtyMeats.flatMap((meat) => meat.options.map((option) => option.name.replace(/\s+/g, '')));
@@ -138,9 +155,12 @@ export default function SpecialtyMeats(props: StepProps) {
   // Watch specific fields instead of all form values
   const formValues = form.watch(fieldNames);
 
-  // Memoize formValues to prevent unnecessary re-renders
-  const formValuesKey = JSON.stringify(formValues);
-  const memoizedFormValues = useMemo(() => formValues, [formValues, formValuesKey]);
+  // Use a ref to store the latest form values to avoid stale closures
+  const formValuesRef = useRef(formValues);
+  formValuesRef.current = formValues;
+
+  // Create a stable string representation for comparison
+  const formValuesKey = useMemo(() => JSON.stringify(formValues), [formValues]);
 
   // Lock/unlock body scroll when modal opens/closes
   useEffect(() => {
@@ -160,7 +180,7 @@ export default function SpecialtyMeats(props: StepProps) {
   useEffect(() => {
     const newSelections: Record<string, any> = {};
     fieldNames.forEach((fieldName, index) => {
-      const value = memoizedFormValues[index];
+      const value = formValuesRef.current[index];
       // Only include if value exists and is not 'false', '0', empty string, null, or undefined
       if (value && value !== 'false' && value !== '0' && value !== '' && value !== null && value !== undefined) {
         // Find the meat and option that corresponds to this field
@@ -182,7 +202,7 @@ export default function SpecialtyMeats(props: StepProps) {
       }
     });
     setSelections(newSelections);
-  }, [memoizedFormValues, fieldNames]);
+  }, [formValuesKey, fieldNames]);
 
   const openModal = (meat: SpecialtyMeatOption) => {
     setSelectedMeat(meat);
@@ -220,42 +240,89 @@ export default function SpecialtyMeats(props: StepProps) {
 
   return (
     <StepWrapper {...props} title='Specialty Meats'>
-      <div className='space-y-8'>
-        {/* Grid of specialty meat buttons */}
-        <div className='grid grid-cols-2 gap-6 '>
-          {specialtyMeats.map((meat) => (
-            <button
-              key={meat.name}
-              type='button'
-              onClick={() => openModal(meat)}
-              className={`group relative overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:shadow-lg ${
-                hasSelections(meat.name) ? 'ring-2 ring-blue-500 ring-offset-2' : ''
-              }`}
-            >
-              <div className='aspect-[4/3] w-full overflow-hidden'>
-                <Image
-                  src={meat.image}
-                  alt={meat.name}
-                  width={400}
-                  height={300}
-                  className='h-full w-full object-cover transition-transform duration-200 group-hover:scale-110'
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-                {/* Overlay */}
-                <div className='absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-200 group-hover:bg-opacity-30' />
-                {/* Text overlay */}
-                <div className='absolute inset-0 flex flex-col items-center justify-center p-4 text-center'>
-                  <h3 className='text-display-xs  font-bold leading-snug text-white'>{meat.name}</h3>
-                  {hasSelections(meat.name) && (
-                    <div className='mt-2 rounded-full bg-blue-500 px-2 py-1 text-xs font-medium text-white'>{getSelectionSummary(meat.name)}</div>
-                  )}
-                </div>
-              </div>
-            </button>
-          ))}
-        </div>
+      <div>
+        {/* Limited Time Only Section */}
+        {limitedTimeOnlyMeats.length > 0 && (
+          <div className='mb-6 space-y-4'>
+            <div className='grid grid-cols-1 gap-6'>
+              {limitedTimeOnlyMeats.map((meat) => (
+                <button
+                  key={meat.name}
+                  type='button'
+                  onClick={() => openModal(meat)}
+                  className={`group relative overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:shadow-lg ${
+                    hasSelections(meat.name) ? 'ring-2 ring-blue-500 ring-offset-2' : ''
+                  }`}
+                >
+                  <div className='absolute left-4 top-4 z-10'>
+                    <span className='rounded-full bg-red-500 px-3 py-1 text-sm font-semibold uppercase text-white'>Limited Time Only</span>
+                  </div>
+                  <div className='aspect-[12/5] w-full overflow-hidden'>
+                    <Image
+                      src={meat.image}
+                      alt={meat.name}
+                      width={400}
+                      height={300}
+                      className='h-full w-full object-cover transition-transform duration-200 group-hover:scale-110'
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    {/* Overlay */}
+                    <div className='absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-200 group-hover:bg-opacity-30' />
+                    {/* Text overlay */}
+                    <div className='absolute inset-0 flex flex-col items-center justify-center p-4 text-center'>
+                      <h3 className='text-display-xs  font-bold leading-snug text-white'>{meat.name}</h3>
+                      {hasSelections(meat.name) && (
+                        <div className='mt-2 rounded-full bg-blue-500 px-2 py-1 text-xs font-medium text-white'>{getSelectionSummary(meat.name)}</div>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Regular Specialty Meats Section */}
+        {regularMeats.length > 0 && (
+          <div className='space-y-4'>
+            <div className='grid grid-cols-2 gap-6'>
+              {regularMeats.map((meat) => (
+                <button
+                  key={meat.name}
+                  type='button'
+                  onClick={() => openModal(meat)}
+                  className={`group relative overflow-hidden rounded-lg bg-white shadow-md transition-all duration-200 hover:shadow-lg ${
+                    hasSelections(meat.name) ? 'ring-2 ring-blue-500 ring-offset-2' : ''
+                  }`}
+                >
+                  <div className='aspect-[4/3] w-full overflow-hidden'>
+                    <Image
+                      src={meat.image}
+                      alt={meat.name}
+                      width={400}
+                      height={300}
+                      className='h-full w-full object-cover transition-transform duration-200 group-hover:scale-110'
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                    {/* Overlay */}
+                    <div className='absolute inset-0 bg-black bg-opacity-40 transition-opacity duration-200 group-hover:bg-opacity-30' />
+                    {/* Text overlay */}
+                    <div className='absolute inset-0 flex flex-col items-center justify-center p-4 text-center'>
+                      <h3 className='text-display-xs  font-bold leading-snug text-white'>{meat.name}</h3>
+                      {hasSelections(meat.name) && (
+                        <div className='mt-2 rounded-full bg-blue-500 px-2 py-1 text-xs font-medium text-white'>{getSelectionSummary(meat.name)}</div>
+                      )}
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Selection Summary */}
         {Object.keys(selections).length > 0 && (

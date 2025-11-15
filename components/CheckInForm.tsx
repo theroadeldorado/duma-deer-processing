@@ -511,6 +511,12 @@ const CheckInForm = () => {
               </div>
 
               <SpecialtyMeat
+                name='Smoked Jalapeño Cheddar Brats'
+                image='/smoked-jalapeno-cheddar-brats.jpg'
+                options={[{ name: 'smokedJalapenoCheddarBrats', label: 'Smoked Jalapeño Cheddar Brats', price: 18.5 }]}
+              />
+
+              <SpecialtyMeat
                 name='Trail Bologna'
                 image='/trail_bologna.jpg'
                 options={[

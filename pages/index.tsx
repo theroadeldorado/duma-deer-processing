@@ -13,6 +13,7 @@ export default function UserDashboard() {
 
   // You can customize these slides as needed
   const slideshowSlides = [
+    { image: '/smoked-jalapeno-cheddar-brats.jpg', text: 'Smoked Jalapeño Cheddar Brats', tag: 'Limited Time Only' },
     { image: '/country_breakfast_sausage.jpg', text: 'Country Breakfast Sausage' },
     { image: '/garlic_ring.jpg', text: 'Garlic Ring Bologna' },
     { image: '/jerky.jpg', text: 'Jerky Restructured' },

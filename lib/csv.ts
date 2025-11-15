@@ -38,6 +38,7 @@ export const exportDeers = async (data: DeerT[]) => {
     trailBolognaRegular: 'Trail Bologna Regular',
     trailBolognaCheddarCheese: 'Trail Bologna Cheddar Cheese',
     trailBolognaHotPepperJackCheese: 'Trail Bologna Hot Pepper Jack Cheese',
+    smokedJalapenoCheddarBrats: 'Smoked Jalapeño Cheddar Brats',
     garlicRingBologna: 'Garlic Ring Bologna',
     summerSausageMild: 'Summer Sausage Mild',
     summerSausageHot: 'Summer Sausage Hot',
