@@ -82,7 +82,6 @@ export default function SpecialtyMeat({ name, image, options, admin = false }: P
                   />
                 </div>
               ))}
-            {/* <Textarea rows={2} name={`${removeSpacesAndCamelCase(name)}Notes`} label='Special Instructions' register={register} /> */}
           </div>
         </div>
       )}

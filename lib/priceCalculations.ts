@@ -1,38 +1,5 @@
 import { DeerT, DeerInputT } from './types';
-import { productsConfig, ProductsConfig } from './products';
-
-interface ProductOption {
-  value?: string | number;
-  label: string;
-  price?: number;
-  name?: string;
-  pricePer5lb?: boolean;
-  isTakeToday?: boolean;
-}
-
-interface Product {
-  name?: string;
-  section?: string;
-  label: string;
-  type: string;
-  required?: boolean;
-  defaultValue?: string;
-  options?: ProductOption[];
-  image?: string;
-  price?: number;
-  priceCondition?: (value: any) => number;
-}
-
-interface SpecialtyMeat {
-  name: string;
-  image: string;
-  options: ProductOption[];
-}
-
-interface SpecialtyMeatsConfig {
-  section: string;
-  meats: SpecialtyMeat[];
-}
+import { productsConfig, ProductsConfig, ProductOption, Product, SpecialtyMeat, SpecialtyMeatsConfig } from './products';
 
 export function findSpecialtyMeatConfig(optionName: string): { section: string; label: string; name: string; notes?: boolean } | undefined {
   const specialtyMeatsConfig = productsConfig.specialtyMeats as SpecialtyMeatsConfig;
@@ -51,7 +18,9 @@ export function calculateCapeHideTotal(formValues: DeerInputT): number {
   // Check cape option
   if (formValues.cape && formValues.cape !== '') {
     const capeConfig = productsConfig.cape as Product;
-    const capeOption = capeConfig.options?.find((option) => option.value === formValues.cape) as ProductOption;
+    const capeOption = capeConfig.options?.find(
+      (option) => typeof option === 'object' && option.value === formValues.cape
+    ) as ProductOption | undefined;
     if (capeOption && !capeOption.isTakeToday) {
       total += capeOption.price || 0;
     }
@@ -60,7 +29,9 @@ export function calculateCapeHideTotal(formValues: DeerInputT): number {
   // Check hide option
   if (formValues.hide && formValues.hide !== '') {
     const hideConfig = productsConfig.hide as Product;
-    const hideOption = hideConfig.options?.find((option) => option.value === formValues.hide) as ProductOption;
+    const hideOption = hideConfig.options?.find(
+      (option) => typeof option === 'object' && option.value === formValues.hide
+    ) as ProductOption | undefined;
     if (hideOption && !hideOption.isTakeToday) {
       total += hideOption.price || 0;
     }
@@ -69,7 +40,9 @@ export function calculateCapeHideTotal(formValues: DeerInputT): number {
   // Check euroMount option
   if (formValues.euroMount && formValues.euroMount !== '' && formValues.euroMount !== 'none') {
     const euroConfig = productsConfig.euroMount as Product;
-    const euroOption = euroConfig.options?.find((option) => option.value === formValues.euroMount) as ProductOption;
+    const euroOption = euroConfig.options?.find(
+      (option) => typeof option === 'object' && option.value === formValues.euroMount
+    ) as ProductOption | undefined;
     if (euroOption && !euroOption.isTakeToday) {
       total += euroOption.price || 0;
     }
@@ -278,7 +251,9 @@ export function calculateTotalPrice(formValues: DeerInputT): number {
         // Skip cape/hide/euroMount options that are not "Take Today" as they'll be calculated separately
         if ((key === 'cape' || key === 'hide' || key === 'euroMount') && formValues[key] !== '') {
           const options = (config as Product).options;
-          const selectedOption = options?.find((option) => option.value === formValues[key]) as ProductOption;
+          const selectedOption = options?.find(
+            (option) => typeof option === 'object' && option.value === formValues[key]
+          ) as ProductOption | undefined;
           if (selectedOption && selectedOption.isTakeToday) {
             total += selectedOption.price || 0;
           }
@@ -373,7 +348,9 @@ export function getSpecialtyMeatPrice(meatName: string, optionName: string, valu
 }
 
 function findOptionInConfig(config: Product, value: string): ProductOption | undefined {
-  return config.options?.find((option) => option.value === value || option.name === value);
+  return config.options?.find(
+    (option) => typeof option === 'object' && (option.value === value || option.name === value)
+  ) as ProductOption | undefined;
 }
 
 function calculateOptionPrice(option: ProductOption, value: number | string): number {

@@ -266,8 +266,6 @@ export default function DeerTableRow({ data }: Props) {
       deposit: data?.deposit, // Preserve the original deposit value
     };
 
-    console.log('Saving mount data with capeHideDeposit:', capeHideDepositValue);
-
     // Store the updated mount data
     setUpdatedMountData(mountData);
 
@@ -307,8 +305,6 @@ export default function DeerTableRow({ data }: Props) {
       ...mountData,
       deposit: data?.deposit, // Preserve the original deposit value
     };
-
-    console.log('Saving and printing mount data with capeHideDeposit:', capeHideDepositValue);
 
     // Store the updated mount data for printing
     setUpdatedMountData(mountData);

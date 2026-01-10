@@ -1,74 +1,15 @@
 import React from 'react';
-import { productsConfig } from 'lib/products';
+import { productsConfig, Product, ProductOption, SpecialtyMeatsConfig } from 'lib/products';
 import {
   calculateTotalPrice,
-  calculatePriceForItem,
   findSpecialtyMeatConfig,
   getSpecialtyMeatPrice,
-  calculateCapeHideTotal,
   getCapeHideTotalForDisplay,
   getItemPriceForDisplay,
 } from 'lib/priceCalculations';
 import SummaryItem from './SummaryItem';
 import SummaryItemsGeneral from './SummaryItemsGeneral';
 import { DeerT } from '@/lib/types';
-
-interface ProductOption {
-  value?: string | number;
-  label: string;
-  price?: number;
-  name?: string;
-  pricePer5lb?: boolean;
-  notes?: boolean;
-}
-
-interface Product {
-  name?: string;
-  section?: string;
-  label: string;
-  type: string;
-  required?: boolean;
-  defaultValue?: string;
-  options?: ProductOption[];
-  image?: string;
-  price?: number;
-  notes?: boolean;
-}
-
-interface SpecialtyMeat {
-  name: string;
-  image: string;
-  options: ProductOption[];
-}
-
-interface SpecialtyMeatsConfig {
-  section: string;
-  meats: SpecialtyMeat[];
-}
-
-interface ProductsConfig {
-  name: Product;
-  fullAddress: Product;
-  phone: Product;
-  communication: Product;
-  tagNumber: Product;
-  stateHarvestedIn: Product;
-  skinnedOrBoneless: Product;
-  cape: Product;
-  hide: Product;
-  euroMount: Product;
-  backStrapsPreference: Product;
-  hindLegPreference1: Product;
-  hindLegPreference2: Product;
-  hindLegJerky1: Product;
-  hindLegJerky2: Product;
-  tenderizedCubedSteaks: Product;
-  roast: Product;
-  groundVenison: Product;
-  // ... other specific product properties
-
-  specialtyMeats: SpecialtyMeatsConfig;
-}
 
 interface SummaryProps {
   formValues: DeerT;
@@ -180,7 +121,10 @@ function groupFormValuesBySections(formValues: Record<string, any>): { sectioned
       const section = config.section || 'Other';
       sectionedValues[section] = sectionedValues[section] || [];
       const price = getItemPriceForDisplay(key, value, formValues);
-      const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
+      const matchedOption = config.options?.find(
+        (option) => typeof option === 'object' && (option as ProductOption).value === value
+      ) as ProductOption | undefined;
+      const pricePer5lb = matchedOption?.pricePer5lb || false;
 
       if (value === 'Evenly') {
         hasEvenly = true;

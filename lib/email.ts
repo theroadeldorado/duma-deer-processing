@@ -48,8 +48,7 @@ export async function sendTemplateEmail({ key, to, data }: TemplateProps) {
   });
 
   try {
-    const response = await sendgrid.send({ from, to, subject, html: body, replyTo });
-    console.log(response);
+    await sendgrid.send({ from, to, subject, html: body, replyTo });
   } catch (error: any) {
     console.error(error.message);
   }

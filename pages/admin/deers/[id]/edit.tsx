@@ -158,7 +158,7 @@ export default function EditDeer({ data, isNew }: Props) {
     const capeHideTotalValue = calculateCapeHideTotal(formData);
     const approxNeckMeasurementValue =
       formData.approxNeckMeasurement && formData.approxNeckMeasurement !== '' ? Number(formData.approxNeckMeasurement) : undefined;
-    ~``;
+
     // Make sure we're explicitly including all cape/hide fields
     const updatedData = {
       ...formData,
@@ -184,16 +184,6 @@ export default function EditDeer({ data, isNew }: Props) {
       shoulderMountSpecialInstructions: formData.shoulderMountSpecialInstructions,
     };
 
-    console.log('Submitting data with all cape/hide fields:', {
-      capeHideDeposit: capeHideDepositValue,
-      hideCondition: formData.hideCondition,
-      facialFeatures: formData.facialFeatures,
-      rackId: formData.rackId,
-      capeId: formData.capeId,
-      capeMorseCode: formData.capeMorseCode,
-      formOrdered: formData.formOrdered,
-      approxNeckMeasurement: approxNeckMeasurementValue,
-    });
     mutation.mutate(updatedData);
   };
 
@@ -372,12 +362,6 @@ export default function EditDeer({ data, isNew }: Props) {
                       { value: 'Shoulder mount', label: 'Shoulder Mount - $850' },
                     ]}
                   ></Select>
-
-                  {/* <CheckboxGroup name='cape' options={[{ value: 'Cape for shoulder mount', label: 'Cape for shoulder mount - Additional $50' }]} /> */}
-                  {/* <label>
-                    <input type='checkbox' name='cape' className='mr-2' />
-                    Cape for shoulder mount - Additional $50
-                  </label> */}
                 </div>
                 <div>
                   <p className='mb-1 font-bold'>Hide Options</p>
@@ -391,11 +375,6 @@ export default function EditDeer({ data, isNew }: Props) {
                       { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
                     ]}
                   ></Select>
-                  {/* <CheckboxGroup name='hide' options={[{ value: 'Keep skinned hide', label: 'Keep skinned hide - Additional $15' }]} /> */}
-                  {/* <label>
-                    <input type='checkbox' name='hide' className='mr-2' />
-                    Keep skinned hide - Additional $15
-                  </label> */}
                 </div>
                 <p className='font-bold'>Euro Mount Options</p>
                 <Select

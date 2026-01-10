@@ -1,4 +1,4 @@
-interface ProductOption {
+export interface ProductOption {
   value?: string | number;
   label: string;
   price?: number;
@@ -7,7 +7,7 @@ interface ProductOption {
   isTakeToday?: boolean;
 }
 
-interface Product {
+export interface Product {
   name?: string;
   section?: string;
   label: string;
@@ -20,13 +20,13 @@ interface Product {
   notes?: boolean;
 }
 
-interface SpecialtyMeat {
+export interface SpecialtyMeat {
   name: string;
   image: string;
   options: ProductOption[];
 }
 
-interface SpecialtyMeatsConfig {
+export interface SpecialtyMeatsConfig {
   section: string;
   meats: SpecialtyMeat[];
 }
@@ -365,7 +365,7 @@ export const productsConfig: ProductsConfig = {
   },
   babyLinksNotes: {
     section: 'Specialty Meats Notes',
-    label: 'Breakfast Linkss Notes',
+    label: 'Breakfast Links Notes',
     type: 'textarea',
     notes: true,
   },
@@ -387,19 +387,6 @@ export const productsConfig: ProductsConfig = {
     type: 'textarea',
     notes: true,
   },
-};
-
-export const getProductPrice = (productName: string, optionName: string): number => {
-  const product = productsConfig.specialtyMeats as SpecialtyMeatsConfig;
-  const meat = product.meats.find((m) => m.name === productName);
-  if (!meat || !meat.options) return 0;
-
-  for (const option of meat.options) {
-    if (option.name === optionName) {
-      return option.price ?? 0;
-    }
-  }
-  return 0;
 };
 
 export default productsConfig;
