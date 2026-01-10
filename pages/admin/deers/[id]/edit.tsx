@@ -746,10 +746,10 @@ export default function EditDeer({ data, isNew }: Props) {
               </div>
             </div>
             <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Breakfast Linkss</h3>
+              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Breakfast Links</h3>
               <SpecialtyMeat
                 admin
-                name='Breakfast Linkss'
+                name='Breakfast Links'
                 options={[
                   { name: 'babyLinksCountry', label: 'Country', price: 20 },
                   { name: 'babyLinksMaple', label: 'Maple', price: 20 },
