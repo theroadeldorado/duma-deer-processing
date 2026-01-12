@@ -2,13 +2,24 @@ import Select from '@/components/Select';
 import StepWrapper from './StepWrapper';
 import { StepProps } from './types';
 import Image from 'next/image';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
+import { getCapeHideOptionsWithPrices, formatPrice } from '@/lib/priceUtils';
 
 export default function CapeHideOptions(props: StepProps) {
   const { form, onNext } = props;
   const capeSelected = form.watch('cape') || '';
   const hideSelected = form.watch('hide') || '';
   const euroMountSelected = form.watch('euroMount') || 'false';
+
+  // Get current prices from productsConfig
+  const capeOptions = useMemo(() => getCapeHideOptionsWithPrices('cape'), []);
+  const hideOptions = useMemo(() => getCapeHideOptionsWithPrices('hide'), []);
+  const euroMountOptions = useMemo(() => getCapeHideOptionsWithPrices('euroMount'), []);
+
+  // Helper to find option config by value
+  const getCapeOption = (value: string) => capeOptions.find((opt) => opt.value === value);
+  const getHideOption = (value: string) => hideOptions.find((opt) => opt.value === value);
+  const getEuroOption = (value: string) => euroMountOptions.find((opt) => opt.value === value);
 
   // Disable euroMount when shoulder mount is selected
   useEffect(() => {
@@ -97,7 +108,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>Keep Cape</div>
-                    <div className='text-xs text-gray-600'>$50 (Take Today)</div>
+                    <div className='text-xs text-gray-600'>{getCapeOption('Cape for shoulder mount')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
@@ -120,7 +131,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>DDP Shoulder Mount</div>
-                    <div className='text-xs text-gray-600'>$850 (Leave Here)</div>
+                    <div className='text-xs text-gray-600'>{getCapeOption('Shoulder mount')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
@@ -169,7 +180,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>Save Hide</div>
-                    <div className='text-xs text-gray-600'>$15 (Take Today)</div>
+                    <div className='text-xs text-gray-600'>{getHideOption('Save Hide')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
@@ -192,7 +203,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>Tanned Hair on</div>
-                    <div className='text-xs text-gray-600'>$200</div>
+                    <div className='text-xs text-gray-600'>{getHideOption('Tanned Hair on')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
@@ -245,7 +256,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>Keep Head</div>
-                    <div className='text-xs text-gray-600'>(Take Today)</div>
+                    <div className='text-xs text-gray-600'>{getEuroOption('Keep head')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
@@ -269,7 +280,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>Boiled Finished Mount</div>
-                    <div className='text-xs text-gray-600'>$145 (Leave Here)</div>
+                    <div className='text-xs text-gray-600'>{getEuroOption('Boiled finished mount')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${
@@ -295,7 +306,7 @@ export default function CapeHideOptions(props: StepProps) {
                 <div className='flex items-center justify-between'>
                   <div>
                     <div className='text-sm font-semibold text-gray-900'>Beetles Finished Mount</div>
-                    <div className='text-xs text-gray-600'>$175 (Leave Here)</div>
+                    <div className='text-xs text-gray-600'>{getEuroOption('Beetles finished mount')?.priceLabel}</div>
                   </div>
                   <div
                     className={`h-4 w-4 shrink-0 rounded-full border-2 transition-all ${

@@ -26,6 +26,16 @@ import useMutation from 'hooks/useMutation';
 import getSecureServerSideProps from '@/lib/getSecureServerSideProps';
 import { getDeer } from '@/lib/mongo';
 import { ParsedUrlQuery } from 'querystring';
+import {
+  getSkinnedOrBonelessOptions,
+  getCapeDropdownOptions,
+  getHideDropdownOptions,
+  getEuroMountDropdownOptions,
+  getGroundVenisonOptions,
+  getHindLegPreferenceOptions,
+  getTenderizedCubedSteaksPrice,
+  formatPrice,
+} from '@/lib/priceUtils';
 
 // Define your props type
 type Props = {
@@ -337,11 +347,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   className='w-full'
                   name='skinnedOrBoneless'
                   required
-                  options={[
-                    { value: 'Skinned, Cut, Ground, Vacuum packed', label: 'Skinned, Cut, Ground, Vacuum packed - $110' },
-                    { value: 'Boneless', label: 'Boneless, 100% deboned already' },
-                    { value: 'Donation', label: 'Donation - $0' },
-                  ]}
+                  options={getSkinnedOrBonelessOptions()}
                 ></Select>
               </div>
               <Textarea rows={3} name={`skinnedBonelessNotes`} label='Special Instructions' />
@@ -356,11 +362,7 @@ export default function EditDeer({ data, isNew }: Props) {
                     className='w-full'
                     name='cape'
                     required
-                    options={[
-                      { value: '', label: 'Select Option' },
-                      { value: 'Cape for shoulder mount', label: 'Additional $50' },
-                      { value: 'Shoulder mount', label: 'Shoulder Mount - $850' },
-                    ]}
+                    options={getCapeDropdownOptions()}
                   ></Select>
                 </div>
                 <div>
@@ -369,23 +371,14 @@ export default function EditDeer({ data, isNew }: Props) {
                     className='w-full'
                     name='hide'
                     required
-                    options={[
-                      { value: '', label: 'Select Option' },
-                      { value: 'Save Hide', label: 'Save Hide - Take Today - $15' },
-                      { value: 'Tanned Hair on', label: 'Tanned Hair on - $200' },
-                    ]}
+                    options={getHideDropdownOptions()}
                   ></Select>
                 </div>
                 <p className='font-bold'>Euro Mount Options</p>
                 <Select
                   className='w-full'
                   name='euroMount'
-                  options={[
-                    { value: 'false', label: 'Select Option' },
-                    { value: 'Keep head', label: 'Keep Head  - Take Today' },
-                    { value: 'Boiled finished mount', label: 'Boiled Finished Mount - $145' },
-                    { value: 'Beetles finished mount', label: 'Beetles Finished Mount - $175' },
-                  ]}
+                  options={getEuroMountDropdownOptions()}
                 ></Select>
               </div>
               <div className='flex flex-col gap-4'>
@@ -515,12 +508,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   className='w-full'
                   name='hindLegPreference1'
                   required
-                  options={[
-                    { value: 'Steaks', label: 'Steaks' },
-                    { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                    { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
-                    { value: 'Grind', label: 'Ground Venison' },
-                  ]}
+                  options={getHindLegPreferenceOptions()}
                   defaultValue='Grind'
                   onChange={(value: string) => {
                     form.setValue('hindLegPreference1', value);
@@ -559,12 +547,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Select
                   className='w-full'
                   name='hindLegPreference2'
-                  options={[
-                    { value: 'Steaks', label: 'Steaks' },
-                    { value: 'Smoked Whole Ham', label: 'Smoked Whole Ham - $40' },
-                    { value: 'Whole Muscle Jerky', label: 'Whole Muscle Jerky - $35' },
-                    { value: 'Grind', label: 'Ground Venison' },
-                  ]}
+                  options={getHindLegPreferenceOptions()}
                   defaultValue='Grind'
                   onChange={(value: string) => {
                     form.setValue('hindLegPreference2', value);
@@ -604,7 +587,7 @@ export default function EditDeer({ data, isNew }: Props) {
                   <div className='mb-3'>
                     <div className='flex flex-wrap items-center justify-start gap-2 font-normal'>
                       <input name='tenderizedCubedSteaks' type='checkbox' className='checkbox' />
-                      <label htmlFor='tenderizedCubedSteaks'>Tenderized Cubed Steaks - $5</label>
+                      <label htmlFor='tenderizedCubedSteaks'>Tenderized Cubed Steaks - {formatPrice(getTenderizedCubedSteaksPrice())}</label>
                     </div>
                   </div>
                 )}
@@ -645,12 +628,7 @@ export default function EditDeer({ data, isNew }: Props) {
                 label='Ground Venison Options'
                 placeholder='Select Option'
                 defaultValue='Plain'
-                options={[
-                  { value: 'Plain', label: 'Plain' },
-                  { value: 'Add Beef Trim', label: 'Add Beef Trim - $5' },
-                  { value: 'Add Pork Trim', label: 'Add Pork Trim - $5' },
-                  { value: 'Add Beef & Pork Trim', label: 'Add Beef & Pork Trim - $10' },
-                ]}
+                options={getGroundVenisonOptions()}
               ></Select>
 
               <Select
