@@ -1,129 +1,33 @@
 import React from 'react';
 import { DeerT } from 'lib/types';
-import Summary from './Summary';
-import { productsConfig } from 'lib/products';
-import {
-  calculateTotalPrice,
-  calculatePriceForItem,
-  findSpecialtyMeatConfig,
-  getSpecialtyMeatPrice,
-  getItemPriceForDisplay,
-} from 'lib/priceCalculations';
+import { calculateTotalPrice } from 'lib/priceCalculations';
 import SummaryItemsGeneral from './SummaryItemsGeneral';
 import SummaryItem from './SummaryItem';
-import Logo from './Logo';
 import clsx from 'clsx';
 import dayjs from 'dayjs';
+import { groupFormValuesBySections, SectionedValues } from '@/lib/formValueUtils';
 
 interface PrintDeerDetailsProps {
   data: DeerT;
 }
 
-interface ProductOption {
-  value?: string | number;
-  label: string;
-  price?: number;
-  name?: string;
-  pricePer5lb?: boolean;
-  notes?: boolean;
-}
-
-interface Product {
-  name?: string;
-  section?: string;
-  label: string;
-  type: string;
-  required?: boolean;
-  defaultValue?: string;
-  options?: ProductOption[];
-  image?: string;
-  price?: number;
-  notes?: boolean;
-}
-
-interface SpecialtyMeat {
-  name: string;
-  image: string;
-  options: ProductOption[];
-}
-
-interface SpecialtyMeatsConfig {
-  section: string;
-  meats: SpecialtyMeat[];
-}
-
-interface ProductsConfig {
-  name: Product;
-  fullAddress: Product;
-  phone: Product;
-  communication: Product;
-  tagNumber: Product;
-  stateHarvestedIn: Product;
-  skinnedOrBoneless: Product;
-  cape: Product;
-  hide: Product;
-  euroMount: Product;
-  backStrapsPreference: Product;
-  hindLegPreference1: Product;
-  hindLegPreference2: Product;
-  hindLegJerky1: Product;
-  hindLegJerky2: Product;
-  tenderizedCubedSteaks: Product;
-  roast: Product;
-  groundVenison: Product;
-  // ... other specific product properties
-
-  specialtyMeats: SpecialtyMeatsConfig;
-}
-
-interface SummaryProps {
-  formValues: DeerT;
-}
-
-interface SectionedValues {
-  [section: string]: Array<{
-    key: string;
-    label: string;
-    value: string | number;
-    price: number;
-    pricePer5lb?: boolean;
-    notes?: boolean;
-  }>;
-}
-
 const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
-  const { sectionedValues, hasEvenly } = groupFormValuesBySections(data);
-
-  const renderWithLineBreaks = (text: string) => {
-    return text.split('\n').map((line, index) => (
-      <span key={index}>
-        {line}
-        {index < text.split('\n').length - 1 && <br />}
-      </span>
-    ));
-  };
+  const { sectionedValues, hasEvenly } = groupFormValuesBySections(data, {
+    applyBonelessGroundVenisonPricing: true,
+    reorderContactInfo: true,
+  });
 
   const renderContactInformation = () => {
     const contactInfo = sectionedValues['Contact Information'] || [];
     return <SummaryItemsGeneral values={contactInfo} print />;
-    return contactInfo.map(({ label, value }, index) => (
-      <div key={index} className='flex flex-col'>
-        {/* <div className='font-bold'>{label}:</div> */}
-        <div className={clsx((label == 'Name' || label == 'Phone') && 'text-xl font-bold', 'text-md')}>{value}</div>
-      </div>
-    ));
   };
 
   const renderOtherInformation = (name: keyof SectionedValues) => {
     const contactInfo = sectionedValues[name] || [];
 
-    return contactInfo.map(({ key, label, value, price, pricePer5lb, notes }, index) => (
+    return contactInfo.map(({ key, label, value, price, pricePer5lb, notes }) => (
       <SummaryItem key={key} label={label} value={value} price={price} pricePer5lb={pricePer5lb} notes={notes} print />
     ));
-  };
-
-  const checkForPrice = (price: any) => {
-    return price ? price : 0;
   };
 
   return (
@@ -245,173 +149,3 @@ const PrintDeerDetails: React.FC<PrintDeerDetailsProps> = ({ data }) => {
 };
 
 export default PrintDeerDetails;
-
-function groupFormValuesBySections(formValues: Record<string, any>): { sectionedValues: SectionedValues; hasEvenly: boolean } {
-  const sectionedValues: SectionedValues = {};
-  let hasEvenly = false;
-  const hindLegEntries = processHindLegs(formValues);
-
-  Object.keys(formValues).forEach((key) => {
-    // Skip all hind leg related fields - they're handled by processHindLegs()
-    if (key.startsWith('hindLeg') || key === 'tenderizedCubedSteaks' || key === 'hindLegJerky1Flavor' || key === 'hindLegJerky2Flavor') {
-      return;
-    }
-
-    const value = formValues[key];
-    const config = productsConfig[key] as Product | undefined;
-
-    if (config) {
-      const section = config.section || 'Other';
-      sectionedValues[section] = sectionedValues[section] || [];
-      const price = getItemPriceForDisplay(key, value, formValues);
-      const pricePer5lb = config.options?.find((option) => option.value === value)?.pricePer5lb || false;
-
-      if (value === 'Evenly') {
-        hasEvenly = true;
-      }
-
-      // Handle boolean values and special cases
-      let displayValue = value;
-      let actualPrice = price;
-
-      if (value === 'true') {
-        displayValue = 'Yes';
-      } else if (value === 'false') {
-        return; // Skip false values
-      }
-
-      if (key === 'groundVenison' && formValues.skinnedOrBoneless === 'Boneless') {
-        if (value === 'Add Pork Trim' || value === 'Add Beef Trim') {
-          actualPrice = 5;
-        } else if (value === 'Add Beef & Pork Trim') {
-          actualPrice = 10;
-        }
-      }
-
-      if (value && value !== 'false' && value !== '') {
-        sectionedValues[section].push({
-          key,
-          label: config.label,
-          value: displayValue,
-          price: actualPrice,
-          pricePer5lb,
-          notes: config.notes,
-        });
-      }
-    } else {
-      const specialtyMeatConfig = findSpecialtyMeatConfig(key);
-      if (specialtyMeatConfig) {
-        const section = specialtyMeatConfig.section;
-        sectionedValues[section] = sectionedValues[section] || [];
-        const price =
-          formValues.historicalItemPrices && formValues.historicalItemPrices[key] !== undefined
-            ? formValues.historicalItemPrices[key]
-            : getSpecialtyMeatPrice(specialtyMeatConfig.name, key, value);
-        const pricePer5lb = true;
-        if (value === 'Evenly') {
-          hasEvenly = true;
-        }
-
-        if (value && value !== 'false' && value !== '') {
-          sectionedValues[section].push({ key, label: specialtyMeatConfig.label, value, price, pricePer5lb, notes: specialtyMeatConfig.notes });
-        }
-      }
-    }
-  });
-
-  // Add processed hind leg entries
-  if (hindLegEntries.length > 0) {
-    const section = 'Cutting Instructions';
-    sectionedValues[section] = sectionedValues[section] || [];
-    sectionedValues[section].push(...hindLegEntries);
-  }
-
-  // reorder sections so name, phone are first two in their group
-  const contactInfo = sectionedValues['Contact Information'];
-  if (contactInfo) {
-    const nameIndex = contactInfo.findIndex((item) => item.key === 'name');
-    const phoneIndex = contactInfo.findIndex((item) => item.key === 'phone');
-    if (nameIndex > -1) {
-      const name = contactInfo.splice(nameIndex, 1)[0];
-      contactInfo.unshift(name);
-    }
-    if (phoneIndex > -1) {
-      const phone = contactInfo.splice(phoneIndex, 1)[0];
-      contactInfo.splice(1, 0, phone);
-    }
-  }
-
-  return { sectionedValues, hasEvenly };
-}
-
-function processHindLegs(formValues: Record<string, any>): Array<{
-  key: string;
-  label: string;
-  value: string;
-  price: number;
-  pricePer5lb?: boolean;
-  notes?: boolean;
-}> {
-  const entries = [];
-
-  // Process Hind Leg 1
-  const hindLeg1 = formValues.hindLegPreference1;
-  if (hindLeg1) {
-    let displayValue = hindLeg1;
-    let price = 0;
-
-    if (hindLeg1 === 'Whole Muscle Jerky') {
-      const flavor = formValues.hindLegJerky1Flavor;
-      if (flavor) {
-        displayValue = `Whole Muscle Jerky - ${flavor}`;
-      }
-      // Use historical pricing if available, otherwise default to 35
-      price = getItemPriceForDisplay('hindLegPreference1', hindLeg1, formValues) || 35;
-    } else if (hindLeg1 === 'Steaks') {
-      const tenderized = formValues.tenderizedCubedSteaks;
-      if (tenderized === 'true') {
-        displayValue = 'Steaks - Tenderized Cubed';
-        price = 5;
-      }
-    }
-
-    entries.push({
-      key: 'hindLegPreference1',
-      label: 'Hind Leg 1 Preference',
-      value: displayValue,
-      price: price,
-    });
-  }
-
-  // Process Hind Leg 2
-  const hindLeg2 = formValues.hindLegPreference2;
-  if (hindLeg2) {
-    let displayValue = hindLeg2;
-    let price = 0;
-
-    if (hindLeg2 === 'Whole Muscle Jerky') {
-      const flavor = formValues.hindLegJerky2Flavor;
-      if (flavor) {
-        displayValue = `Whole Muscle Jerky - ${flavor}`;
-      }
-      // Use historical pricing if available, otherwise default to 35
-      price = getItemPriceForDisplay('hindLegPreference2', hindLeg2, formValues) || 35;
-    } else if (hindLeg2 === 'Steaks') {
-      const tenderized = formValues.tenderizedCubedSteaks;
-      const leg1IsAlsoSteaks = formValues.hindLegPreference1 === 'Steaks';
-      if (tenderized === 'true') {
-        displayValue = 'Steaks - Tenderized Cubed';
-        price = leg1IsAlsoSteaks ? 0 : 5;
-      }
-    }
-
-    entries.push({
-      key: 'hindLegPreference2',
-      label: 'Hind Leg 2 Preference',
-      value: displayValue,
-      price: price,
-    });
-  }
-
-  return entries;
-}
