@@ -1,12 +1,11 @@
 import { connect } from 'lib/mongo';
 import Deer from 'models/Deer';
 import { DeerZ, safeData } from 'lib/zod';
-import { z } from 'zod';
+import { DeerT } from 'lib/types';
 import secureApi from 'lib/secureApi';
 
 export default secureApi(async (req, res) => {
   try {
-    type DeerT = z.infer<typeof DeerZ>;
     const data = await safeData<DeerT>(DeerZ, req.body);
 
     await connect();

@@ -54,5 +54,60 @@ Firebase Auth with session cookies verified via `lib/firebaseAdmin.ts`. Role-bas
 - `lib/products.ts` - Product options and pricing configuration
 - `lib/priceCalculations.ts` - All pricing logic
 - `lib/types.ts` - TypeScript type definitions
-- `models/Deer.ts` - Mongoose schema for deer orders
+- `lib/schemaHelpers.ts` - Schema generation utilities for Zod and Mongoose
+- `lib/zod.ts` - Zod validation schemas (auto-generated from productsConfig)
+- `models/Deer.ts` - Mongoose schema for deer orders (auto-generated from productsConfig)
 - `components/checkin-steps/` - Multi-step check-in form components
+
+## Adding New Form Fields
+
+The codebase uses schema generation to minimize duplication when adding new fields.
+
+### For Simple Product Fields (e.g., new specialty meat, new processing option)
+
+**Only update 1 file: `lib/products.ts`**
+
+1. Add the field to `productsConfig`:
+   ```typescript
+   newField: {
+     section: 'Processing Options',
+     label: 'New Field Label',
+     type: 'select',  // or 'text', 'textarea', 'radio', etc.
+     options: ['Option 1', 'Option 2'],
+     // Optional: fieldType for non-string fields
+     fieldType: 'string',  // 'string' | 'number' | 'boolean' | 'stringOrNumber' | 'date'
+   }
+   ```
+
+2. For specialty meats, add to the `specialtyMeats.meats` array:
+   ```typescript
+   {
+     name: 'New Meat Product',
+     image: '/new-meat.jpg',
+     options: [
+       { name: 'newMeatOption', label: 'New Meat Option', price: 20, pricePer5lb: true }
+     ]
+   }
+   ```
+
+The Zod and Mongoose schemas will auto-generate from productsConfig.
+
+### For Special/System Fields (e.g., custom validation, non-string types)
+
+Update 3 files:
+
+1. **`lib/products.ts`** - Add to productsConfig (if it's a form field)
+2. **`lib/zod.ts`** - Add to `manualZodFields` with custom Zod validation
+3. **`models/Deer.ts`** - Add to `manualMongooseFields` with custom Mongoose config
+
+Optionally update `lib/types.ts` for IDE autocomplete support (not required due to index signature).
+
+### Field Type Reference
+
+| `fieldType` | Zod Type | Mongoose Type |
+|------------|----------|---------------|
+| `'string'` (default) | `z.string()` | `String` |
+| `'number'` | `z.number()` with transform | `Number` |
+| `'boolean'` | `z.union([z.boolean(), z.string()])` | `String` |
+| `'stringOrNumber'` | `z.union([z.string(), z.number()])` | `String` |
+| `'date'` | `z.string()` | `String` |

@@ -15,9 +15,38 @@ export type ProfileT = {
   updatedAt: Date;
 };
 
+/**
+ * DeerT - Main deer order type
+ *
+ * IMPORTANT: This type uses an index signature [key: string]: any to allow
+ * dynamic fields from productsConfig without requiring manual type updates.
+ *
+ * ADDING A NEW FIELD:
+ * - For fields defined in productsConfig: No changes needed here!
+ *   The index signature allows any field, and runtime validation is handled by Zod.
+ *
+ * - For system/special fields: Add them explicitly below for IDE autocomplete.
+ *
+ * The explicit fields below provide:
+ * 1. IDE autocomplete for commonly-used fields
+ * 2. Type checking for required fields
+ * 3. Documentation of the expected shape
+ *
+ * Runtime validation is handled by:
+ * - lib/zod.ts (via generateZodFieldsFromConfig)
+ * - models/Deer.ts (via generateMongooseFieldsFromConfig)
+ */
 export type DeerT = {
+  // Index signature allows dynamic fields from productsConfig
   [key: string]: any;
+
+  // ===== System Fields =====
   _id?: string;
+  createdAt: Date;
+  updatedAt: Date;
+
+  // ===== Contact Information =====
+  // These are explicit for IDE support; also defined in productsConfig
   name: string;
   firstName: string;
   lastName: string;
@@ -30,34 +59,51 @@ export type DeerT = {
   phone: string;
   communication: string;
   stateHarvestedIn: string;
-  hasPrinted: string;
   buckOrDoe: string;
   dateHarvested?: string;
   dateFound?: string;
+
+  // ===== Print Status =====
+  hasPrinted: string;
+
+  // ===== Cape/Hide/Mount Options =====
+  // These come from productsConfig but are explicit for autocomplete
   cape?: boolean | string | number;
   hide?: boolean | string | number;
   euroMount?: string;
+  capeHideNotes?: string;
+
+  // ===== Shoulder Mount Details =====
   shoulderMountHeadPosition?: string;
   shoulderMountEarPosition?: string;
   shoulderMountSpecialInstructions?: string;
   hideCondition?: string;
   facialFeatures?: string;
-  deposit?: number;
-  capeHideDeposit?: number;
-  capeHideTotal?: number;
-  // Historical individual item prices (stored at entry time to preserve pricing)
-  historicalItemPrices?: Record<string, number>;
-  // Complete pricing configuration snapshot (entire pricing structure at entry time)
-  pricingSnapshot?: Record<string, any>;
   rackId?: string;
   capeId?: string;
   capeMorseCode?: string;
   approxNeckMeasurement?: number;
   formOrdered?: string;
-  capeHideNotes?: string;
+
+  // ===== Pricing Fields =====
+  deposit?: number;
+  capeHideDeposit?: number;
+  capeHideTotal?: number;
+  amountPaid: number;
+  totalPrice: number;
+
+  // Historical pricing (stored at entry time to preserve prices)
+  historicalItemPrices?: Record<string, number>;
+  // Complete pricing configuration snapshot (entire pricing structure at entry time)
+  pricingSnapshot?: Record<string, any>;
+
+  // ===== Processing Options =====
+  // These come from productsConfig but are explicit for autocomplete
   skinnedOrBoneless?: string;
   skinnedBonelessNotes?: string;
   quickOption?: string;
+
+  // ===== Cutting Preferences =====
   backStrapsPreference?: string;
   backStrap2Preference?: string;
   backStrapNotes?: string;
@@ -71,9 +117,16 @@ export type DeerT = {
   hindLegJerky2Flavor?: string;
   roast?: string;
   roastNotes?: string;
+
+  // ===== Ground Venison =====
   groundVenison?: string;
   groundVenisonAmount?: string;
   groundVenisonNotes?: string;
+
+  // ===== Specialty Meats =====
+  // NOTE: These fields are auto-generated in Zod and Mongoose schemas
+  // from productsConfig.specialtyMeats. They're listed here for IDE support.
+  // When adding a new specialty meat to productsConfig, you do NOT need to add it here.
   trailBolognaRegular?: number | string;
   trailBolognaCheddarCheese?: number | string;
   trailBolognaHotPepperJackCheese?: number | string;
@@ -108,12 +161,11 @@ export type DeerT = {
   jerkyRestructuredMild?: number | string;
   jerkyRestructuredTeriyaki?: number | string;
   jerkyRestructuredNotes?: string;
+
+  // ===== Recap =====
   recapNotes?: string;
-  amountPaid: number;
-  totalPrice: number;
-  createdAt: Date;
-  updatedAt: Date;
 };
+
 export type DeerInputT = Omit<DeerT, '_id' | 'createdAt' | 'updatedAt'>;
 
 export type ProfileInputT = Omit<ProfileT, '_id' | 'uid' | 'createdAt' | 'updatedAt' | 'inviteCode'>;

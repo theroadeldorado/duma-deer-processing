@@ -8,10 +8,9 @@ import Button from 'components/Button';
 import Input from 'components/Input';
 import Form from 'components/Form';
 import RadioButtonGroup from '@/components/RadioButtonGroup';
-import CheckboxGroup from '@/components/CheckboxGroup';
 import Textarea from '@/components/Textarea';
 import Select from '@/components/Select';
-import SpecialtyMeat from '@/components/SpecialtyMeat';
+import SpecialtyMeatsAdminSection from '@/components/admin/SpecialtyMeatsAdminSection';
 
 import { DeerT, DeerInputT } from 'lib/types';
 import {
@@ -645,145 +644,8 @@ export default function EditDeer({ data, isNew }: Props) {
                 <Textarea rows={2} name={`groundVenisonNotes`} label='Special Instructions' />
               </div>
             </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Smoked Jalapeño Cheddar Brats</h3>
-              <SpecialtyMeat
-                admin
-                name='Smoked Jalapeño Cheddar Brats'
-                image='/smoked-jalapeno-cheddar-brats.jpg'
-                options={[{ name: 'smokedJalapenoCheddarBrats', label: '', price: 22.5 }]}
-              />
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Trail Bologna</h3>
-              <SpecialtyMeat
-                admin
-                name='Trail Bologna'
-                image='/trail_bologna.jpg'
-                options={[
-                  { name: 'trailBolognaRegular', label: 'Regular', price: 15 },
-                  { name: 'trailBolognaCheddarCheese', label: 'Cheddar Cheese', price: 20 },
-                  { name: 'trailBolognaHotPepperJackCheese', label: 'Hot Pepper Jack Cheese', price: 20 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`trailBolognaNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Garlic Ring Bologna</h3>
-              <SpecialtyMeat admin name='Garlic Ring Bologna' options={[{ name: 'garlicRingBologna', label: '', price: 20 }]} />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`garlicRingBolognaNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Summer Sausage</h3>
-              <SpecialtyMeat
-                admin
-                name='Summer Sausage'
-                options={[
-                  { name: 'summerSausageMild', label: 'Mild', price: 15 },
-                  { name: 'summerSausageHot', label: 'Hot', price: 15 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`summerSausageNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Smoked Kielbasa Sausage</h3>
-              <SpecialtyMeat admin name='Smoked Kielbasa Sausage' options={[{ name: 'smokedKielbasaSausage', label: '', price: 17.5 }]} />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`smokedKielbasaSausageNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Italian Sausage Links</h3>
-              <SpecialtyMeat
-                admin
-                name='Italian Sausage Links'
-                options={[
-                  { name: 'italianSausageLinksMild', label: 'Mild', price: 15 },
-                  { name: 'italianSausageLinksHot', label: 'Hot', price: 15 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`italianSausageLinksNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Country Breakfast Sausage</h3>
-              <SpecialtyMeat
-                admin
-                name='Country Breakfast Sausage'
-                options={[{ name: 'countryBreakfastSausage', label: 'Country Breakfast Sausage', price: 15 }]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`countryBreakfastSausageNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Breakfast Links</h3>
-              <SpecialtyMeat
-                admin
-                name='Breakfast Links'
-                options={[
-                  { name: 'babyLinksCountry', label: 'Country', price: 20 },
-                  { name: 'babyLinksMaple', label: 'Maple', price: 20 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`babyLinksNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Snack Sticks</h3>
-              <SpecialtyMeat
-                admin
-                name='Snack Sticks'
-                options={[
-                  { name: 'snackSticksRegular', label: 'Regular', price: 25 },
-                  { name: 'snackSticksCheddarCheese', label: 'Cheddar Cheese', price: 30 },
-                  { name: 'snackSticksHotPepperJackCheese', label: 'Hot Pepper Jack Cheese', price: 30 },
-                  { name: 'snackSticksHotHotPepperJackCheese', label: '🔥 Hot Hot Pepper Jack Cheese', price: 30 },
-                  { name: 'snackSticksHoneyBBQ', label: 'Honey BBQ', price: 30 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`snackSticksNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Hot Dogs</h3>
-              <SpecialtyMeat
-                admin
-                name='Hot Dogs'
-                options={[
-                  { name: 'hotDogsRegular', label: 'Regular', price: 17.5 },
-                  { name: 'hotDogsCheddarCheese', label: 'Cheddar Cheese', price: 22.5 },
-                  { name: 'hotDogsHotPepperJackCheese', label: 'Hot Pepper Jack Cheese', price: 22.5 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`hotDogsNotes`} label='Special Instructions' />
-              </div>
-            </div>
-            <div className='mb-10 grid grid-cols-3 gap-4 border-b border-dashed border-gray-300 pb-10'>
-              <h3 className='col-span-3 shrink-0 text-display-xs font-bold'>Jerky Restructured</h3>
-              <SpecialtyMeat
-                admin
-                name='Jerky Restructured'
-                options={[
-                  { name: 'jerkyRestructuredHot', label: 'Hot', price: 35 },
-                  { name: 'jerkyRestructuredMild', label: 'Mild', price: 35 },
-                  { name: 'jerkyRestructuredTeriyaki', label: 'Teriyaki', price: 35 },
-                ]}
-              />
-              <div className='col-span-3'>
-                <Textarea rows={2} name={`jerkyRestructuredNotes`} label='Special Instructions' />
-              </div>
-            </div>
+            {/* Data-driven specialty meats section - renders all meats from productsConfig */}
+            <SpecialtyMeatsAdminSection />
 
             <div className='mt-6 border-t border-dashed border-gray-300 pt-6'>
               <h3 className='mb-4 text-xl font-bold'>Payment Information</h3>

@@ -7,6 +7,16 @@ export interface ProductOption {
   isTakeToday?: boolean;
 }
 
+/**
+ * Field type hint used for schema generation.
+ * - 'string': Standard text field (default)
+ * - 'number': Numeric field
+ * - 'boolean': Checkbox/toggle field
+ * - 'stringOrNumber': Field that can be either type
+ * - 'date': Date string field
+ */
+export type ProductFieldType = 'string' | 'number' | 'boolean' | 'stringOrNumber' | 'date';
+
 export interface Product {
   name?: string;
   section?: string;
@@ -18,6 +28,12 @@ export interface Product {
   image?: string;
   price?: number;
   notes?: boolean;
+  /**
+   * Field type hint for schema generation.
+   * If not specified, defaults to 'string'.
+   * Use this to control how Zod and Mongoose schemas are generated.
+   */
+  fieldType?: ProductFieldType;
 }
 
 export interface SpecialtyMeat {

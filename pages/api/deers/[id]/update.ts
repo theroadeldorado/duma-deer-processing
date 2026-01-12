@@ -2,7 +2,7 @@ import { connect } from 'lib/mongo';
 import secureApi from 'lib/secureApi';
 import Deer from 'models/Deer'; // Your Deer model
 import { DeerZ, safeData } from 'lib/zod'; // Your Zod validation for deer
-import { z } from 'zod';
+import { DeerT } from 'lib/types';
 import { NextApiRequest, NextApiResponse } from 'next';
 
 export default secureApi(async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,8 +13,7 @@ export default secureApi(async (req: NextApiRequest, res: NextApiResponse) => {
   const id = req.query.id as string;
 
   try {
-    type DeerDataT = z.infer<typeof DeerZ>;
-    const data = await safeData<DeerDataT>(DeerZ, req.body);
+    const data = await safeData<DeerT>(DeerZ, req.body);
 
     await connect();
     const deer = await Deer.findById(id);

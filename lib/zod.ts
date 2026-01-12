@@ -1,5 +1,6 @@
 import { z, Schema } from 'zod';
 import { EmailTemplateSchemaT, ProfileSchemaT } from '@/lib/types';
+import { generateZodFieldsFromConfig } from '@/lib/schemaHelpers';
 
 export const safeData = async <ResultType>(zodSchema: Schema, data: any) => {
   const safeInput = zodSchema.safeParse(data);
@@ -23,98 +24,81 @@ const EmailTemplate: Omit<EmailTemplateSchemaT, 'key' | 'vars'> = {
 };
 export const EmailTemplateZ = z.object(EmailTemplate);
 
-export const Deer = {
+/**
+ * Manual Zod field definitions for fields NOT in productsConfig
+ * or requiring special validation beyond what can be auto-generated.
+ *
+ * WHEN TO ADD HERE:
+ * - System fields (_id, createdAt, updatedAt)
+ * - Fields with complex validation (historicalItemPrices, pricingSnapshot)
+ * - Fields not defined in productsConfig
+ *
+ * WHEN NOT TO ADD HERE:
+ * - Simple string/number fields that exist in productsConfig
+ * - Specialty meat fields (auto-generated from productsConfig.specialtyMeats)
+ * - Notes fields (auto-generated from productsConfig)
+ */
+const manualZodFields = {
+  // System fields
   _id: z.string().optional(),
-  name: z.string().min(1, 'Name is required'),
-  firstName: z.string().min(1, 'Name is required'),
-  lastName: z.string().min(1, 'Name is required'),
-  tagNumber: z.string().min(1, 'Confirmation Number is required'),
+
+  // Contact fields with specific validation (override auto-generated)
+  firstName: z.string().min(1, 'First name is required'),
+  lastName: z.string().min(1, 'Last name is required'),
   address: z.string().min(1, 'Address is required'),
   city: z.string().min(1, 'City is required'),
   state: z.string().min(1, 'State is required'),
   zip: z.string().min(1, 'ZIP code is required'),
-  phone: z.string().min(1, 'Phone number is required'),
-  communication: z.string().min(1, 'Communication is required'),
   stateHarvestedIn: z.string().min(1, 'State Harvested In is required'),
-  buckOrDoe: z.string().min(1, 'Deer Type is required'),
+
+  // Date fields
   dateHarvested: z.string().optional(),
   dateFound: z.string().optional(),
-  cape: z.string().optional(),
-  hide: z.string().optional(),
-  euroMount: z.string().optional(),
+
+  // Pricing/payment fields with number transformation
+  deposit: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
+  capeHideDeposit: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
+  capeHideTotal: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
+  approxNeckMeasurement: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
+  amountPaid: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
+  totalPrice: z.any().optional(),
+
+  // Historical pricing (complex types)
+  historicalItemPrices: z.record(z.string(), z.number()).optional(),
+  pricingSnapshot: z.record(z.string(), z.any()).optional(),
+
+  // Shoulder mount fields
   shoulderMountHeadPosition: z.string().optional(),
   shoulderMountEarPosition: z.string().optional(),
   shoulderMountSpecialInstructions: z.string().optional(),
   hideCondition: z.string().optional(),
   facialFeatures: z.string().optional(),
-  deposit: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
-  capeHideDeposit: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
-  capeHideTotal: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
-  historicalItemPrices: z.record(z.string(), z.number()).optional(),
-  pricingSnapshot: z.record(z.string(), z.any()).optional(),
+
+  // Cape/rack tracking fields
   rackId: z.string().optional(),
   capeId: z.string().optional(),
   capeMorseCode: z.string().optional(),
-  approxNeckMeasurement: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
   formOrdered: z.string().optional(),
   hasPrinted: z.string().optional(),
-  capeHideNotes: z.string().optional(),
-  skinnedOrBoneless: z.string().optional(),
-  skinnedBonelessNotes: z.string().optional(),
-  quickOption: z.string().optional(),
-  backStrapsPreference: z.string().optional(),
+
+  // Second back strap field (not in productsConfig)
   backStrap2Preference: z.string().optional(),
-  backStrapNotes: z.string().optional(),
-  hindLegPreference1: z.string().optional(),
-  hindLegPreference2: z.string().optional(),
-  hindLegNotes: z.string().optional(),
-  tenderizedCubedSteaks: z.string().optional(),
+
+  // Hind leg jerky boolean fields
   hindLegJerky1: z.string().optional(),
   hindLegJerky2: z.string().optional(),
-  hindLegJerky1Flavor: z.string().optional(),
-  hindLegJerky2Flavor: z.string().optional(),
-  roast: z.string().optional(),
-  roastNotes: z.string().optional(),
-  groundVenison: z.string().optional(),
-  groundVenisonAmount: z.string().optional(),
-  groundVenisonNotes: z.string().optional(),
-  trailBolognaRegular: z.any().optional(),
-  trailBolognaCheddarCheese: z.any().optional(),
-  trailBolognaHotPepperJackCheese: z.any().optional(),
-  smokedJalapenoCheddarBrats: z.any().optional(),
-  trailBolognaNotes: z.string().optional(),
-  garlicRingBologna: z.string().optional(),
-  garlicRingBolognaNotes: z.string().optional(),
-  summerSausageMild: z.string().optional(),
-  summerSausageHot: z.string().optional(),
-  summerSausageNotes: z.string().optional(),
-  smokedKielbasaSausage: z.string().optional(),
-  smokedKielbasaSausageNotes: z.string().optional(),
-  italianSausageLinksMild: z.string().optional(),
-  italianSausageLinksHot: z.string().optional(),
-  italianSausageLinksNotes: z.string().optional(),
-  countryBreakfastSausage: z.string().optional(),
-  countryBreakfastSausageNotes: z.string().optional(),
-  babyLinksCountry: z.string().optional(),
-  babyLinksMaple: z.string().optional(),
-  babyLinksNotes: z.string().optional(),
-  snackSticksRegular: z.string().optional(),
-  snackSticksCheddarCheese: z.string().optional(),
-  snackSticksHotPepperJackCheese: z.string().optional(),
-  snackSticksHotHotPepperJackCheese: z.string().optional(),
-  snackSticksHoneyBBQ: z.string().optional(),
-  snackSticksNotes: z.string().optional(),
-  hotDogsRegular: z.string().optional(),
-  hotDogsCheddarCheese: z.string().optional(),
-  hotDogsHotPepperJackCheese: z.string().optional(),
-  hotDogsNotes: z.string().optional(),
-  jerkyRestructuredHot: z.string().optional(),
-  jerkyRestructuredMild: z.string().optional(),
-  jerkyRestructuredTeriyaki: z.string().optional(),
-  jerkyRestructuredNotes: z.string().optional(),
+
+  // Recap notes
   recapNotes: z.string().optional(),
-  amountPaid: z.union([z.number(), z.string().transform((val) => (val === '' ? undefined : Number(val)))]).optional(),
-  totalPrice: z.any().optional(),
+};
+
+// Generate fields from productsConfig and merge with manual fields
+// Manual fields take precedence (are spread last) to allow overrides
+const generatedFields = generateZodFieldsFromConfig();
+
+export const Deer = {
+  ...generatedFields,
+  ...manualZodFields,
 };
 
 export const DeerZ = z.object(Deer);

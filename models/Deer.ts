@@ -1,42 +1,36 @@
 import { DeerT, DeerSchemaT } from 'lib/types';
 import mongoose from 'mongoose';
+import { generateMongooseFieldsFromConfig } from '@/lib/schemaHelpers';
+
 const { Schema, model, models } = mongoose;
 
-const fields: DeerSchemaT = {
+/**
+ * Manual Mongoose field definitions for fields NOT in productsConfig
+ * or requiring special schema configuration beyond what can be auto-generated.
+ *
+ * WHEN TO ADD HERE:
+ * - System fields (_id with required: true)
+ * - Fields with special Mongoose types (Map, Mixed)
+ * - Fields not defined in productsConfig
+ * - Fields requiring specific Mongoose options (indexes, etc.)
+ *
+ * WHEN NOT TO ADD HERE:
+ * - Simple string fields that exist in productsConfig
+ * - Specialty meat fields (auto-generated from productsConfig.specialtyMeats)
+ * - Notes fields (auto-generated from productsConfig)
+ */
+const manualMongooseFields: Partial<DeerSchemaT> = {
+  // System fields
   _id: {
     type: String,
     required: true,
   },
-  name: {
-    type: String,
-    required: true,
-  },
+
+  // Contact fields that need required flag (override auto-generated)
   firstName: {
     type: String,
   },
-  hasPrinted: {
-    type: String,
-  },
   lastName: {
-    type: String,
-  },
-  tagNumber: {
-    type: String,
-    required: true,
-  },
-  stateHarvestedIn: {
-    type: String,
-  },
-  buckOrDoe: {
-    type: String,
-  },
-  dateHarvested: {
-    type: String,
-  },
-  dateFound: {
-    type: String,
-  },
-  fullAddress: {
     type: String,
   },
   address: {
@@ -55,29 +49,49 @@ const fields: DeerSchemaT = {
     type: String,
     required: true,
   },
-  phone: {
-    type: String,
-    required: true,
-  },
-  communication: {
-    type: String,
-    required: true,
-  },
-  cape: {
+  stateHarvestedIn: {
     type: String,
   },
-  hide: {
+
+  // Date fields
+  dateHarvested: {
     type: String,
   },
-  capeHideNotes: {
+  dateFound: {
     type: String,
   },
-  skinnedOrBoneless: {
-    type: String,
+
+  // Numeric fields
+  deposit: {
+    type: Number,
   },
-  euroMount: {
-    type: String,
+  capeHideDeposit: {
+    type: Number,
   },
+  capeHideTotal: {
+    type: Number,
+  },
+  approxNeckMeasurement: {
+    type: Number,
+  },
+  amountPaid: {
+    type: Number,
+  },
+  totalPrice: {
+    type: Number,
+  },
+
+  // Historical pricing (special Map types)
+  historicalItemPrices: {
+    type: Map,
+    of: Number,
+  },
+  pricingSnapshot: {
+    type: Map,
+    of: mongoose.Schema.Types.Mixed,
+  },
+
+  // Shoulder mount fields
   shoulderMountHeadPosition: {
     type: String,
   },
@@ -93,23 +107,8 @@ const fields: DeerSchemaT = {
   facialFeatures: {
     type: String,
   },
-  deposit: {
-    type: Number,
-  },
-  capeHideDeposit: {
-    type: Number,
-  },
-  capeHideTotal: {
-    type: Number,
-  },
-  historicalItemPrices: {
-    type: Map,
-    of: Number,
-  },
-  pricingSnapshot: {
-    type: Map,
-    of: mongoose.Schema.Types.Mixed,
-  },
+
+  // Cape/rack tracking fields
   rackId: {
     type: String,
   },
@@ -119,178 +118,40 @@ const fields: DeerSchemaT = {
   capeMorseCode: {
     type: String,
   },
-  approxNeckMeasurement: {
-    type: Number,
-  },
   formOrdered: {
     type: String,
   },
-  skinnedBonelessNotes: {
+  hasPrinted: {
     type: String,
   },
-  quickOption: {
-    type: String,
-  },
-  backStrapsPreference: {
-    type: String,
-  },
+
+  // Second back strap field (not in productsConfig)
   backStrap2Preference: {
     type: String,
   },
-  backStrapNotes: {
-    type: String,
-  },
-  hindLegPreference1: {
-    type: String,
-  },
-  hindLegPreference2: {
-    type: String,
-  },
-  hindLegNotes: {
-    type: String,
-  },
-  tenderizedCubedSteaks: {
-    type: String,
-  },
+
+  // Hind leg jerky fields
   hindLegJerky1: {
     type: String,
   },
   hindLegJerky2: {
     type: String,
   },
-  hindLegJerky1Flavor: {
-    type: String,
-  },
-  hindLegJerky2Flavor: {
-    type: String,
-  },
-  roast: {
-    type: String,
-  },
-  roastNotes: {
-    type: String,
-  },
-  groundVenison: {
-    type: String,
-  },
-  groundVenisonAmount: {
-    type: String,
-  },
-  groundVenisonNotes: {
-    type: String,
-  },
-  trailBolognaRegular: {
-    type: String,
-  },
-  trailBolognaCheddarCheese: {
-    type: String,
-  },
-  trailBolognaHotPepperJackCheese: {
-    type: String,
-  },
-  smokedJalapenoCheddarBrats: {
-    type: String,
-  },
-  trailBolognaNotes: {
-    type: String,
-  },
-  garlicRingBologna: {
-    type: String,
-  },
-  garlicRingBolognaNotes: {
-    type: String,
-  },
-  summerSausageMild: {
-    type: String,
-  },
-  summerSausageHot: {
-    type: String,
-  },
-  summerSausageNotes: {
-    type: String,
-  },
-  smokedKielbasaSausage: {
-    type: String,
-  },
-  smokedKielbasaSausageNotes: {
-    type: String,
-  },
-  italianSausageLinksMild: {
-    type: String,
-  },
-  italianSausageLinksHot: {
-    type: String,
-  },
-  italianSausageLinksNotes: {
-    type: String,
-  },
-  countryBreakfastSausage: {
-    type: String,
-  },
-  countryBreakfastSausageNotes: {
-    type: String,
-  },
-  babyLinksCountry: {
-    type: String,
-  },
-  babyLinksMaple: {
-    type: String,
-  },
-  babyLinksNotes: {
-    type: String,
-  },
-  snackSticksRegular: {
-    type: String,
-  },
-  snackSticksCheddarCheese: {
-    type: String,
-  },
-  snackSticksHotPepperJackCheese: {
-    type: String,
-  },
-  snackSticksHotHotPepperJackCheese: {
-    type: String,
-  },
-  snackSticksHoneyBBQ: {
-    type: String,
-  },
-  snackSticksNotes: {
-    type: String,
-  },
-  hotDogsRegular: {
-    type: String,
-  },
-  hotDogsCheddarCheese: {
-    type: String,
-  },
-  hotDogsHotPepperJackCheese: {
-    type: String,
-  },
-  hotDogsNotes: {
-    type: String,
-  },
-  jerkyRestructuredHot: {
-    type: String,
-  },
-  jerkyRestructuredMild: {
-    type: String,
-  },
-  jerkyRestructuredTeriyaki: {
-    type: String,
-  },
-  jerkyRestructuredNotes: {
-    type: String,
-  },
-  amountPaid: {
-    type: Number,
-  },
-  totalPrice: {
-    type: Number,
-  },
+
+  // Recap notes
   recapNotes: {
     type: String,
   },
 };
+
+// Generate fields from productsConfig and merge with manual fields
+// Manual fields take precedence (are spread last) to allow overrides
+const generatedFields = generateMongooseFieldsFromConfig();
+
+const fields: DeerSchemaT = {
+  ...generatedFields,
+  ...manualMongooseFields,
+} as DeerSchemaT;
 
 const DeerSchema = new Schema(fields, {
   timestamps: true,
