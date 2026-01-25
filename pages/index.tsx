@@ -33,7 +33,10 @@ export default function UserDashboard() {
     setHasFormData(hasData);
   }, []);
 
-  // Reset to slideshow after 1 minute of inactivity (only if no form data)
+  // Reset to slideshow after inactivity (only if no form data)
+  // Use longer timeout during E2E tests (5 minutes vs 1 minute)
+  const inactivityTimeout = process.env.NEXT_PUBLIC_E2E_TEST ? 300000 : 60000;
+
   useEffect(() => {
     // Don't reset if we're on slideshow or have form data
     if (flowMode === 'slideshow' || hasFormData) return;
@@ -42,8 +45,7 @@ export default function UserDashboard() {
       const now = Date.now();
       const timeSinceLastActivity = now - lastActivity;
 
-      // 1 minute = 60,000 milliseconds
-      if (timeSinceLastActivity >= 60000) {
+      if (timeSinceLastActivity >= inactivityTimeout) {
         resetToSlideshow();
       }
     };
@@ -51,7 +53,7 @@ export default function UserDashboard() {
     const interval = setInterval(checkInactivity, 1000);
 
     return () => clearInterval(interval);
-  }, [flowMode, hasFormData, lastActivity]);
+  }, [flowMode, hasFormData, lastActivity, inactivityTimeout]);
 
   // Add event listeners for user activity when not on slideshow
   useEffect(() => {

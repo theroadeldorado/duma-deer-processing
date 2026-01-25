@@ -7,7 +7,12 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "create-admin": "tsx ./scripts/create-admin.ts"
+    "create-admin": "tsx ./scripts/create-admin.ts",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.4.0",
@@ -46,6 +51,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.58.0",
     "@tailwindcss/forms": "^0.5.3",
     "@tanstack/eslint-plugin-query": "^4.29.9",
     "@types/json2csv": "^5.0.3",

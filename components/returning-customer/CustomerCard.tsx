@@ -22,7 +22,7 @@ export default function CustomerCard({ customer, onSelect }: CustomerCardProps) 
   };
 
   return (
-    <div className='flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-primary-blue hover:shadow-md'>
+    <div className='flex flex-col rounded-xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:border-primary-blue hover:shadow-md [&:nth-child(odd):last-child]:translate-x-1/2'>
       <div className='mb-4 flex-1'>
         <h3 className='mb-2 text-xl font-semibold text-gray-900'>{customer.name}</h3>
 

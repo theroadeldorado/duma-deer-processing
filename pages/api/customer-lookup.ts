@@ -53,23 +53,36 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
       return res.status(200).json({ success: true, customers: [] });
     }
 
-    // Group orders by customer (unique combination of phone + name)
+    // Group orders by customer (unique combination of phone + last name + address)
+    // This handles cases like "Charles Dusek" vs "Chuck Dusek" at the same address
     const customerMap = new Map<string, CustomerSummary>();
 
     for (const order of orders) {
-      // Create a key based on normalized phone and name to identify unique customers
+      // Create a key based on normalized phone, last name, and address
       const normalizedOrderPhone = normalizePhone(order.phone || '');
-      // Build name from either the name field or firstName + lastName, normalized
-      const orderName = (order.name || `${order.firstName || ''} ${order.lastName || ''}`)
+
+      // Extract last name (handles both "name" field and separate firstName/lastName)
+      const fullName = order.name || `${order.firstName || ''} ${order.lastName || ''}`;
+      const nameParts = fullName.trim().split(/\s+/);
+      const lastName = nameParts.length > 0 ? nameParts[nameParts.length - 1].toLowerCase() : '';
+
+      // Normalize address for comparison (lowercase, remove extra spaces, common abbreviations)
+      const normalizedAddress = (order.address || '')
         .toLowerCase()
         .trim()
-        .replace(/\s+/g, ' '); // Collapse multiple spaces
-      const customerKey = `${normalizedOrderPhone}-${orderName}`;
+        .replace(/\s+/g, ' ')
+        .replace(/\bstreet\b/g, 'st')
+        .replace(/\broad\b/g, 'rd')
+        .replace(/\bavenue\b/g, 'ave')
+        .replace(/\bdrive\b/g, 'dr');
+
+      // Key: phone + last name + address = unique customer
+      const customerKey = `${normalizedOrderPhone}-${lastName}-${normalizedAddress}`;
 
       // Only keep the first (most recent) order for each customer
       if (!customerMap.has(customerKey)) {
         customerMap.set(customerKey, {
-          name: order.name || '',
+          name: order.name || `${order.firstName || ''} ${order.lastName || ''}`.trim(),
           phone: order.phone || '',
           address: order.address || '',
           city: order.city || '',

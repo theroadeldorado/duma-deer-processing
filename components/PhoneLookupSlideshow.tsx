@@ -148,11 +148,11 @@ export default function PhoneLookupSlideshow({
       {/* Phone Lookup Section - Center */}
       <div className='absolute inset-0 flex items-center justify-center'>
         <div className='w-full max-w-md rounded-2xl bg-white/95 p-8 shadow-2xl backdrop-blur-sm'>
-          <h2 className='mb-2 text-center text-2xl font-bold text-gray-800'>
-            Welcome Back!
+          <h2 className='mb-2 text-center text-3xl font-bold text-gray-900'>
+            Have you been here before?
           </h2>
-          <p className='mb-6 text-center text-gray-600'>
-            Enter your phone number to quickly reorder
+          <p className='mb-6 text-center text-gray-700'>
+            Enter your phone number to look up your information and reorder what you got last time, or start fresh.
           </p>
 
           <div className='space-y-4'>
@@ -216,14 +216,11 @@ export default function PhoneLookupSlideshow({
               )}
             </Button>
 
-            <div className='relative'>
-              <div className='absolute inset-0 flex items-center'>
-                <div className='w-full border-t border-gray-300' />
+              <div className='flex justify-between items-center text-sm'>
+                <span className='grow h-px bg-gray-300' />
+                <span className=' mb-1 px-4 text-gray-500 shrink-0'>or</span>
+                <span className='grow h-px bg-gray-300' />
               </div>
-              <div className='relative flex justify-center text-sm'>
-                <span className='bg-white px-4 text-gray-500'>or</span>
-              </div>
-            </div>
 
             <Button onClick={onNewCustomer} color='default' className='w-full py-3 text-lg' size='xl'>
               New Customer
