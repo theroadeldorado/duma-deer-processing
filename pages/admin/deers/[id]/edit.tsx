@@ -44,7 +44,26 @@ type Props = {
 
 export default function EditDeer({ data, isNew }: Props) {
   const router = useRouter();
-  const [calculatedPrice, setCalculatedPrice] = useState<number>(Number(data?.totalPrice) || 0);
+
+  // Original price from when order was created (stored in database)
+  const originalTotalPrice = Number(data?.totalPrice) || 0;
+  const originalCapeHideTotal = data?.capeHideTotal ?? 0;
+
+  // Current calculated price using today's pricing
+  const [currentCalculatedPrice, setCurrentCalculatedPrice] = useState<number>(0);
+  const [currentCapeHidePrice, setCurrentCapeHidePrice] = useState<number>(0);
+
+  // Pricing mode: 'original' (default for existing), 'current', or 'manual'
+  const [pricingMode, setPricingMode] = useState<'original' | 'current' | 'manual'>(isNew ? 'current' : 'original');
+  const [manualPrice, setManualPrice] = useState<number>(originalTotalPrice + originalCapeHideTotal);
+
+  // The actual price that will be saved
+  const getFinalPrice = () => {
+    if (pricingMode === 'manual') return manualPrice;
+    if (pricingMode === 'current') return currentCalculatedPrice + currentCapeHidePrice;
+    // 'original' mode - for new orders, use calculated; for existing, use stored
+    return isNew ? currentCalculatedPrice + currentCapeHidePrice : originalTotalPrice + originalCapeHideTotal;
+  };
 
   const form = useForm<DeerInputT>({
     defaultValues: data,
@@ -105,26 +124,27 @@ export default function EditDeer({ data, isNew }: Props) {
   // State for balance calculation
   const [balance, setBalance] = useState<number>(0);
 
+  // Check if prices have changed (for showing the pricing comparison UI)
+  const pricesHaveChanged = !isNew && Math.abs((currentCalculatedPrice + currentCapeHidePrice) - (originalTotalPrice + originalCapeHideTotal)) > 0.01;
+
   // Update calculated price whenever form values change
   useEffect(() => {
     const subscription = form.watch((formData) => {
       const processingPrice = calculateTotalPrice(formData as DeerInputT);
       const capeHidePrice = calculateCapeHideTotal(formData as DeerInputT);
-      const totalPrice = processingPrice + capeHidePrice;
-      setCalculatedPrice(totalPrice);
+      setCurrentCalculatedPrice(processingPrice);
+      setCurrentCapeHidePrice(capeHidePrice);
 
-      // Calculate balance
+      // Calculate balance using the appropriate price based on pricing mode
       const totalDeposits = Number(formData.deposit || 0) + Number(formData.capeHideDeposit || 0) + Number(formData.amountPaid || 0);
-      setBalance(totalPrice - totalDeposits);
-
-      // Update capeHideTotal field if it's not set manually
-      if (!formData.capeHideTotal && capeHidePrice > 0) {
-        form.setValue('capeHideTotal', capeHidePrice);
-      }
+      const priceToUse = pricingMode === 'manual' ? manualPrice :
+        pricingMode === 'current' ? processingPrice + capeHidePrice :
+        isNew ? processingPrice + capeHidePrice : originalTotalPrice + originalCapeHideTotal;
+      setBalance(priceToUse - totalDeposits);
     });
 
     return () => subscription.unsubscribe();
-  }, [form]);
+  }, [form, pricingMode, manualPrice, isNew, originalTotalPrice, originalCapeHideTotal]);
 
   const mutation = useMutation({
     url: isNew ? '/api/deers/add' : `/api/deers/${data?._id}/update`,
@@ -164,23 +184,61 @@ export default function EditDeer({ data, isNew }: Props) {
     const capeHideDepositValue = formData.capeHideDeposit && formData.capeHideDeposit !== '' ? Number(formData.capeHideDeposit) : undefined;
     const depositValue = formData.deposit && formData.deposit !== '' ? Number(formData.deposit) : undefined;
     const amountPaidValue = formData.amountPaid && formData.amountPaid !== '' ? Number(formData.amountPaid) : undefined;
-    const capeHideTotalValue = calculateCapeHideTotal(formData);
     const approxNeckMeasurementValue =
       formData.approxNeckMeasurement && formData.approxNeckMeasurement !== '' ? Number(formData.approxNeckMeasurement) : undefined;
+
+    // Determine final pricing based on pricing mode
+    let finalTotalPrice: number;
+    let finalCapeHideTotal: number;
+    let finalHistoricalItemPrices: Record<string, number> | undefined;
+    let finalPricingSnapshot: Record<string, any> | undefined;
+
+    if (isNew) {
+      // New orders always use current pricing and create new snapshots
+      finalTotalPrice = pricingMode === 'manual' ? manualPrice : currentCalculatedPrice + currentCapeHidePrice;
+      finalCapeHideTotal = currentCapeHidePrice;
+      finalHistoricalItemPrices = buildHistoricalItemPrices(formData);
+      finalPricingSnapshot = buildCompletePricingSnapshot();
+    } else {
+      // Existing orders - preserve or update based on pricing mode
+      switch (pricingMode) {
+        case 'original':
+          // Keep original pricing - preserve all historical data
+          finalTotalPrice = originalTotalPrice + originalCapeHideTotal;
+          finalCapeHideTotal = originalCapeHideTotal;
+          finalHistoricalItemPrices = data?.historicalItemPrices;
+          finalPricingSnapshot = data?.pricingSnapshot;
+          break;
+        case 'current':
+          // Update to current pricing - rebuild historical data
+          finalTotalPrice = currentCalculatedPrice + currentCapeHidePrice;
+          finalCapeHideTotal = currentCapeHidePrice;
+          finalHistoricalItemPrices = buildHistoricalItemPrices(formData);
+          finalPricingSnapshot = buildCompletePricingSnapshot();
+          break;
+        case 'manual':
+          // Manual override - keep original historical data but use manual total
+          finalTotalPrice = manualPrice;
+          finalCapeHideTotal = data?.capeHideTotal ?? currentCapeHidePrice;
+          finalHistoricalItemPrices = data?.historicalItemPrices;
+          finalPricingSnapshot = data?.pricingSnapshot;
+          break;
+      }
+    }
 
     // Make sure we're explicitly including all cape/hide fields
     const updatedData = {
       ...formData,
-      totalPrice: calculatedPrice,
+      totalPrice: finalTotalPrice,
       // Numeric fields
       capeHideDeposit: capeHideDepositValue,
-      capeHideTotal: capeHideTotalValue,
+      capeHideTotal: finalCapeHideTotal,
       deposit: depositValue,
       amountPaid: amountPaidValue,
       approxNeckMeasurement: approxNeckMeasurementValue,
-      historicalItemPrices: buildHistoricalItemPrices(formData),
-      // Complete pricing snapshot - preserve existing or build new for new entries
-      pricingSnapshot: isNew ? buildCompletePricingSnapshot() : data?.pricingSnapshot || buildCompletePricingSnapshot(),
+      // Historical pricing - preserved or rebuilt based on pricing mode
+      historicalItemPrices: finalHistoricalItemPrices,
+      pricingSnapshot: finalPricingSnapshot,
       // String fields - explicitly included to ensure they're saved
       hideCondition: formData.hideCondition,
       facialFeatures: formData.facialFeatures,
@@ -649,6 +707,98 @@ export default function EditDeer({ data, isNew }: Props) {
 
             <div className='mt-6 border-t border-dashed border-gray-300 pt-6'>
               <h3 className='mb-4 text-xl font-bold'>Payment Information</h3>
+
+              {/* Pricing Comparison Alert - Only show for existing orders with price changes */}
+              {!isNew && pricesHaveChanged && (
+                <div className='mb-6 rounded-lg border-2 border-amber-300 bg-amber-50 p-4'>
+                  <div className='flex items-start gap-3'>
+                    <svg className='mt-0.5 h-6 w-6 flex-shrink-0 text-amber-600' fill='none' viewBox='0 0 24 24' stroke='currentColor'>
+                      <path strokeLinecap='round' strokeLinejoin='round' strokeWidth={2} d='M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z' />
+                    </svg>
+                    <div className='flex-1'>
+                      <h4 className='font-bold text-amber-800'>Pricing Has Changed</h4>
+                      <p className='mt-1 text-sm text-amber-700'>
+                        Current pricing differs from when this order was submitted. Choose how to handle the price:
+                      </p>
+                      <div className='mt-3 grid grid-cols-2 gap-4 text-sm'>
+                        <div className='rounded bg-white p-3'>
+                          <p className='font-medium text-gray-600'>Original Price (at submission)</p>
+                          <p className='text-xl font-bold text-gray-900'>${(originalTotalPrice + originalCapeHideTotal).toFixed(2)}</p>
+                        </div>
+                        <div className='rounded bg-white p-3'>
+                          <p className='font-medium text-gray-600'>Current Price (today&apos;s rates)</p>
+                          <p className='text-xl font-bold text-gray-900'>${(currentCalculatedPrice + currentCapeHidePrice).toFixed(2)}</p>
+                          <p className='text-xs text-gray-500'>
+                            {(currentCalculatedPrice + currentCapeHidePrice) > (originalTotalPrice + originalCapeHideTotal) ? '+' : ''}
+                            ${((currentCalculatedPrice + currentCapeHidePrice) - (originalTotalPrice + originalCapeHideTotal)).toFixed(2)} difference
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Pricing Mode Selection - Only show for existing orders */}
+              {!isNew && (
+                <div className='mb-6'>
+                  <label className='mb-2 block font-medium text-gray-700'>Pricing Option</label>
+                  <div className='flex flex-wrap gap-3'>
+                    <label className={`flex cursor-pointer items-center gap-2 rounded-lg border-2 px-4 py-2 transition-colors ${pricingMode === 'original' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                      <input
+                        type='radio'
+                        name='pricingMode'
+                        value='original'
+                        checked={pricingMode === 'original'}
+                        onChange={() => setPricingMode('original')}
+                        className='text-blue-600'
+                      />
+                      <span className='font-medium'>Keep Original Price</span>
+                      <span className='text-sm text-gray-500'>(${(originalTotalPrice + originalCapeHideTotal).toFixed(2)})</span>
+                    </label>
+                    <label className={`flex cursor-pointer items-center gap-2 rounded-lg border-2 px-4 py-2 transition-colors ${pricingMode === 'current' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                      <input
+                        type='radio'
+                        name='pricingMode'
+                        value='current'
+                        checked={pricingMode === 'current'}
+                        onChange={() => setPricingMode('current')}
+                        className='text-blue-600'
+                      />
+                      <span className='font-medium'>Update to Current Price</span>
+                      <span className='text-sm text-gray-500'>(${(currentCalculatedPrice + currentCapeHidePrice).toFixed(2)})</span>
+                    </label>
+                    <label className={`flex cursor-pointer items-center gap-2 rounded-lg border-2 px-4 py-2 transition-colors ${pricingMode === 'manual' ? 'border-blue-500 bg-blue-50' : 'border-gray-200 hover:border-gray-300'}`}>
+                      <input
+                        type='radio'
+                        name='pricingMode'
+                        value='manual'
+                        checked={pricingMode === 'manual'}
+                        onChange={() => setPricingMode('manual')}
+                        className='text-blue-600'
+                      />
+                      <span className='font-medium'>Manual Override</span>
+                    </label>
+                  </div>
+                  {pricingMode === 'manual' && (
+                    <div className='mt-3'>
+                      <label className='mb-1 block text-sm font-medium text-gray-700'>Override Total Price</label>
+                      <div className='flex items-center gap-2'>
+                        <span className='text-lg'>$</span>
+                        <input
+                          type='number'
+                          step='0.01'
+                          min='0'
+                          value={manualPrice}
+                          onChange={(e) => setManualPrice(Number(e.target.value) || 0)}
+                          className='w-40 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500'
+                        />
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
+
               <div className='grid grid-cols-2 gap-4'>
                 <div className='space-y-4'>
                   <div>
@@ -703,15 +853,33 @@ export default function EditDeer({ data, isNew }: Props) {
                 <div className='space-y-2 text-right'>
                   <div>
                     <p className='mb-1 font-bold'>Processing Total</p>
-                    <p className='text-lg'>${calculateTotalPrice(form.getValues()).toFixed(2)}</p>
+                    <p className='text-lg'>
+                      {pricingMode === 'original' && !isNew
+                        ? `$${originalTotalPrice.toFixed(2)}`
+                        : `$${currentCalculatedPrice.toFixed(2)}`}
+                      {pricingMode === 'original' && !isNew && (
+                        <span className='ml-1 text-xs text-gray-500'>(original)</span>
+                      )}
+                    </p>
                   </div>
                   <div>
                     <p className='mb-1 font-bold'>Cape/Hide Total</p>
-                    <p className='text-lg'>${getCapeHideTotalForDisplay(form.getValues()).toFixed(2)}</p>
+                    <p className='text-lg'>
+                      {pricingMode === 'original' && !isNew
+                        ? `$${originalCapeHideTotal.toFixed(2)}`
+                        : `$${currentCapeHidePrice.toFixed(2)}`}
+                      {pricingMode === 'original' && !isNew && (
+                        <span className='ml-1 text-xs text-gray-500'>(original)</span>
+                      )}
+                    </p>
                   </div>
-                  <div>
+                  <div className='border-t border-gray-200 pt-2'>
                     <p className='mb-1 font-bold'>Grand Total</p>
-                    <p className='text-xl font-bold'>${calculatedPrice.toFixed(2)}</p>
+                    <p className='text-xl font-bold'>
+                      ${getFinalPrice().toFixed(2)}
+                      {pricingMode === 'manual' && <span className='ml-1 text-xs text-gray-500'>(manual)</span>}
+                      {pricingMode === 'original' && !isNew && <span className='ml-1 text-xs text-gray-500'>(original)</span>}
+                    </p>
                   </div>
                   <div>
                     <p className='mb-1 font-bold text-blue-600'>Balance</p>
