@@ -201,3 +201,50 @@ export type EmailTemplateT = {
 
 export type EmailTemplateInputT = Omit<EmailTemplateT, '_id' | 'createdAt' | 'updatedAt' | 'key' | 'description' | 'vars'>;
 export type EmailTemplateSchemaT = Record<keyof Omit<EmailTemplateT, '_id' | 'createdAt' | 'updatedAt'>, any>;
+
+// ===== Quick Reorder Types =====
+
+/**
+ * Customer summary returned from phone lookup
+ */
+export type CustomerSummary = {
+  name: string;
+  phone: string;
+  address: string;
+  city: string;
+  state: string;
+  zip: string;
+  fullAddress: string;
+  lastOrderId: string;
+  lastOrderDate: string;
+  communication?: string;
+};
+
+/**
+ * Sections that can be edited in the quick reorder flow
+ */
+export type EditableSection =
+  | 'processing-type'
+  | 'cape-hide'
+  | 'cutting-preferences'
+  | 'ground-venison'
+  | 'specialty-meats';
+
+/**
+ * Flow mode for the homepage
+ */
+export type QuickReorderMode =
+  | 'slideshow'
+  | 'customer-selection'
+  | 'quick-reorder'
+  | 'new-customer';
+
+/**
+ * State for the quick reorder flow
+ */
+export type QuickReorderState = {
+  mode: QuickReorderMode;
+  selectedCustomer: CustomerSummary | null;
+  previousOrder: Partial<DeerT> | null;
+  editingSection: EditableSection | null;
+};

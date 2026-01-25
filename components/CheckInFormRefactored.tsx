@@ -6,9 +6,10 @@ import { FormWizard, stepConfigs } from './checkin-steps';
 
 interface CheckInFormRefactoredProps {
   onFormDataChange?: (hasData: boolean) => void;
+  initialData?: Partial<DeerT>;
 }
 
-const CheckInFormRefactored = ({ onFormDataChange }: CheckInFormRefactoredProps) => {
+const CheckInFormRefactored = ({ onFormDataChange, initialData: propInitialData }: CheckInFormRefactoredProps) => {
   const router = useRouter();
 
   const mutation = useMutation({
@@ -90,7 +91,7 @@ const CheckInFormRefactored = ({ onFormDataChange }: CheckInFormRefactoredProps)
           </div>
         </div>
       )}
-      <FormWizard steps={stepConfigs} onSubmit={handleSubmit} initialData={isTestMode ? getTestData() : {}} onFormDataChange={onFormDataChange} />
+      <FormWizard steps={stepConfigs} onSubmit={handleSubmit} initialData={isTestMode ? getTestData() : (propInitialData || {})} onFormDataChange={onFormDataChange} />
     </>
   );
 };
