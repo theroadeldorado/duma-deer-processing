@@ -45,7 +45,10 @@ const manualZodFields = {
   // Contact fields with specific validation (override auto-generated)
   firstName: z.string().min(1, 'First name is required'),
   lastName: z.string().min(1, 'Last name is required'),
-  address: z.string().min(1, 'Address is required'),
+  address: z.string().min(1, 'Address is required').refine(
+    (val) => !val.includes('@'),
+    'Please enter your home address, not your email address'
+  ),
   city: z.string().min(1, 'City is required'),
   state: z.string().min(1, 'State is required'),
   zip: z.string().min(1, 'ZIP code is required'),
