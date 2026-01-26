@@ -77,12 +77,27 @@ const BASE_CSV_FIELDS: CsvFieldConfig = {
   communication: 'Communication',
   stateHarvestedIn: 'Harvested In',
   buckOrDoe: 'Doe/Buck',
+  dateHarvested: 'Date Harvested',
+  dateFound: 'Date Found',
 
   // Cape/Hide options
   cape: 'Keep Cape',
   hide: 'Keep Hide',
   euroMount: 'Euro Mount',
   capeHideNotes: 'Cape/Hide Notes',
+  capeHideTotal: 'Cape/Hide Total',
+
+  // Shoulder mount details
+  shoulderMountHeadPosition: 'Shoulder Mount Head Position',
+  shoulderMountEarPosition: 'Shoulder Mount Ear Position',
+  shoulderMountSpecialInstructions: 'Shoulder Mount Special Instructions',
+  hideCondition: 'Hide Condition',
+  facialFeatures: 'Facial Features',
+  rackId: 'Rack ID',
+  capeId: 'Cape ID',
+  capeMorseCode: 'Cape Morse Code',
+  approxNeckMeasurement: 'Approx Neck Measurement',
+  formOrdered: 'Form Ordered',
 
   // Processing options
   skinnedOrBoneless: 'Skinned/Boneless',
@@ -91,10 +106,13 @@ const BASE_CSV_FIELDS: CsvFieldConfig = {
 
   // Cutting preferences
   backStrapsPreference: 'Back Straps 1 Preference',
+  backStrap2Preference: 'Back Straps 2 Preference',
   backStrapNotes: 'Back Straps Notes',
   hindLegPreference1: 'Hind Leg Preference 1',
+  hindLegJerky1: 'Hind Leg 1 Jerky',
   hindLegJerky1Flavor: 'Hind Leg 1 Jerky Flavor',
   hindLegPreference2: 'Hind Leg Preference 2',
+  hindLegJerky2: 'Hind Leg 2 Jerky',
   hindLegJerky2Flavor: 'Hind Leg 2 Jerky Flavor',
   hindLegNotes: 'Hind Leg Notes',
   tenderizedCubedSteaks: 'Tenderized Cubed Steaks',
@@ -110,8 +128,11 @@ const BASE_CSV_FIELDS: CsvFieldConfig = {
  */
 const TRAILING_CSV_FIELDS: CsvFieldConfig = {
   recapNotes: 'Recap Notes',
+  deposit: 'Deposit',
+  capeHideDeposit: 'Cape/Hide Deposit',
   amountPaid: 'Amount Paid',
   totalPrice: 'Total Price',
+  hasPrinted: 'Has Printed',
   _id: 'ID',
 };
 
@@ -122,9 +143,10 @@ const EXCLUDED_FIELDS = new Set([
   'name', // Combined into firstName/lastName
   'fullAddress', // Split into address/city/state/zip
   'specialtyMeats', // Not a direct field
-  'hasPrinted', // Internal field
-  'historicalItemPrices', // Internal pricing data
-  'pricingSnapshot', // Internal pricing data
+  'historicalItemPrices', // Internal pricing data (complex object)
+  'pricingSnapshot', // Internal pricing data (complex object)
+  '__v', // Mongoose version key
+  'updatedAt', // System field
 ]);
 
 /**
@@ -183,17 +205,91 @@ const getCsvFields = (): CsvFieldConfig => {
   return cachedCsvFields;
 };
 
-export const exportDeers = async (data: DeerT[]) => {
-  const fields = getCsvFields();
+/**
+ * Sanitize a value for CSV export
+ * Handles complex objects, nulls, and special types
+ */
+const sanitizeValue = (value: unknown): string | number | boolean | null | undefined => {
+  if (value === null || value === undefined) {
+    return '';
+  }
 
-  const formattedData = data.map((data) => {
-    return {
-      ...data,
-      createdAt: dayjs(data.createdAt).format('MM/DD/YYYY'),
-    };
+  // Handle Map objects (like historicalItemPrices)
+  if (value instanceof Map) {
+    return JSON.stringify(Object.fromEntries(value));
+  }
+
+  // Handle plain objects (like pricingSnapshot)
+  if (typeof value === 'object' && !Array.isArray(value) && !(value instanceof Date)) {
+    return JSON.stringify(value);
+  }
+
+  // Handle arrays
+  if (Array.isArray(value)) {
+    return JSON.stringify(value);
+  }
+
+  return value as string | number | boolean;
+};
+
+/**
+ * Collect all unique field names from the data
+ * This ensures new fields are automatically included
+ */
+const collectFieldsFromData = (data: DeerT[]): Set<string> => {
+  const fields = new Set<string>();
+  for (const record of data) {
+    for (const key of Object.keys(record)) {
+      fields.add(key);
+    }
+  }
+  return fields;
+};
+
+export const exportDeers = async (data: DeerT[]) => {
+  const configuredFields = getCsvFields();
+
+  // Collect all unique fields from the actual data
+  const dataFields = collectFieldsFromData(data);
+
+  // Add any fields from the data that aren't in the configuration
+  // This ensures new fields are automatically exported
+  const allFields: CsvFieldConfig = { ...configuredFields };
+  Array.from(dataFields).forEach((fieldName) => {
+    if (!allFields[fieldName] && !EXCLUDED_FIELDS.has(fieldName)) {
+      // Convert camelCase to Title Case for the label
+      const label = fieldName
+        .replace(/([A-Z])/g, ' $1')
+        .replace(/^./, (str) => str.toUpperCase())
+        .trim();
+      allFields[fieldName] = label;
+    }
   });
 
-  return saveCSV('Deers', fields, formattedData);
+  const formattedData = data.map((record) => {
+    const formatted: Record<string, unknown> = {};
+
+    // Process all fields
+    for (const key of Object.keys(record)) {
+      if (EXCLUDED_FIELDS.has(key)) continue;
+
+      const value = record[key];
+
+      // Special handling for dates
+      if (key === 'createdAt' && value) {
+        formatted[key] = dayjs(value).format('MM/DD/YYYY');
+      } else if ((key === 'dateHarvested' || key === 'dateFound') && value) {
+        // Format date fields if they exist
+        formatted[key] = value;
+      } else {
+        formatted[key] = sanitizeValue(value);
+      }
+    }
+
+    return formatted;
+  });
+
+  return saveCSV('Deers', allFields, formattedData);
 };
 
 export const exportUsers = async (data: ProfileT[]) => {

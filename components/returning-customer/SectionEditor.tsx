@@ -104,7 +104,7 @@ export default function SectionEditor({
     if (section === 'processing-type') {
       // Initialize the ref with current value on first render
       if (previousProcessingType.current === null) {
-        previousProcessingType.current = processingType;
+        previousProcessingType.current = processingType ?? null;
         return;
       }
 
@@ -115,7 +115,7 @@ export default function SectionEditor({
         setShowDonationAlert(true);
       }
 
-      previousProcessingType.current = processingType;
+      previousProcessingType.current = processingType ?? null;
     }
   }, [processingType, section]);
 

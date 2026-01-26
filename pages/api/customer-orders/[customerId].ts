@@ -3,6 +3,7 @@ import Deer from 'models/Deer';
 import { connect } from 'lib/mongo';
 import { createPhoneRegex } from '@/lib/phoneUtils';
 import { extractReorderPreferences } from '@/lib/reorderUtils';
+import { DeerT } from '@/lib/types';
 
 /**
  * Fields to compare when determining if two orders have different preferences
@@ -110,11 +111,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse<
 
     // Find all orders for this customer using flexible phone matching
     const phoneRegex = createPhoneRegex(phone);
-    const orders = await Deer.find({
+    const orders = (await Deer.find({
       phone: { $regex: phoneRegex },
     })
       .sort({ createdAt: -1 })
-      .lean();
+      .lean()) as DeerT[];
 
     console.log(`[customer-orders] Phone: ${phone}, Regex: ${phoneRegex}, Name: ${name}`);
     console.log(`[customer-orders] Found ${orders.length} orders by phone`);
